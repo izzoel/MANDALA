@@ -82,6 +82,15 @@
                 @endif
             </flux:sidebar.group>
 
+            @if(auth()->user()->isAdminDiklat())
+                <flux:sidebar.group expandable heading="{{ __('Pengguna & Akses') }}" class="grid">
+                    <flux:sidebar.item :href="route('pengguna.user')"
+                        :current="request()->routeIs('pengguna.user')" icon="users" wire:navigate>
+                        {{ __('Manajemen Akun') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
+            @endif
+
             <flux:sidebar.group expandable heading="{{ __('Pengaturan Akun') }}" class="grid">
                 <flux:sidebar.item :href="route('profile.edit')" :current="request()->routeIs('profile.edit')"
                     icon="cog-6-tooth" wire:navigate>

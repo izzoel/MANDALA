@@ -241,6 +241,7 @@ Sebelum kuota dihitung, sistem memeriksa:
 | `/diklit/pembimbing` | `auth, verified` | Penugasan CI Lapangan & Dosen Pembimbing |
 | `/diklit/penilaian` | `auth, verified` | Formulir evaluasi nilai kompetensi klinis |
 | `/diklit/kriteria` | `role:admin_diklat,super_admin` | Master aspek & persentase bobot nilai |
+| `/pengguna/user` | `role:admin_diklat,super_admin` | Manajemen akun, penetapan peran (RBAC) & profil ekstensi |
 | `/settings/profile` | `auth, verified` | Pengaturan profil, kata sandi, Passkeys & 2FA |
 
 ---

@@ -20,6 +20,10 @@
 - **Penilaian Praktik Mahasiswa:** Evaluasi kompetensi klinis dinamis berbasis kriteria penilaian terbobot (skor otomatis 0–100).
 - **Master Kriteria Evaluasi:** Pengaturan aspek kompetensi dan persentase pembobotan penilaian (total 100%).
 
+### 3. Modul Manajemen Pengguna & Hak Akses (RBAC)
+- **Kelola Akun Multi-Peran:** Penambahan dan pembaruan akun untuk 7 peran pengguna dengan form ekstensi profil dinamis (Pegawai Non-ASN, Mahasiswa, CI Lapangan, Dosen Pembimbing, Admin PT, Admin Diklat, Super Admin).
+- **Kontrol Status & Keamanan:** Pengaktifan/penonaktifan akun, reset kata sandi, dan proteksi hak akses berbasis peran (*Role-Based Access Control*). Khusus diakses oleh **Super Administrator** dan **Admin Diklat RS**.
+
 ---
 
 ## 👥 Hak Akses & Peran Pengguna (RBAC)

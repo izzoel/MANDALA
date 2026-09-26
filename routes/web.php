@@ -38,6 +38,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('role:admin_diklat,super_admin')
             ->name('kriteria');
     });
+
+    // Modul 3: Manajemen Akun & Hak Akses (RBAC) - Khusus Admin Diklat & Super Admin
+    Route::prefix('pengguna')->name('pengguna.')->middleware('role:admin_diklat,super_admin')->group(function () {
+        Route::livewire('/user', 'pages::pengguna.user')->name('user');
+    });
 });
 
 require __DIR__.'/settings.php';
