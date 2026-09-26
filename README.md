@@ -119,6 +119,13 @@ composer run dev
 
 ---
 
+## 📚 Dokumentasi Terkait
+- [Panduan Penggunaan & Struktur Sistem MANDALA](file:///Applications/MAMP/htdocs/mandala/PANDUAN_PENGGUNAAN_DAN_STRUKTUR_MANDALA.md)
+- [Catatan Pembelajaran & Status Pengembangan Harian](file:///Applications/MAMP/htdocs/mandala/CATATAN_PENGEMBANGAN_HARIAN.md)
+- [Spesifikasi Teknis & Logika Bisnis RS](file:///Applications/MAMP/htdocs/mandala/spesifikasi_teknis_laravel_manajemen_diklat_rs.md)
+
+---
+
 ## 📄 Lisensi & Pengembang
 
 Dikembangkan oleh **[Zetware](https://zetware.id)** © 2026. Hak cipta dilindungi undang-undang.
