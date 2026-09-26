@@ -21,17 +21,17 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
     // Filter & Search
     public string $search = '';
     public string $filterStatus = 'semua';
-    public ?int $filterUnitId = null;
+    public string|int|null $filterUnitId = null;
 
     // Calendar State
     public int $calendarMonth = 0;
     public int $calendarYear = 0;
-    public ?int $calendarUnitId = null;
+    public string|int|null $calendarUnitId = null;
 
     // Form Permohonan Booking
     public bool $showBookingModal = false;
-    public ?int $pt_id = null;
-    public ?int $unit_id = null;
+    public string|int|null $pt_id = null;
+    public string|int|null $unit_id = null;
     public string $prodi = '';
     public int $jumlah_mahasiswa = 1;
     public string $tgl_mulai = '';
@@ -87,7 +87,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
     #[Computed]
     public function selectedUnit()
     {
-        return $this->unit_id ? Unit::with('prodiKuotas')->find($this->unit_id) : null;
+        return $this->unit_id ? Unit::with('prodiKuotas')->find((int) $this->unit_id) : null;
     }
 
     #[Computed]
@@ -97,7 +97,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
             return collect();
         }
 
-        $unit = Unit::with('prodiKuotas')->find($this->unit_id);
+        $unit = Unit::with('prodiKuotas')->find((int) $this->unit_id);
         return $unit ? $unit->prodiKuotas : collect();
     }
 
@@ -107,7 +107,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
         return PermohonanPraktik::query()
             ->with(['perguruanTinggi', 'unit.prodiKuotas', 'suratPersetujuan.diterbitkanOleh', 'penunjukanPembimbings.mahasiswa', 'penunjukanPembimbings.pembimbingLapangan', 'penunjukanPembimbings.pembimbingDosen'])
             ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status', $this->filterStatus))
-            ->when($this->filterUnitId, fn ($q) => $q->where('unit_id', $this->filterUnitId))
+            ->when(! empty($this->filterUnitId), fn ($q) => $q->where('unit_id', (int) $this->filterUnitId))
             ->when($this->search !== '', function ($q) {
                 $term = '%' . strtolower($this->search) . '%';
                 $q->where(function ($sub) use ($term) {
@@ -154,7 +154,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
         $bookings = PermohonanPraktik::with(['perguruanTinggi', 'unit'])
             ->where('status', 'disetujui')
-            ->when($this->calendarUnitId, fn ($q) => $q->where('unit_id', $this->calendarUnitId))
+            ->when(! empty($this->calendarUnitId), fn ($q) => $q->where('unit_id', (int) $this->calendarUnitId))
             ->where(function ($q) use ($startOfMonth, $endOfMonth) {
                 $q->where('tgl_mulai', '<=', $endOfMonth->toDateString())
                   ->where('tgl_selesai', '>=', $startOfMonth->toDateString());
@@ -217,10 +217,13 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
     public function updated($propertyName): void
     {
         if ($propertyName === 'unit_id') {
-            // Auto-select first prodi if unit has prodis
-            $unit = Unit::with('prodiKuotas')->find($this->unit_id);
-            if ($unit && $unit->mode_kuota === 'per_prodi' && $unit->prodiKuotas->isNotEmpty()) {
-                $this->prodi = $unit->prodiKuotas->first()->prodi;
+            if ($this->unit_id) {
+                $unit = Unit::with('prodiKuotas')->find((int) $this->unit_id);
+                if ($unit && $unit->mode_kuota === 'per_prodi' && $unit->prodiKuotas->isNotEmpty()) {
+                    $this->prodi = $unit->prodiKuotas->first()->prodi;
+                }
+            } else {
+                $this->prodi = '';
             }
             $this->checkLiveKuota();
         } elseif (in_array($propertyName, ['prodi', 'tgl_mulai', 'tgl_selesai', 'jumlah_mahasiswa', 'pt_id'])) {
@@ -233,7 +236,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
         $this->errorMessage = '';
         $this->kuotaCheckResult = null;
 
-        if ($this->unit_id && $this->tgl_mulai && $this->tgl_selesai && $this->tgl_selesai >= $this->tgl_mulai) {
+        if (! empty($this->unit_id) && $this->tgl_mulai && $this->tgl_selesai && $this->tgl_selesai >= $this->tgl_mulai) {
             $service = app(BookingKuotaService::class);
             $this->kuotaCheckResult = $service->checkKuotaAvailability(
                 (int) $this->unit_id,
@@ -326,10 +329,10 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
             $service = app(BookingKuotaService::class);
             $service->ajukanPermohonan([
-                'pt_id' => $this->pt_id,
-                'unit_id' => $this->unit_id,
+                'pt_id' => (int) $this->pt_id,
+                'unit_id' => (int) $this->unit_id,
                 'prodi' => $this->prodi,
-                'jumlah_mahasiswa' => $this->jumlah_mahasiswa,
+                'jumlah_mahasiswa' => (int) $this->jumlah_mahasiswa,
                 'tgl_mulai' => $this->tgl_mulai,
                 'tgl_selesai' => $this->tgl_selesai,
                 'file_surat_permohonan' => $filePath,
