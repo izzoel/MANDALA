@@ -29,7 +29,13 @@
 
 ### C. Modul 3: Manajemen Akun & Hak Akses (RBAC)
 - **Integrasi Spatie Laravel Permission**:
-  - Konfigurasi role & permission granular.
+  - Konfigurasi role & permission granular dengan 5 kluster kategori izin:
+    1. 🛡️ *Manajemen Sistem & Pengguna* (`kelola-role`, `kelola-user`, `kelola-pengaturan-sistem`)
+    2. 🎓 *Modul Diklat Pegawai Non-ASN* (`kelola-target-pelatihan`, `upload-sertifikat`, `verifikasi-sertifikat`, `lihat-rekap-pelatihan`)
+    3. 🏥 *Modul Praktik Mahasiswa RS (Diklit)* (`kelola-pt-mou`, `kelola-unit-rs`, `ajukan-booking-praktik`, `persetujuan-booking`, `terbitkan-surat-rs`, `penunjukan-pembimbing`)
+    4. 📝 *Modul Penilaian & Evaluasi Klinis* (`kelola-kriteria-nilai`, `input-penilaian-praktik`, `lihat-rekap-nilai`)
+    5. 📊 *Laporan & Ekspor Dokumen* (`ekspor-laporan-diklat`, `ekspor-laporan-diklit`)
+  - **Fitur Preset Template Cepat**: Tombol otomatis untuk menerapkan izin standar bagi *Super Admin (100%)*, *Admin Diklat RS*, *Admin PT*, *CI Lapangan RS*, *Dosen PT*, dan *Pegawai Non-ASN*.
   - Bypass `Gate::before` untuk role `super_admin`.
   - Halaman **Manajemen Pengguna (`/pengguna/user`)**: Khusus untuk `admin_diklat` dan `super_admin`.
   - Halaman **Manajemen Role & Permissions (`/pengguna/role`)**: Terproteksi ketat **HANYA untuk `super_admin`**.
