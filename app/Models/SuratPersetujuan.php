@@ -34,4 +34,9 @@ class SuratPersetujuan extends Model
     {
         return $this->belongsTo(User::class, 'diterbitkan_oleh');
     }
+
+    public function diterbitkanOleh(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'diterbitkan_oleh');
+    }
 }
