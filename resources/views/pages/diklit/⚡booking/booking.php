@@ -6,7 +6,6 @@ use App\Models\Unit;
 use App\Models\UnitProdiKuota;
 use App\Services\BookingKuotaService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -338,9 +337,8 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
             $this->showBookingModal = false;
             session()->flash('message', 'Permohonan booking praktik berhasil diajukan dan masuk ke antrean verifikasi Diklat RS.');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->errorMessage = $e->getMessage();
         }
     }
 };
-
