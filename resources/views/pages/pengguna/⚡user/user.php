@@ -207,6 +207,10 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component {
 
     protected function syncRoleProfile(User $user): void
     {
+        // Sync Spatie Role
+        \Spatie\Permission\Models\Role::firstOrCreate(['name' => $user->role, 'guard_name' => 'web']);
+        $user->syncRoles([$user->role]);
+
         if ($user->role === 'pegawai_non_asn') {
             PegawaiNonAsn::updateOrCreate(
                 ['user_id' => $user->id],

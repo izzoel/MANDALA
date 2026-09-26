@@ -242,6 +242,7 @@ Sebelum kuota dihitung, sistem memeriksa:
 | `/diklit/penilaian` | `auth, verified` | Formulir evaluasi nilai kompetensi klinis |
 | `/diklit/kriteria` | `role:admin_diklat,super_admin` | Master aspek & persentase bobot nilai |
 | `/pengguna/user` | `role:admin_diklat,super_admin` | Manajemen akun, penetapan peran (RBAC) & profil ekstensi |
+| `/pengguna/role` | `role:super_admin` | Manajemen Role & Permissions Spatie (Eksklusif Super Admin) |
 | `/settings/profile` | `auth, verified` | Pengaturan profil, kata sandi, Passkeys & 2FA |
 
 ---

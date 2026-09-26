@@ -39,9 +39,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('kriteria');
     });
 
-    // Modul 3: Manajemen Akun & Hak Akses (RBAC) - Khusus Admin Diklat & Super Admin
-    Route::prefix('pengguna')->name('pengguna.')->middleware('role:admin_diklat,super_admin')->group(function () {
-        Route::livewire('/user', 'pages::pengguna.user')->name('user');
+    // Modul 3: Manajemen Akun & Hak Akses (RBAC)
+    Route::prefix('pengguna')->name('pengguna.')->group(function () {
+        // Akun Pengguna: Admin Diklat & Super Admin
+        Route::livewire('/user', 'pages::pengguna.user')
+            ->middleware('role:admin_diklat,super_admin')
+            ->name('user');
+
+        // Manajemen Role & Permissions Spatie: HANYA Super Admin
+        Route::livewire('/role', 'pages::pengguna.role')
+            ->middleware('role:super_admin')
+            ->name('role');
     });
 });
 

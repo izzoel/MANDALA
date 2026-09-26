@@ -88,6 +88,13 @@
                         :current="request()->routeIs('pengguna.user')" icon="users" wire:navigate>
                         {{ __('Manajemen Akun') }}
                     </flux:sidebar.item>
+
+                    @if(auth()->user()->isSuperAdmin())
+                        <flux:sidebar.item :href="route('pengguna.role')"
+                            :current="request()->routeIs('pengguna.role')" icon="shield-check" wire:navigate>
+                            {{ __('Manajemen Role') }}
+                        </flux:sidebar.item>
+                    @endif
                 </flux:sidebar.group>
             @endif
 

@@ -25,6 +25,67 @@ class DiklatRsSeeder extends Seeder
 {
     public function run(): void
     {
+        // 0. Spatie Roles & Permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        $permissions = [
+            'kelola-role',
+            'kelola-user',
+            'kelola-target-pelatihan',
+            'upload-sertifikat',
+            'verifikasi-sertifikat',
+            'kelola-pt-mou',
+            'kelola-unit-rs',
+            'ajukan-booking-praktik',
+            'persetujuan-booking',
+            'penunjukan-pembimbing',
+            'input-penilaian-praktik',
+            'kelola-kriteria-nilai',
+        ];
+
+        foreach ($permissions as $perm) {
+            \Spatie\Permission\Models\Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
+        }
+
+        $roleSuperAdmin = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
+        $roleAdminDiklat = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin_diklat', 'guard_name' => 'web']);
+        $roleAdminPt = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin_pt', 'guard_name' => 'web']);
+        $rolePegawai = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'pegawai_non_asn', 'guard_name' => 'web']);
+        $rolePembimbingLapangan = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'pembimbing_lapangan', 'guard_name' => 'web']);
+        $rolePembimbingDosen = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'pembimbing_dosen', 'guard_name' => 'web']);
+        $roleMahasiswa = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'mahasiswa', 'guard_name' => 'web']);
+
+        // Assign Permissions to Roles
+        $roleSuperAdmin->syncPermissions($permissions);
+
+        $roleAdminDiklat->syncPermissions([
+            'kelola-user',
+            'kelola-target-pelatihan',
+            'upload-sertifikat',
+            'verifikasi-sertifikat',
+            'kelola-pt-mou',
+            'kelola-unit-rs',
+            'persetujuan-booking',
+            'penunjukan-pembimbing',
+            'kelola-kriteria-nilai',
+        ]);
+
+        $roleAdminPt->syncPermissions([
+            'ajukan-booking-praktik',
+        ]);
+
+        $rolePegawai->syncPermissions([
+            'upload-sertifikat',
+        ]);
+
+        $rolePembimbingLapangan->syncPermissions([
+            'input-penilaian-praktik',
+        ]);
+
+        $rolePembimbingDosen->syncPermissions([
+            'input-penilaian-praktik',
+        ]);
+
         // 1. Users Akun Utama
         $superAdmin = User::create([
             'name' => 'Super Administrator RS',
@@ -33,6 +94,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'super_admin',
             'status' => 'aktif',
         ]);
+        $superAdmin->assignRole($roleSuperAdmin);
 
         $adminDiklat = User::create([
             'name' => 'Ns. Ratna Dewi, S.Kep (Admin Diklat)',
@@ -41,6 +103,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'admin_diklat',
             'status' => 'aktif',
         ]);
+        $adminDiklat->assignRole($roleAdminDiklat);
 
         $adminPt = User::create([
             'name' => 'Budi Santoso, M.Kom (Admin PT)',
@@ -49,6 +112,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'admin_pt',
             'status' => 'aktif',
         ]);
+        $adminPt->assignRole($roleAdminPt);
 
         $userPegawai1 = User::create([
             'name' => 'dr. Andika Pratama',
@@ -57,6 +121,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'pegawai_non_asn',
             'status' => 'aktif',
         ]);
+        $userPegawai1->assignRole($rolePegawai);
 
         $userPegawai2 = User::create([
             'name' => 'Siti Nurhaliza, A.Md.Farm',
@@ -65,6 +130,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'pegawai_non_asn',
             'status' => 'aktif',
         ]);
+        $userPegawai2->assignRole($rolePegawai);
 
         $userPembimbingLapangan = User::create([
             'name' => 'Ns. Bambang Hidayat, S.Tr.Kep (CI Lapangan)',
@@ -73,6 +139,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'pembimbing_lapangan',
             'status' => 'aktif',
         ]);
+        $userPembimbingLapangan->assignRole($rolePembimbingLapangan);
 
         $userPembimbingDosen = User::create([
             'name' => 'Dr. drg. Maya Anggraini, M.Kes (Dosen Pembimbing)',
@@ -81,6 +148,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'pembimbing_dosen',
             'status' => 'aktif',
         ]);
+        $userPembimbingDosen->assignRole($rolePembimbingDosen);
 
         $userMahasiswa1 = User::create([
             'name' => 'Ahmad Fauzi (Mahasiswa)',
@@ -89,6 +157,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'mahasiswa',
             'status' => 'aktif',
         ]);
+        $userMahasiswa1->assignRole($roleMahasiswa);
 
         $userMahasiswa2 = User::create([
             'name' => 'Dinda Putri Rahmawati',
@@ -97,6 +166,7 @@ class DiklatRsSeeder extends Seeder
             'role' => 'mahasiswa',
             'status' => 'aktif',
         ]);
+        $userMahasiswa2->assignRole($roleMahasiswa);
 
         // 2. Perguruan Tinggi Mitra (MoU)
         $pt1 = PerguruanTinggi::create([

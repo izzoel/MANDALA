@@ -14,13 +14,14 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'role', 'status'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable, HasRoles;
 
     /**
      * Get the attributes that should be cast.
@@ -67,37 +68,36 @@ class User extends Authenticatable implements PasskeyUser
         return $this->hasOne(PembimbingDosen::class, 'user_id');
     }
 
-    public function hasRole(string|array $roles): bool
+    public function isSuperAdmin(): bool
     {
-        if (is_array($roles)) {
-            return in_array($this->role, $roles) || $this->role === 'super_admin';
-        }
-
-        return $this->role === $roles || $this->role === 'super_admin';
+        return $this->role === 'super_admin' || $this->hasRole('super_admin');
     }
 
     public function isAdminDiklat(): bool
     {
-        return in_array($this->role, ['admin_diklat', 'super_admin']);
+        return in_array($this->role, ['admin_diklat', 'super_admin'])
+            || $this->hasAnyRole(['admin_diklat', 'super_admin']);
     }
 
     public function isAdminPt(): bool
     {
-        return in_array($this->role, ['admin_pt', 'super_admin']);
+        return in_array($this->role, ['admin_pt', 'super_admin'])
+            || $this->hasAnyRole(['admin_pt', 'super_admin']);
     }
 
     public function isPegawaiNonAsn(): bool
     {
-        return $this->role === 'pegawai_non_asn';
+        return $this->role === 'pegawai_non_asn' || $this->hasRole('pegawai_non_asn');
     }
 
     public function isMahasiswa(): bool
     {
-        return $this->role === 'mahasiswa';
+        return $this->role === 'mahasiswa' || $this->hasRole('mahasiswa');
     }
 
     public function isPembimbing(): bool
     {
-        return in_array($this->role, ['pembimbing_lapangan', 'pembimbing_dosen', 'super_admin']);
+        return in_array($this->role, ['pembimbing_lapangan', 'pembimbing_dosen', 'super_admin'])
+            || $this->hasAnyRole(['pembimbing_lapangan', 'pembimbing_dosen', 'super_admin']);
     }
 }

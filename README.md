@@ -20,9 +20,9 @@
 - **Penilaian Praktik Mahasiswa:** Evaluasi kompetensi klinis dinamis berbasis kriteria penilaian terbobot (skor otomatis 0–100).
 - **Master Kriteria Evaluasi:** Pengaturan aspek kompetensi dan persentase pembobotan penilaian (total 100%).
 
-### 3. Modul Manajemen Pengguna & Hak Akses (RBAC)
-- **Kelola Akun Multi-Peran:** Penambahan dan pembaruan akun untuk 7 peran pengguna dengan form ekstensi profil dinamis (Pegawai Non-ASN, Mahasiswa, CI Lapangan, Dosen Pembimbing, Admin PT, Admin Diklat, Super Admin).
-- **Kontrol Status & Keamanan:** Pengaktifan/penonaktifan akun, reset kata sandi, dan proteksi hak akses berbasis peran (*Role-Based Access Control*). Khusus diakses oleh **Super Administrator** dan **Admin Diklat RS**.
+### 3. Modul Manajemen Pengguna, Role & Hak Akses (Laravel Spatie)
+- **Manajemen Role & Permissions (Eksklusif Super Admin):** Konfigurasi hak akses berbasis engine *Spatie Laravel Permission*. Super Admin dapat membuat peran baru, menambah izin (*permissions*), serta mencentang matriks izin per peran.
+- **Kelola Akun Multi-Peran (Super Admin & Admin Diklat):** Penambahan dan pembaruan akun pengguna dengan form ekstensi profil dinamis (Pegawai Non-ASN, Mahasiswa, CI Lapangan, Dosen Pembimbing, Admin PT, Admin Diklat, Super Admin).
 
 ---
 
@@ -30,8 +30,8 @@
 
 | Peran (Role) | Kode Role | Hak Akses Utama |
 | :--- | :--- | :--- |
-| **Super Administrator** | `super_admin` | Akses penuh seluruh modul dan konfigurasi sistem |
-| **Admin Diklat RS** | `admin_diklat` | Kelola target, verifikasi sertifikat, review booking, terbitkan surat, atur kuota unit & kriteria nilai |
+| **Super Administrator** | `super_admin` | **Akses penuh**, termasuk manajemen Role & Permissions Spatie |
+| **Admin Diklat RS** | `admin_diklat` | Kelola user, target pelatihan, verifikasi sertifikat, review booking, terbitkan surat, atur unit & kriteria |
 | **Admin Perguruan Tinggi** | `admin_pt` | Cek ketersediaan kuota unit & ajukan permohonan praktik mahasiswa |
 | **Pegawai Non-ASN** | `pegawai_non_asn` | Pantau target pelatihan & unggah berkas sertifikat |
 | **Pembimbing Lapangan (CI RS)** | `pembimbing_lapangan` | Bimbing mahasiswa di unit & input evaluasi/nilai kompetensi |

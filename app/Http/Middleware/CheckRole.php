@@ -23,7 +23,7 @@ class CheckRole
         $user = $request->user();
 
         // Super admin has full access
-        if ($user->role === 'super_admin') {
+        if ($user->role === 'super_admin' || $user->hasRole('super_admin')) {
             return $next($request);
         }
 
@@ -31,7 +31,7 @@ class CheckRole
             return $next($request);
         }
 
-        if (in_array($user->role, $roles)) {
+        if (in_array($user->role, $roles) || $user->hasAnyRole($roles)) {
             return $next($request);
         }
 
