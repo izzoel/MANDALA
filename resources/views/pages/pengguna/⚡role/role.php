@@ -35,32 +35,32 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
     // Metadata & Grouping Permission Sistem
     public array $permissionMetadata = [
         // 1. Sistem & Pengguna
-        'kelola-role' => ['label' => 'Kelola Role & Permissions', 'group' => '🛡️ Manajemen Sistem & Pengguna', 'desc' => 'Akses penuh konfigurasi peran dan izin Spatie'],
-        'kelola-user' => ['label' => 'Kelola Akun Pengguna', 'group' => '🛡️ Manajemen Sistem & Pengguna', 'desc' => 'Menambah, mengedit, dan mengaktifkan akun pengguna'],
-        'kelola-pengaturan-sistem' => ['label' => 'Kelola Pengaturan Sistem', 'group' => '🛡️ Manajemen Sistem & Pengguna', 'desc' => 'Konfigurasi parameter aplikasi dan instansi rumah sakit'],
+        'kelola-role' => ['label' => 'Kelola Role & Permissions', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'shield-check', 'desc' => 'Akses penuh konfigurasi peran dan izin Spatie'],
+        'kelola-user' => ['label' => 'Kelola Akun Pengguna', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'users', 'desc' => 'Menambah, mengedit, dan mengaktifkan akun pengguna'],
+        'kelola-pengaturan-sistem' => ['label' => 'Kelola Pengaturan Sistem', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'cog-6-tooth', 'desc' => 'Konfigurasi parameter aplikasi dan instansi rumah sakit'],
 
         // 2. Modul Diklat Pegawai
-        'kelola-target-pelatihan' => ['label' => 'Kelola Target Pelatihan Pegawai', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Menetapkan target pelatihan wajib & fungsional tahunan'],
-        'upload-sertifikat' => ['label' => 'Unggah Berkas Sertifikat', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Mengunggah file sertifikat pelatihan ke sistem'],
-        'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
-        'lihat-rekap-pelatihan' => ['label' => 'Lihat Rekapitulasi Pelatihan Pegawai', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Memantau statistik pemenuhan target pelatihan'],
+        'kelola-target-pelatihan' => ['label' => 'Kelola Target Pelatihan Pegawai', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'academic-cap', 'desc' => 'Menetapkan target pelatihan wajib & fungsional tahunan'],
+        'upload-sertifikat' => ['label' => 'Unggah Berkas Sertifikat', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'arrow-up-tray', 'desc' => 'Mengunggah file sertifikat pelatihan ke sistem'],
+        'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'check-badge', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
+        'lihat-rekap-pelatihan' => ['label' => 'Lihat Rekapitulasi Pelatihan Pegawai', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'chart-bar', 'desc' => 'Memantau statistik pemenuhan target pelatihan'],
 
         // 3. Modul Diklit & Booking Praktik RS
-        'kelola-pt-mou' => ['label' => 'Kelola Perguruan Tinggi & MoU', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Mengatur institusi mitra dan masa berlaku MoU'],
-        'kelola-unit-rs' => ['label' => 'Kelola Unit RS & Mode Kuota', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Mengatur unit ruangan dan alokasi kuota per-prodi/gabungan'],
-        'ajukan-booking-praktik' => ['label' => 'Ajukan Permohonan Booking Praktik', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Mengajukan jadwal praktik klinik mahasiswa'],
-        'persetujuan-booking' => ['label' => 'Persetujuan Permohonan Booking', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Memproses review dan keputusan booking praktik'],
-        'terbitkan-surat-rs' => ['label' => 'Terbitkan Surat Persetujuan RS', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Menerbitkan nomor surat resmi persetujuan rumah sakit'],
-        'penunjukan-pembimbing' => ['label' => 'Penunjukan Tim Pembimbing', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Menugaskan CI RS Lapangan dan Dosen Pembimbing'],
+        'kelola-pt-mou' => ['label' => 'Kelola Perguruan Tinggi & MoU', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'building-library', 'desc' => 'Mengatur institusi mitra dan masa berlaku MoU'],
+        'kelola-unit-rs' => ['label' => 'Kelola Unit RS & Mode Kuota', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'building-office-2', 'desc' => 'Mengatur unit ruangan dan alokasi kuota per-prodi/gabungan'],
+        'ajukan-booking-praktik' => ['label' => 'Ajukan Permohonan Booking Praktik', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'calendar-days', 'desc' => 'Mengajukan jadwal praktik klinik mahasiswa'],
+        'persetujuan-booking' => ['label' => 'Persetujuan Permohonan Booking', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'document-check', 'desc' => 'Memproses review dan keputusan booking praktik'],
+        'terbitkan-surat-rs' => ['label' => 'Terbitkan Surat Persetujuan RS', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'document-text', 'desc' => 'Menerbitkan nomor surat resmi persetujuan rumah sakit'],
+        'penunjukan-pembimbing' => ['label' => 'Penunjukan Tim Pembimbing', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'user-plus', 'desc' => 'Menugaskan CI RS Lapangan dan Dosen Pembimbing'],
 
         // 4. Modul Penilaian & Evaluasi Klinis
-        'kelola-kriteria-nilai' => ['label' => 'Kelola Kriteria & Bobot Nilai', 'group' => '📝 Modul Penilaian & Evaluasi Klinis', 'desc' => 'Mengatur parameter dan persentase bobot kelulusan stase'],
-        'input-penilaian-praktik' => ['label' => 'Input Penilaian & Evaluasi Praktik', 'group' => '📝 Modul Penilaian & Evaluasi Klinis', 'desc' => 'Mengisi nilai kompetensi klinis dan logbook mahasiswa'],
-        'lihat-rekap-nilai' => ['label' => 'Lihat Transkrip & Rekap Nilai', 'group' => '📝 Modul Penilaian & Evaluasi Klinis', 'desc' => 'Melihat rekap nilai akhir dan transkrip kelulusan stase'],
+        'kelola-kriteria-nilai' => ['label' => 'Kelola Kriteria & Bobot Nilai', 'group' => 'Modul Penilaian & Evaluasi Klinis', 'icon' => 'adjustments-horizontal', 'desc' => 'Mengatur parameter dan persentase bobot kelulusan stase'],
+        'input-penilaian-praktik' => ['label' => 'Input Penilaian & Evaluasi Praktik', 'group' => 'Modul Penilaian & Evaluasi Klinis', 'icon' => 'clipboard-document-check', 'desc' => 'Mengisi nilai kompetensi klinis dan logbook mahasiswa'],
+        'lihat-rekap-nilai' => ['label' => 'Lihat Transkrip & Rekap Nilai', 'group' => 'Modul Penilaian & Evaluasi Klinis', 'icon' => 'document-chart-bar', 'desc' => 'Melihat rekap nilai akhir dan transkrip kelulusan stase'],
 
         // 5. Laporan & Dokumen
-        'ekspor-laporan-diklat' => ['label' => 'Ekspor Laporan Diklat Pegawai', 'group' => '📊 Laporan & Ekspor Dokumen', 'desc' => 'Ekspor data pelatihan pegawai non-ASN ke PDF/Excel'],
-        'ekspor-laporan-diklit' => ['label' => 'Ekspor Laporan Praktik Mahasiswa', 'group' => '📊 Laporan & Ekspor Dokumen', 'desc' => 'Ekspor data stase dan jadwal mahasiswa ke PDF/Excel'],
+        'ekspor-laporan-diklat' => ['label' => 'Ekspor Laporan Diklat Pegawai', 'group' => 'Laporan & Ekspor Dokumen', 'icon' => 'arrow-down-tray', 'desc' => 'Ekspor data pelatihan pegawai non-ASN ke PDF/Excel'],
+        'ekspor-laporan-diklit' => ['label' => 'Ekspor Laporan Praktik Mahasiswa', 'group' => 'Laporan & Ekspor Dokumen', 'icon' => 'arrow-down-tray', 'desc' => 'Ekspor data stase dan jadwal mahasiswa ke PDF/Excel'],
     ];
 
     #[Computed]
@@ -84,23 +84,37 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
     {
         $permissions = Permission::orderBy('name')->get();
 
+        $categoryIcons = [
+            'Manajemen Sistem & Pengguna' => 'shield-check',
+            'Modul Diklat Pegawai Non-ASN' => 'academic-cap',
+            'Modul Praktik Mahasiswa RS (Diklit)' => 'building-office-2',
+            'Modul Penilaian & Evaluasi Klinis' => 'clipboard-document-check',
+            'Laporan & Ekspor Dokumen' => 'document-chart-bar',
+            'Izin Kustom & Ekstensi Lainnya' => 'cog-6-tooth',
+        ];
+
         $grouped = [];
         foreach ($permissions as $perm) {
             $meta = $this->permissionMetadata[$perm->name] ?? [
                 'label' => ucwords(str_replace(['-', '_'], ' ', $perm->name)),
-                'group' => '⚙️ Izin Kustom & Ekstensi Lainnya',
+                'group' => 'Izin Kustom & Ekstensi Lainnya',
+                'icon' => 'key',
                 'desc' => 'Izin kustom sistem tambahan',
             ];
 
             $groupName = $meta['group'];
             if (! isset($grouped[$groupName])) {
-                $grouped[$groupName] = [];
+                $grouped[$groupName] = [
+                    'category_icon' => $categoryIcons[$groupName] ?? 'key',
+                    'permissions' => [],
+                ];
             }
 
-            $grouped[$groupName][] = [
+            $grouped[$groupName]['permissions'][] = [
                 'id' => $perm->id,
                 'name' => $perm->name,
                 'label' => $meta['label'],
+                'icon' => $meta['icon'] ?? 'key',
                 'desc' => $meta['desc'],
             ];
         }
@@ -135,8 +149,12 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
 
     public function toggleCategoryPermissions(string $category): void
     {
-        $groupItems = $this->groupedPermissions[$category] ?? [];
-        $groupPermNames = array_column($groupItems, 'name');
+        $groupData = $this->groupedPermissions[$category] ?? null;
+        if (! $groupData) {
+            return;
+        }
+
+        $groupPermNames = array_column($groupData['permissions'], 'name');
 
         // Check if all in this category are currently selected
         $allSelected = count(array_intersect($groupPermNames, $this->selectedPermissions)) === count($groupPermNames);

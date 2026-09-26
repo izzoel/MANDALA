@@ -5,7 +5,7 @@ Dokumen ini berisi panduan komprehensif mengenai struktur teknis kode, relasi ba
 
 ---
 
-## 📑 Daftar Isi
+## Daftar Isi
 1. [Gambaran Umum Sistem](#1-gambaran-umum-sistem)
 2. [Peta Struktur Direktori Proyek](#2-peta-struktur-direktori-proyek)
 3. [Arsitektur Database & Model Data](#3-arsitektur-database--model-data)
@@ -67,19 +67,19 @@ mandala/
 │       ├── layouts/
 │       │   └── app/
 │       │       └── sidebar.blade.php        # Layout navigasi sidebar & header
-│       ├── pages/                           # Komponen Livewire 4 SFC (⚡)
+│       ├── pages/                           # Komponen Livewire 4 SFC
 │       │   ├── diklat/
-│       │   │   ├── ⚡target/                 # Modul target pelatihan pegawai
-│       │   │   ├── ⚡sertifikat/             # Modul unggah sertifikat mandiri
-│       │   │   └── ⚡verifikasi/             # Modul verifikasi admin diklat
+│       │   │   ├── target/                  # Modul target pelatihan pegawai
+│       │   │   ├── sertifikat/              # Modul unggah sertifikat mandiri
+│       │   │   └── verifikasi/              # Modul verifikasi admin diklat
 │       │   └── diklit/
-│       │       ├── ⚡perguruan-tinggi/       # Modul master PT & MoU
-│       │       ├── ⚡unit/                   # Modul unit RS & batas kuota
-│       │       ├── ⚡booking/                # Modul kalender & form permohonan
-│       │       ├── ⚡persetujuan/            # Modul review & surat izin
-│       │       ├── ⚡pembimbing/             # Modul penunjukan pembimbing
-│       │       ├── ⚡penilaian/              # Modul pengisian nilai kompetensi
-│       │       └── ⚡kriteria/               # Modul master kriteria evaluasi
+│       │       ├── perguruan-tinggi/        # Modul master PT & MoU
+│       │       ├── unit/                    # Modul unit RS & batas kuota
+│       │       ├── booking/                 # Modul kalender & form permohonan
+│       │       ├── persetujuan/             # Modul review & surat izin
+│       │       ├── pembimbing/              # Modul penunjukan pembimbing
+│       │       ├── penilaian/               # Modul pengisian nilai kompetensi
+│       │       └── kriteria/                # Modul master kriteria evaluasi
 │       ├── dashboard.blade.php              # Halaman dashboard metrik terpusat
 │       └── landing.blade.php                # Landing page selamat datang
 └── routes/

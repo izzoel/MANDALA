@@ -4,14 +4,14 @@
 
 ---
 
-## 🚀 Fitur & Modul Sistem
+## 1. Fitur & Modul Sistem
 
-### 1. Modul Diklat (Pelatihan Pegawai Non-ASN)
+### A. Modul Diklat (Pelatihan Pegawai Non-ASN)
 - **Target Pelatihan:** Penugasan dan pemantauan target pelatihan wajib / fungsional tenaga kesehatan dan staf non-ASN.
 - **Upload & Berkas Sertifikat:** Pengunggahan mandiri sertifikat pelatihan (PDF/JPG/PNG max 5MB) dengan penautan otomatis ke target pelatihan.
 - **Verifikasi Sertifikat:** Antrean verifikasi keabsahan dokumen oleh Admin Diklat RS dengan review berkas & form keputusan (*Approve/Reject*).
 
-### 2. Modul Diklit (Booking Unit RS & Praktik Mahasiswa)
+### B. Modul Diklit (Booking Unit RS & Praktik Mahasiswa)
 - **Manajemen Perguruan Tinggi & MoU:** Pencatatan data institusi mitra dan gatekeeper masa berlaku MoU.
 - **Unit RS & Alokasi Kuota:** Konfigurasi unit ruangan (IGD, ICU, Bedah, Farmasi, Lab, dsb.) dengan mode kuota **Gabungan** atau **Per-Program Studi**.
 - **Kalender Booking & Permohonan Praktik:** Pengajuan izin praktik oleh Admin PT dengan *real-time quota check* dan pencegahan *overlap collision*.
@@ -20,17 +20,17 @@
 - **Penilaian Praktik Mahasiswa:** Evaluasi kompetensi klinis dinamis berbasis kriteria penilaian terbobot (skor otomatis 0–100).
 - **Master Kriteria Evaluasi:** Pengaturan aspek kompetensi dan persentase pembobotan penilaian (total 100%).
 
-### 3. Modul Manajemen Pengguna, Role & Hak Akses (Laravel Spatie)
+### C. Modul Manajemen Pengguna, Role & Hak Akses (Laravel Spatie)
 - **Manajemen Role & Permissions (Eksklusif Super Admin):** Konfigurasi hak akses berbasis engine *Spatie Laravel Permission*. Super Admin dapat membuat peran baru, menambah izin (*permissions*), serta mencentang matriks izin per peran.
 - **Kelola Akun Multi-Peran (Super Admin & Admin Diklat):** Penambahan dan pembaruan akun pengguna dengan form ekstensi profil dinamis (Pegawai Non-ASN, Mahasiswa, CI Lapangan, Dosen Pembimbing, Admin PT, Admin Diklat, Super Admin).
 
 ---
 
-## 👥 Hak Akses & Peran Pengguna (RBAC)
+## 2. Hak Akses & Peran Pengguna (RBAC)
 
 | Peran (Role) | Kode Role | Hak Akses Utama |
 | :--- | :--- | :--- |
-| **Super Administrator** | `super_admin` | **Akses penuh**, termasuk manajemen Role & Permissions Spatie |
+| **Super Administrator** | `super_admin` | Akses penuh, termasuk manajemen Role & Permissions Spatie |
 | **Admin Diklat RS** | `admin_diklat` | Kelola user, target pelatihan, verifikasi sertifikat, review booking, terbitkan surat, atur unit & kriteria |
 | **Admin Perguruan Tinggi** | `admin_pt` | Cek ketersediaan kuota unit & ajukan permohonan praktik mahasiswa |
 | **Pegawai Non-ASN** | `pegawai_non_asn` | Pantau target pelatihan & unggah berkas sertifikat |
@@ -40,10 +40,10 @@
 
 ---
 
-## 🛠️ Tech Stack
+## 3. Tech Stack
 
 - **Backend Framework:** [Laravel 13](https://laravel.com) (PHP 8.3+)
-- **Frontend Reaktif:** [Livewire 4](https://livewire.laravel.com) (Single-File Components `⚡`)
+- **Frontend Reaktif:** [Livewire 4](https://livewire.laravel.com) (Single-File Components)
 - **UI Toolkit:** [Flux UI Pro](https://fluxui.dev)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com) + `@tailwindcss/vite`
 - **Database:** MySQL 8.x
@@ -51,7 +51,7 @@
 
 ---
 
-## 📊 Skema Database & Relasi (ERD)
+## 4. Skema Database & Relasi (ERD)
 
 ```mermaid
 erDiagram
@@ -83,7 +83,7 @@ erDiagram
 
 ---
 
-## 🔐 Akun Uji Coba Default (Seeder)
+## 5. Akun Uji Coba Default (Seeder)
 
 Semua akun default menggunakan password: `password`
 
@@ -100,7 +100,7 @@ Semua akun default menggunakan password: `password`
 
 ---
 
-## 💻 Panduan Instalasi & Menjalankan
+## 6. Panduan Instalasi & Menjalankan
 
 ```bash
 # 1. Konfigurasi Environment & DB MySQL
@@ -119,13 +119,13 @@ composer run dev
 
 ---
 
-## 📚 Dokumentasi Terkait
+## 7. Dokumentasi Terkait
 - [Panduan Penggunaan & Struktur Sistem MANDALA](file:///Applications/MAMP/htdocs/mandala/PANDUAN_PENGGUNAAN_DAN_STRUKTUR_MANDALA.md)
 - [Catatan Pembelajaran & Status Pengembangan Harian](file:///Applications/MAMP/htdocs/mandala/CATATAN_PENGEMBANGAN_HARIAN.md)
 - [Spesifikasi Teknis & Logika Bisnis RS](file:///Applications/MAMP/htdocs/mandala/spesifikasi_teknis_laravel_manajemen_diklat_rs.md)
 
 ---
 
-## 📄 Lisensi & Pengembang
+## 8. Lisensi & Pengembang
 
 Dikembangkan oleh **[Zetware](https://zetware.id)** © 2026. Hak cipta dilindungi undang-undang.

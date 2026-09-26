@@ -165,31 +165,39 @@
                 </div>
 
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <button type="button" wire:click="applyPresetTemplate('admin_diklat')" class="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                        🎓 Admin Diklat RS (Lengkap)
+                    <button type="button" wire:click="applyPresetTemplate('admin_diklat')" class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                        <flux:icon name="academic-cap" class="size-3.5 text-primary-500" />
+                        Admin Diklat RS (Lengkap)
                     </button>
-                    <button type="button" wire:click="applyPresetTemplate('admin_pt')" class="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                        🏛️ Admin Perguruan Tinggi
+                    <button type="button" wire:click="applyPresetTemplate('admin_pt')" class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                        <flux:icon name="building-office-2" class="size-3.5 text-blue-500" />
+                        Admin Perguruan Tinggi
                     </button>
-                    <button type="button" wire:click="applyPresetTemplate('pembimbing_lapangan')" class="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                        👨‍⚕️ CI / Pembimbing Lapangan
+                    <button type="button" wire:click="applyPresetTemplate('pembimbing_lapangan')" class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                        <flux:icon name="user-group" class="size-3.5 text-emerald-500" />
+                        CI / Pembimbing Lapangan
                     </button>
-                    <button type="button" wire:click="applyPresetTemplate('pembimbing_dosen')" class="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                        👩‍🏫 Dosen Pembimbing PT
+                    <button type="button" wire:click="applyPresetTemplate('pembimbing_dosen')" class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                        <flux:icon name="book-open" class="size-3.5 text-purple-500" />
+                        Dosen Pembimbing PT
                     </button>
-                    <button type="button" wire:click="applyPresetTemplate('pegawai_non_asn')" class="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                        📋 Pegawai Non-ASN
+                    <button type="button" wire:click="applyPresetTemplate('pegawai_non_asn')" class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                        <flux:icon name="identification" class="size-3.5 text-teal-500" />
+                        Pegawai Non-ASN
                     </button>
-                    <button type="button" wire:click="applyPresetTemplate('super_admin')" class="rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-900 dark:bg-rose-950/60 dark:text-rose-300">
-                        🛡️ Super Admin (100% Akses)
+                    <button type="button" wire:click="applyPresetTemplate('super_admin')" class="inline-flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-900 dark:bg-rose-950/60 dark:text-rose-300">
+                        <flux:icon name="shield-check" class="size-3.5 text-rose-600" />
+                        Super Admin (100% Akses)
                     </button>
                 </div>
             </div>
 
             <!-- Matriks Checkbox Permissions Terkategori -->
             <div class="space-y-4 max-h-96 overflow-y-auto pr-1">
-                @foreach($this->groupedPermissions as $categoryName => $perms)
+                @foreach($this->groupedPermissions as $categoryName => $categoryData)
                     @php
+                        $perms = $categoryData['permissions'];
+                        $categoryIcon = $categoryData['category_icon'] ?? 'key';
                         $groupPermNames = array_column($perms, 'name');
                         $selectedInGroup = count(array_intersect($groupPermNames, $selectedPermissions));
                         $totalInGroup = count($perms);
@@ -197,6 +205,7 @@
                     <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 space-y-3">
                         <div class="flex items-center justify-between border-b border-zinc-100 pb-2 dark:border-zinc-800">
                             <div class="flex items-center gap-2">
+                                <flux:icon name="{{ $categoryIcon }}" class="size-4 text-primary-600 dark:text-primary-400" />
                                 <span class="font-bold text-xs uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
                                     {{ $categoryName }}
                                 </span>
@@ -224,7 +233,10 @@
                                         class="mt-0.5 rounded text-primary-600 focus:ring-primary-500 size-4"
                                     />
                                     <div class="space-y-0.5">
-                                        <div class="text-xs font-bold text-zinc-900 dark:text-white">{{ $p['label'] }}</div>
+                                        <div class="text-xs font-bold text-zinc-900 dark:text-white flex items-center gap-1.5">
+                                            <flux:icon name="{{ $p['icon'] }}" class="size-3.5 text-zinc-400" />
+                                            <span>{{ $p['label'] }}</span>
+                                        </div>
                                         <div class="text-[11px] text-zinc-500 leading-tight">{{ $p['desc'] }}</div>
                                         <div class="text-[10px] font-mono text-zinc-400 pt-0.5">{{ $p['name'] }}</div>
                                     </div>
