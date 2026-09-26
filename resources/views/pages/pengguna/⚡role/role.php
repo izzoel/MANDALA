@@ -11,13 +11,15 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
 
     // Modal Role
     public bool $showRoleModal = false;
-    public ?int $editingRoleId = null;
+    public string|int|null $editingRoleId = null;
     public string $role_name = '';
+    public string $role_guard = 'web';
     public array $selectedPermissions = [];
 
     // Modal Permission
     public bool $showPermissionModal = false;
     public string $permission_name = '';
+    public string $permission_category = 'Lainnya';
 
     // Core System Roles that cannot be deleted
     public array $coreRoles = [
@@ -28,6 +30,37 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         'pembimbing_lapangan',
         'pembimbing_dosen',
         'mahasiswa',
+    ];
+
+    // Metadata & Grouping Permission Sistem
+    public array $permissionMetadata = [
+        // 1. Sistem & Pengguna
+        'kelola-role' => ['label' => 'Kelola Role & Permissions', 'group' => '🛡️ Manajemen Sistem & Pengguna', 'desc' => 'Akses penuh konfigurasi peran dan izin Spatie'],
+        'kelola-user' => ['label' => 'Kelola Akun Pengguna', 'group' => '🛡️ Manajemen Sistem & Pengguna', 'desc' => 'Menambah, mengedit, dan mengaktifkan akun pengguna'],
+        'kelola-pengaturan-sistem' => ['label' => 'Kelola Pengaturan Sistem', 'group' => '🛡️ Manajemen Sistem & Pengguna', 'desc' => 'Konfigurasi parameter aplikasi dan instansi rumah sakit'],
+
+        // 2. Modul Diklat Pegawai
+        'kelola-target-pelatihan' => ['label' => 'Kelola Target Pelatihan Pegawai', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Menetapkan target pelatihan wajib & fungsional tahunan'],
+        'upload-sertifikat' => ['label' => 'Unggah Berkas Sertifikat', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Mengunggah file sertifikat pelatihan ke sistem'],
+        'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
+        'lihat-rekap-pelatihan' => ['label' => 'Lihat Rekapitulasi Pelatihan Pegawai', 'group' => '🎓 Modul Diklat Pegawai Non-ASN', 'desc' => 'Memantau statistik pemenuhan target pelatihan'],
+
+        // 3. Modul Diklit & Booking Praktik RS
+        'kelola-pt-mou' => ['label' => 'Kelola Perguruan Tinggi & MoU', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Mengatur institusi mitra dan masa berlaku MoU'],
+        'kelola-unit-rs' => ['label' => 'Kelola Unit RS & Mode Kuota', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Mengatur unit ruangan dan alokasi kuota per-prodi/gabungan'],
+        'ajukan-booking-praktik' => ['label' => 'Ajukan Permohonan Booking Praktik', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Mengajukan jadwal praktik klinik mahasiswa'],
+        'persetujuan-booking' => ['label' => 'Persetujuan Permohonan Booking', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Memproses review dan keputusan booking praktik'],
+        'terbitkan-surat-rs' => ['label' => 'Terbitkan Surat Persetujuan RS', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Menerbitkan nomor surat resmi persetujuan rumah sakit'],
+        'penunjukan-pembimbing' => ['label' => 'Penunjukan Tim Pembimbing', 'group' => '🏥 Modul Praktik Mahasiswa RS (Diklit)', 'desc' => 'Menugaskan CI RS Lapangan dan Dosen Pembimbing'],
+
+        // 4. Modul Penilaian & Evaluasi Klinis
+        'kelola-kriteria-nilai' => ['label' => 'Kelola Kriteria & Bobot Nilai', 'group' => '📝 Modul Penilaian & Evaluasi Klinis', 'desc' => 'Mengatur parameter dan persentase bobot kelulusan stase'],
+        'input-penilaian-praktik' => ['label' => 'Input Penilaian & Evaluasi Praktik', 'group' => '📝 Modul Penilaian & Evaluasi Klinis', 'desc' => 'Mengisi nilai kompetensi klinis dan logbook mahasiswa'],
+        'lihat-rekap-nilai' => ['label' => 'Lihat Transkrip & Rekap Nilai', 'group' => '📝 Modul Penilaian & Evaluasi Klinis', 'desc' => 'Melihat rekap nilai akhir dan transkrip kelulusan stase'],
+
+        // 5. Laporan & Dokumen
+        'ekspor-laporan-diklat' => ['label' => 'Ekspor Laporan Diklat Pegawai', 'group' => '📊 Laporan & Ekspor Dokumen', 'desc' => 'Ekspor data pelatihan pegawai non-ASN ke PDF/Excel'],
+        'ekspor-laporan-diklit' => ['label' => 'Ekspor Laporan Praktik Mahasiswa', 'group' => '📊 Laporan & Ekspor Dokumen', 'desc' => 'Ekspor data stase dan jadwal mahasiswa ke PDF/Excel'],
     ];
 
     #[Computed]
@@ -46,6 +79,35 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         return Permission::orderBy('name')->get();
     }
 
+    #[Computed]
+    public function groupedPermissions()
+    {
+        $permissions = Permission::orderBy('name')->get();
+
+        $grouped = [];
+        foreach ($permissions as $perm) {
+            $meta = $this->permissionMetadata[$perm->name] ?? [
+                'label' => ucwords(str_replace(['-', '_'], ' ', $perm->name)),
+                'group' => '⚙️ Izin Kustom & Ekstensi Lainnya',
+                'desc' => 'Izin kustom sistem tambahan',
+            ];
+
+            $groupName = $meta['group'];
+            if (! isset($grouped[$groupName])) {
+                $grouped[$groupName] = [];
+            }
+
+            $grouped[$groupName][] = [
+                'id' => $perm->id,
+                'name' => $perm->name,
+                'label' => $meta['label'],
+                'desc' => $meta['desc'],
+            ];
+        }
+
+        return $grouped;
+    }
+
     public function openCreateRoleModal(): void
     {
         $this->reset(['editingRoleId', 'role_name', 'selectedPermissions']);
@@ -61,6 +123,95 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         $this->showRoleModal = true;
     }
 
+    public function selectAllPermissions(): void
+    {
+        $this->selectedPermissions = Permission::pluck('name')->toArray();
+    }
+
+    public function deselectAllPermissions(): void
+    {
+        $this->selectedPermissions = [];
+    }
+
+    public function toggleCategoryPermissions(string $category): void
+    {
+        $groupItems = $this->groupedPermissions[$category] ?? [];
+        $groupPermNames = array_column($groupItems, 'name');
+
+        // Check if all in this category are currently selected
+        $allSelected = count(array_intersect($groupPermNames, $this->selectedPermissions)) === count($groupPermNames);
+
+        if ($allSelected) {
+            // Deselect category
+            $this->selectedPermissions = array_values(array_diff($this->selectedPermissions, $groupPermNames));
+        } else {
+            // Select all in category
+            $this->selectedPermissions = array_values(array_unique(array_merge($this->selectedPermissions, $groupPermNames)));
+        }
+    }
+
+    public function applyPresetTemplate(string $preset): void
+    {
+        switch ($preset) {
+            case 'super_admin':
+                $this->selectedPermissions = Permission::pluck('name')->toArray();
+                break;
+            case 'admin_diklat':
+                $this->selectedPermissions = [
+                    'kelola-user',
+                    'kelola-target-pelatihan',
+                    'upload-sertifikat',
+                    'verifikasi-sertifikat',
+                    'lihat-rekap-pelatihan',
+                    'kelola-pt-mou',
+                    'kelola-unit-rs',
+                    'persetujuan-booking',
+                    'terbitkan-surat-rs',
+                    'penunjukan-pembimbing',
+                    'kelola-kriteria-nilai',
+                    'lihat-rekap-nilai',
+                    'ekspor-laporan-diklat',
+                    'ekspor-laporan-diklit',
+                ];
+                break;
+            case 'admin_pt':
+                $this->selectedPermissions = [
+                    'ajukan-booking-praktik',
+                    'lihat-rekap-nilai',
+                    'ekspor-laporan-diklit',
+                ];
+                break;
+            case 'pembimbing_lapangan':
+                $this->selectedPermissions = [
+                    'input-penilaian-praktik',
+                    'lihat-rekap-nilai',
+                    'penunjukan-pembimbing',
+                ];
+                break;
+            case 'pembimbing_dosen':
+                $this->selectedPermissions = [
+                    'input-penilaian-praktik',
+                    'lihat-rekap-nilai',
+                ];
+                break;
+            case 'pegawai_non_asn':
+                $this->selectedPermissions = [
+                    'upload-sertifikat',
+                    'lihat-rekap-pelatihan',
+                ];
+                break;
+            case 'mahasiswa':
+                $this->selectedPermissions = [
+                    'lihat-rekap-nilai',
+                ];
+                break;
+        }
+
+        // Filter only existing permissions
+        $validPerms = Permission::pluck('name')->toArray();
+        $this->selectedPermissions = array_values(array_intersect($this->selectedPermissions, $validPerms));
+    }
+
     public function saveRole(): void
     {
         $this->validate([
@@ -73,15 +224,15 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         if ($this->editingRoleId) {
-            $role = Role::findOrFail($this->editingRoleId);
-            
+            $role = Role::findOrFail((int) $this->editingRoleId);
+
             // Core roles cannot be renamed
             if (! in_array($role->name, $this->coreRoles)) {
                 $role->update(['name' => $this->role_name]);
             }
 
             $role->syncPermissions($this->selectedPermissions);
-            session()->flash('message', "Peran '{$role->name}' dan hak akses izin berhasil diperbarui.");
+            session()->flash('message', "Peran '{$role->name}' dan hak akses izin berhasil diperbarui ({$role->permissions()->count()} izin aktif).");
         } else {
             $role = Role::create([
                 'name' => $this->role_name,
@@ -89,7 +240,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
             ]);
 
             $role->syncPermissions($this->selectedPermissions);
-            session()->flash('message', "Peran baru '{$role->name}' berhasil dibuat dengan izin yang dipilih.");
+            session()->flash('message', "Peran baru '{$role->name}' berhasil dibuat dengan {$role->permissions()->count()} izin yang dipilih.");
         }
 
         $this->showRoleModal = false;

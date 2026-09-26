@@ -29,18 +29,33 @@ class DiklatRsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = [
+            // Manajemen Sistem & Pengguna
             'kelola-role',
             'kelola-user',
+            'kelola-pengaturan-sistem',
+
+            // Modul Diklat Pegawai
             'kelola-target-pelatihan',
             'upload-sertifikat',
             'verifikasi-sertifikat',
+            'lihat-rekap-pelatihan',
+
+            // Modul Praktik & Booking RS (Diklit)
             'kelola-pt-mou',
             'kelola-unit-rs',
             'ajukan-booking-praktik',
             'persetujuan-booking',
+            'terbitkan-surat-rs',
             'penunjukan-pembimbing',
-            'input-penilaian-praktik',
+
+            // Modul Penilaian Klinis
             'kelola-kriteria-nilai',
+            'input-penilaian-praktik',
+            'lihat-rekap-nilai',
+
+            // Laporan & Dokumen
+            'ekspor-laporan-diklat',
+            'ekspor-laporan-diklit',
         ];
 
         foreach ($permissions as $perm) {
@@ -63,27 +78,42 @@ class DiklatRsSeeder extends Seeder
             'kelola-target-pelatihan',
             'upload-sertifikat',
             'verifikasi-sertifikat',
+            'lihat-rekap-pelatihan',
             'kelola-pt-mou',
             'kelola-unit-rs',
             'persetujuan-booking',
+            'terbitkan-surat-rs',
             'penunjukan-pembimbing',
             'kelola-kriteria-nilai',
+            'lihat-rekap-nilai',
+            'ekspor-laporan-diklat',
+            'ekspor-laporan-diklit',
         ]);
 
         $roleAdminPt->syncPermissions([
             'ajukan-booking-praktik',
+            'lihat-rekap-nilai',
+            'ekspor-laporan-diklit',
         ]);
 
         $rolePegawai->syncPermissions([
             'upload-sertifikat',
+            'lihat-rekap-pelatihan',
         ]);
 
         $rolePembimbingLapangan->syncPermissions([
             'input-penilaian-praktik',
+            'lihat-rekap-nilai',
+            'penunjukan-pembimbing',
         ]);
 
         $rolePembimbingDosen->syncPermissions([
             'input-penilaian-praktik',
+            'lihat-rekap-nilai',
+        ]);
+
+        $roleMahasiswa->syncPermissions([
+            'lihat-rekap-nilai',
         ]);
 
         // 1. Users Akun Utama
