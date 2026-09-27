@@ -57,7 +57,7 @@
                         </span>
 
                         <span class="text-xs text-zinc-400">
-                            {{ \Carbon\Carbon::parse($sertifikat->tgl_pelaksanaan)->format('d M Y') }}
+                            {{ $sertifikat->created_at->diffForHumans() }}
                         </span>
                     </div>
 
@@ -73,6 +73,8 @@
                         <div><span class="text-zinc-400">Pegawai:</span> {{ $sertifikat->pegawai->nama ?? '-' }}
                             ({{ $sertifikat->pegawai->unit_kerja ?? '-' }})
                         </div>
+                        <div><span class="text-zinc-400">Pelaksanaan:</span>
+                            {{ \Carbon\Carbon::parse($sertifikat->tgl_pelaksanaan)->format('d M Y') }}</div>
                     </div>
 
                     @if ($sertifikat->catatan_verifikator)
@@ -84,9 +86,13 @@
                 </div>
 
                 <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                    <span class="text-xs text-zinc-400">
-                        {{ $sertifikat->created_at->diffForHumans() }}
-                    </span>
+
+                    @role('admin_diklat')
+                        <flux:button wire:click="openVerifyModal({{ $sertifikat->id }})" size="sm" variant="subtle"
+                            icon="shield-check">
+                            Verifikasi
+                        </flux:button>
+                    @endrole
 
                     <flux:button href="{{ asset('storage/' . $sertifikat->file_path) }}" target="_blank" size="sm"
                         variant="subtle" icon="arrow-down-tray">
@@ -103,7 +109,7 @@
     </div>
 
     <!-- Modal Form Upload -->
-    <flux:modal wire:model="showUploadModal" class="min-w-lg">
+    <flux:modal wire:model="showUploadModal" class="min-w-2xl">
         <form wire:submit.prevent="saveSertifikat" class="space-y-4">
             <div>
                 <flux:heading size="lg">Unggah Sertifikat Pelatihan</flux:heading>
@@ -137,38 +143,49 @@
                 </flux:field>
             @endif
 
-            <flux:field>
+            <flux:field class="relative mb-6">
                 <flux:label>Nama Pelatihan / Workshop</flux:label>
                 <flux:input wire:model="nama_pelatihan"
                     placeholder="Contoh: Basic Trauma Cardiac Life Support (BTCLS)" />
-                <flux:error name="nama_pelatihan" />
+                <flux:error name="nama_pelatihan" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
             </flux:field>
 
-            <flux:field>
+            <flux:field class="relative mb-6">
                 <flux:label>Lembaga Penyelenggara</flux:label>
                 <flux:input wire:model="penyelenggara" placeholder="Contoh: Bapelkes Kemenkes RI / IDI / PPNI" />
-                <flux:error name="penyelenggara" />
+                <flux:error name="penyelenggara" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
             </flux:field>
 
             <div class="grid grid-cols-2 gap-4">
-                <flux:field>
+                <flux:field class="relative mb-2">
                     <flux:label>Tanggal Pelaksanaan</flux:label>
                     <flux:input type="date" wire:model="tgl_pelaksanaan" />
-                    <flux:error name="tgl_pelaksanaan" />
+                    <flux:error name="tgl_pelaksanaan" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
                 </flux:field>
 
-                <flux:field>
+                <flux:field class="relative mb-2">
                     <flux:label>Nomor Sertifikat</flux:label>
                     <flux:input wire:model="no_sertifikat" placeholder="No. Sertifikat resmi" />
-                    <flux:error name="no_sertifikat" />
+                    <flux:error name="no_sertifikat" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
                 </flux:field>
             </div>
 
-            <flux:file-upload wire:model="file_sertifikat" label="File Dokumen Sertifikat">
+            {{-- <flux:file-upload wire:model="file_sertifikat" label="File Dokumen Sertifikat" error="false">
                 <flux:file-upload.dropzone heading="Seret file atau klik untuk menelusuri"
                     text="PDF, JPG, PNG maksimal 5MB" with-progress inline />
-            </flux:file-upload>
-            {{-- <flux:error name="file_sertifikat" /> --}}
+                <flux:error name="file_sertifikat" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
+            </flux:file-upload> --}}
+
+            <flux:field class="relative mb-4 mt-2">
+                <flux:label>File Dokumen Sertifikat</flux:label>
+
+                <flux:file-upload wire:model="file_sertifikat" :error="false">
+                    <flux:file-upload.dropzone heading="Seret file atau klik untuk menelusuri" text="PDF maksimal 5MB"
+                        with-progress inline />
+                </flux:file-upload>
+
+                <flux:error name="file_sertifikat" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
+            </flux:field>
 
             <div class="flex justify-end gap-2 pt-4">
                 <flux:button type="button" variant="subtle" wire:click="$set('showUploadModal', false)">Batal
@@ -177,4 +194,71 @@
             </div>
         </form>
     </flux:modal>
+
+    <!-- Modal Form Verifikasi -->
+    @if ($selectedSertifikat)
+        <flux:modal wire:model="showVerifyModal" class="min-w-xl">
+            <form wire:submit.prevent="submitVerifikasi" class="space-y-4">
+                <div>
+                    <flux:heading size="lg">Review & Verifikasi Dokumen Sertifikat</flux:heading>
+                    <flux:subheading>Pastikan keaslian nomor sertifikat dan relevansi kompetensi pelatihan.
+                    </flux:subheading>
+                </div>
+
+                <div
+                    class="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/60 space-y-2 text-sm">
+                    <div class="grid grid-cols-3 gap-2">
+                        <span class="text-zinc-500">Nama Pegawai:</span>
+                        <span
+                            class="col-span-2 font-semibold text-zinc-900 dark:text-white">{{ $selectedSertifikat->pegawai->nama ?? '-' }}
+                            ({{ $selectedSertifikat->pegawai->unit_kerja ?? '-' }})</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <span class="text-zinc-500">Nama Pelatihan:</span>
+                        <span class="col-span-2 font-medium">{{ $selectedSertifikat->nama_pelatihan }}</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <span class="text-zinc-500">Penyelenggara:</span>
+                        <span class="col-span-2">{{ $selectedSertifikat->penyelenggara }}</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <span class="text-zinc-500">No. Sertifikat:</span>
+                        <span class="col-span-2 font-mono font-bold">{{ $selectedSertifikat->no_sertifikat }}</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <span class="text-zinc-500">Tgl Pelaksanaan:</span>
+                        <span
+                            class="col-span-2">{{ \Carbon\Carbon::parse($selectedSertifikat->tgl_pelaksanaan)->format('d F Y') }}</span>
+                    </div>
+
+                    <div class="pt-2">
+                        <flux:button href="{{ asset('storage/' . $selectedSertifikat->file_path) }}" target="_blank"
+                            size="sm" variant="filled" icon="document-magnifying-glass">
+                            Buka / Preview Berkas Sertifikat
+                        </flux:button>
+                    </div>
+                </div>
+
+                <flux:field>
+                    <flux:label>Status Verifikasi</flux:label>
+                    <flux:select wire:model="status_verifikasi" variant="listbox">
+                        <flux:select.option value="disetujui">Setujui (Valid & Sah)</flux:select.option>
+                        <flux:select.option value="ditolak">Tolak (Tidak Valid / Tidak Terbaca)</flux:select.option>
+                    </flux:select>
+                </flux:field>
+
+                <flux:field>
+                    <flux:label>Catatan Verifikator</flux:label>
+                    <flux:textarea wire:model="catatan_verifikator"
+                        placeholder="Berikan catatan keabsahan atau alasan jika ditolak..." rows="3" />
+                </flux:field>
+
+                <div class="flex justify-end gap-2 pt-4">
+                    <flux:button type="button" variant="subtle" wire:click="$set('showVerifyModal', false)">Batal
+                    </flux:button>
+                    <flux:button type="submit" variant="primary">Simpan</flux:button>
+                </div>
+            </form>
+        </flux:modal>
+    @endif
 </div>

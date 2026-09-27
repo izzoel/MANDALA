@@ -41,7 +41,7 @@ class DiklatRsSeeder extends Seeder
             // Modul Diklat Pegawai
             'kelola-target-pelatihan',
             'upload-sertifikat',
-            'verifikasi-sertifikat',
+            'arsip-sertifikat',
             'lihat-rekap-pelatihan',
 
             // Modul Praktik & Booking RS (Diklit)
@@ -81,7 +81,7 @@ class DiklatRsSeeder extends Seeder
             'kelola-user',
             'kelola-target-pelatihan',
             'upload-sertifikat',
-            'verifikasi-sertifikat',
+            'arsip-sertifikat',
             'lihat-rekap-pelatihan',
             'kelola-pt-mou',
             'kelola-unit-rs',

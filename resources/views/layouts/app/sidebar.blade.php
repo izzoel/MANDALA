@@ -21,7 +21,7 @@
             </flux:sidebar.item>
 
             <!-- Modul 1: Diklat / Pelatihan Peserta Diklat -->
-            @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'verifikasi-sertifikat'])
+            @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'arsip-sertifikat'])
                 <flux:sidebar.group expandable heading="{{ __('Diklat (Pelatihan)') }}" class="grid">
                     @can('kelola-target-pelatihan')
                         <flux:sidebar.item :href="route('diklat.target')" :current="request()->routeIs('diklat.target')"
@@ -32,15 +32,15 @@
 
                     @can('upload-sertifikat')
                         <flux:sidebar.item :href="route('diklat.sertifikat')" :current="request()->routeIs('diklat.sertifikat')"
-                            icon="academic-cap" wire:navigate>
-                            {{ __('Sertifikat Pegawai') }}
+                            icon="document-check" wire:navigate>
+                            {{ __('Sertifikat Peserta') }}
                         </flux:sidebar.item>
                     @endcan
 
-                    @can('verifikasi-sertifikat')
-                        <flux:sidebar.item :href="route('diklat.verifikasi')" :current="request()->routeIs('diklat.verifikasi')"
+                    @can('arsip-sertifikat')
+                        <flux:sidebar.item :href="route('diklat.arsip')" :current="request()->routeIs('diklat.arsip')"
                             icon="shield-check" wire:navigate>
-                            {{ __('Verifikasi Sertifikat') }}
+                            {{ __('Arsip Sertifikat') }}
                         </flux:sidebar.item>
                     @endcan
                 </flux:sidebar.group>
@@ -151,7 +151,8 @@
             <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}</flux:navbar.item>
 
-            @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'verifikasi-sertifikat'])
+            {{-- @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'verifikasi-sertifikat']) --}}
+            @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'arsip-sertifikat'])
                 <flux:navbar.item :href="route('diklat.sertifikat')" :current="request()->routeIs('diklat.*')"
                     wire:navigate>
                     {{ __('Diklat') }}</flux:navbar.item>

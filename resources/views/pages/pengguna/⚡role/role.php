@@ -5,20 +5,28 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
-new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
+new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component
+{
     public string $search = '';
 
     // Modal Role
     public bool $showRoleModal = false;
+
     public string|int|null $editingRoleId = null;
+
     public string $role_name = '';
+
     public string $role_guard = 'web';
+
     public array $selectedPermissions = [];
 
     // Modal Permission
     public bool $showPermissionModal = false;
+
     public string $permission_name = '';
+
     public string $permission_category = 'Lainnya';
 
     // Core System Roles that cannot be deleted
@@ -42,7 +50,8 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         // 2. Modul Diklat Pegawai
         'kelola-target-pelatihan' => ['label' => 'Kelola Target Pelatihan Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'academic-cap', 'desc' => 'Menetapkan target pelatihan wajib & fungsional tahunan'],
         'upload-sertifikat' => ['label' => 'Unggah Berkas Sertifikat', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'arrow-up-tray', 'desc' => 'Mengunggah file sertifikat pelatihan ke sistem'],
-        'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'check-badge', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
+        // 'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'check-badge', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
+        'arsip-sertifikat' => ['label' => 'Arsip Sertifikat Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'check-badge', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
         'lihat-rekap-pelatihan' => ['label' => 'Lihat Rekapitulasi Pelatihan Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'chart-bar', 'desc' => 'Memantau statistik pemenuhan target pelatihan'],
 
         // 3. Modul Diklit & Booking Praktik RS
@@ -69,7 +78,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         return Role::query()
             ->with(['permissions', 'users'])
             ->withCount('users')
-            ->when($this->search !== '', fn ($q) => $q->where('name', 'like', '%' . strtolower($this->search) . '%'))
+            ->when($this->search !== '', fn ($q) => $q->where('name', 'like', '%'.strtolower($this->search).'%'))
             ->get();
     }
 
@@ -179,7 +188,8 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
                     'kelola-user',
                     'kelola-target-pelatihan',
                     'upload-sertifikat',
-                    'verifikasi-sertifikat',
+                    // 'verifikasi-sertifikat',
+                    'arsip-sertifikat',
                     'lihat-rekap-pelatihan',
                     'kelola-pt-mou',
                     'kelola-unit-rs',
@@ -239,7 +249,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
             'role_name.regex' => 'Format nama peran harus menggunakan huruf kecil, angka, garis bawah (_) atau strip (-).',
         ]);
 
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         if ($this->editingRoleId) {
             $role = Role::findOrFail((int) $this->editingRoleId);
@@ -270,18 +280,20 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
 
         if (in_array($role->name, $this->coreRoles)) {
             session()->flash('error', "Peran sistem inti '{$role->name}' dilindungi dan tidak boleh dihapus.");
+
             return;
         }
 
         if ($role->users()->count() > 0) {
             session()->flash('error', "Peran '{$role->name}' tidak dapat dihapus karena masih digunakan oleh {$role->users()->count()} pengguna.");
+
             return;
         }
 
         $roleName = $role->name;
         $role->delete();
 
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
         session()->flash('message', "Peran '{$roleName}' berhasil dihapus.");
     }
 
@@ -304,7 +316,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
             'guard_name' => 'web',
         ]);
 
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $this->showPermissionModal = false;
         session()->flash('message', "Izin (permission) baru '{$this->permission_name}' berhasil ditambahkan ke sistem.");

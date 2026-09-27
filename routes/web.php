@@ -19,9 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('diklat')->name('diklat.')->group(function () {
         Route::livewire('/target', 'pages::diklat.target')->name('target');
         Route::livewire('/sertifikat', 'pages::diklat.sertifikat')->name('sertifikat');
-        Route::livewire('/verifikasi', 'pages::diklat.verifikasi')
+        Route::livewire('/arsip', 'pages::diklat.arsip')
             ->middleware('role:admin_diklat,super_admin')
-            ->name('verifikasi');
+            ->name('arsip');
     });
 
     // Modul 2: Praktik Mahasiswa & Booking Unit RS (Diklit)
