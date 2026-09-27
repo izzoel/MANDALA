@@ -3,7 +3,7 @@
         <div>
             <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">Verifikasi Sertifikat Pelatihan</flux:heading>
             <flux:text class="text-zinc-600 dark:text-zinc-400">
-                Antrean verifikasi keabsahan dokumen sertifikat pelatihan yang diunggah pegawai non-ASN rumah sakit.
+                Antrean verifikasi keabsahan dokumen sertifikat pelatihan yang diunggah peserta diklat rumah sakit.
             </flux:text>
         </div>
     </div>

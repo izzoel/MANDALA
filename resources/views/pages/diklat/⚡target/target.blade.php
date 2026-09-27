@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">Target Pelatihan Pegawai Non-ASN</flux:heading>
+            <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">Target Pelatihan Peserta Diklat</flux:heading>
             <flux:text class="text-zinc-600 dark:text-zinc-400">
                 Pemantauan dan penugasan target pelatihan wajib & kompetensi fungsional tenaga kesehatan dan staf rumah sakit.
             </flux:text>
@@ -129,11 +129,11 @@
         <form wire:submit.prevent="saveTarget" class="space-y-4">
             <div>
                 <flux:heading size="lg">Penugasan Target Pelatihan</flux:heading>
-                <flux:subheading>Tugaskan kewajiban pelatihan kompetensi bagi pegawai non-ASN.</flux:subheading>
+                <flux:subheading>Tugaskan kewajiban pelatihan kompetensi bagi peserta diklat.</flux:subheading>
             </div>
 
             <flux:field>
-                <flux:label>Pilih Pegawai Non-ASN</flux:label>
+                <flux:label>Pilih Peserta Diklat</flux:label>
                 <flux:select wire:model="pegawai_id" placeholder="Pilih Pegawai">
                     @foreach($this->listPegawai as $pegawai)
                         <flux:select.option :value="$pegawai->id">{{ $pegawai->nama }} ({{ $pegawai->unit_kerja }} - {{ $pegawai->jabatan }})</flux:select.option>

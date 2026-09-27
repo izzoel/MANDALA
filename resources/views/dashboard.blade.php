@@ -33,7 +33,7 @@
                     {{ __('Sistem Manajemen Diklat & Diklit Rumah Sakit') }}
                 </flux:heading>
                 <flux:text class="text-zinc-600 dark:text-zinc-400">
-                    {{ __('Pemantauan kompetensi pelatihan pegawai Non-ASN, kuota unit RS, dan izin praktik klinik mahasiswa.') }}
+                    {{ __('Pemantauan kompetensi pelatihan peserta diklat, kuota unit RS, dan izin praktik klinik mahasiswa.') }}
                 </flux:text>
             </div>
 

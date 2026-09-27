@@ -183,7 +183,7 @@
                     </button>
                     <button type="button" wire:click="applyPresetTemplate('pegawai_non_asn')" class="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700 hover:border-primary-400 hover:bg-primary-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
                         <flux:icon name="identification" class="size-3.5 text-teal-500" />
-                        Pegawai Non-ASN
+                        Peserta Diklat
                     </button>
                     <button type="button" wire:click="applyPresetTemplate('super_admin')" class="inline-flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-900 dark:bg-rose-950/60 dark:text-rose-300">
                         <flux:icon name="shield-check" class="size-3.5 text-rose-600" />

@@ -13,7 +13,7 @@ Dokumen ini berisi panduan komprehensif mengenai struktur teknis kode, relasi ba
 5. [Panduan Penggunaan Berdasarkan Peran](#5-panduan-penggunaan-berdasarkan-peran)
    - [A. Administrator Diklat RS](#a-administrator-diklat-rs)
    - [B. Admin Perguruan Tinggi Mitra](#b-admin-perguruan-tinggi-mitra)
-   - [C. Pegawai Non-ASN](#c-pegawai-non-asn)
+   - [C. peserta diklat](#c-pegawai-non-asn)
    - [D. Pembimbing Lapangan (CI RS) & Pembimbing Dosen (PT)](#d-pembimbing-lapangan-ci-rs--pembimbing-dosen-pt)
    - [E. Mahasiswa Praktikan](#e-mahasiswa-praktikan)
 6. [Daftar Endpoint & Rute Navigasi](#6-daftar-endpoint--rute-navigasi)
@@ -24,7 +24,7 @@ Dokumen ini berisi panduan komprehensif mengenai struktur teknis kode, relasi ba
 ## 1. Gambaran Umum Sistem
 
 MANDALA adalah sistem terpadu yang dirancang untuk mendukung operasional divisi **Pendidikan dan Pelatihan (Diklat)** serta **Pendidikan dan Penelitian (Diklit)** di lingkungan rumah sakit:
-- **Modul Diklat:** Bertujuan memastikan pemenuhan target kompetensi wajib dan fungsional bagi seluruh tenaga kesehatan dan pegawai non-ASN melalui sistem penugasan target, pengunggahan sertifikat, dan verifikasi administratif.
+- **Modul Diklat:** Bertujuan memastikan pemenuhan target kompetensi wajib dan fungsional bagi seluruh tenaga kesehatan dan peserta diklat melalui sistem penugasan target, pengunggahan sertifikat, dan verifikasi administratif.
 - **Modul Diklit:** Mengotomatisasi proses penerimaan mahasiswa praktik klinik dari perguruan tinggi mitra melalui pengecekan kuota unit secara real-time, validasi masa berlaku nota kesepahaman (MoU), penerbitan surat izin praktik, penunjukan pembimbing, hingga evaluasi nilai kompetensi terbobot.
 
 ---
@@ -41,7 +41,7 @@ mandala/
 │   │       └── CheckRole.php                # Middleware proteksi rute berbasis peran (RBAC)
 │   ├── Models/                              # Model Eloquent
 │   │   ├── User.php                         # Entitas akun utama + otentikasi
-│   │   ├── PegawaiNonAsn.php                # Profil data pegawai non-ASN
+│   │   ├── PegawaiNonAsn.php                # Profil data peserta diklat
 │   │   ├── PerguruanTinggi.php              # Data PT mitra & status MoU
 │   │   ├── Unit.php                         # Unit/Instalasi RS & mode kuota
 │   │   ├── UnitProdiKuota.php               # Alokasi kuota per-prodi
@@ -157,7 +157,7 @@ Sebelum kuota dihitung, sistem memeriksa:
 2. **Mengelola Institusi Mitra (MoU):**
    - Masuk ke menu **Diklit (Praktik RS) > Perguruan Tinggi (MoU)**.
    - Tambahkan institusi baru dan set masa berlaku tanggal mulai dan akhir MoU.
-3. **Menugaskan Target Pelatihan Pegawai Non-ASN:**
+3. **Menugaskan Target Pelatihan peserta diklat:**
    - Masuk ke menu **Diklat (Pelatihan) > Target Pelatihan**.
    - Klik **Tambah Target Pelatihan**, pilih pegawai, isi nama pelatihan, kategori (Wajib/Fungsional), dan tenggat waktu pemenuhan.
 4. **Memverifikasi Berkas Sertifikat:**
@@ -189,7 +189,7 @@ Sebelum kuota dihitung, sistem memeriksa:
 
 ---
 
-### C. Pegawai Non-ASN
+### C. peserta diklat
 **Peran (`role`):** `pegawai_non_asn`
 
 1. **Melihat Kewajiban Target Pelatihan:**
@@ -256,8 +256,8 @@ Seluruh akun seeder menggunakan kata sandi standar: `password`
 | **Super Administrator** | `superadmin@mandala.test` | Akses penuh ke seluruh fitur dan master data |
 | **Admin Diklat RS** | `diklat@mandala.test` | Pengelolaan target, verifikasi, approval booking & kriteria |
 | **Admin Perguruan Tinggi** | `adminpt@mandala.test` | Pengajuan booking praktik & unduh surat izin RS |
-| **Pegawai Non-ASN (Dokter)** | `andika@mandala.test` | Monitoring target pelatihan & unggah sertifikat |
-| **Pegawai Non-ASN (Farmasi)** | `siti@mandala.test` | Monitoring target pelatihan & unggah sertifikat |
+| **peserta diklat (Dokter)** | `andika@mandala.test` | Monitoring target pelatihan & unggah sertifikat |
+| **peserta diklat (Farmasi)** | `siti@mandala.test` | Monitoring target pelatihan & unggah sertifikat |
 | **Pembimbing Lapangan (CI RS)** | `ci.lapangan@mandala.test` | Penilaian mahasiswa di unit IGD & stase RS |
 | **Pembimbing Dosen (PT)** | `dosen@mandala.test` | Evaluasi akademik mahasiswa institusi |
 | **Mahasiswa Praktikan** | `mahasiswa@mandala.test` | Monitoring jadwal stase dan hasil evaluasi |

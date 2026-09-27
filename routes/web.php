@@ -15,7 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Utama
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
-    // Modul 1: Perencanaan & Pelatihan Pegawai Non-ASN (Diklat)
+    // Modul 1: Perencanaan & Pelatihan peserta diklat (Diklat)
     Route::prefix('diklat')->name('diklat.')->group(function () {
         Route::livewire('/target', 'pages::diklat.target')->name('target');
         Route::livewire('/sertifikat', 'pages::diklat.sertifikat')->name('sertifikat');

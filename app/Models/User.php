@@ -21,7 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable, HasRoles;
+    use HasFactory, HasRoles, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
     /**
      * Get the attributes that should be cast.
@@ -48,9 +48,14 @@ class User extends Authenticatable implements PasskeyUser
             ->implode('');
     }
 
+    public function peserta(): HasOne
+    {
+        return $this->hasOne(Peserta::class, 'user_id');
+    }
+
     public function pegawaiNonAsn(): HasOne
     {
-        return $this->hasOne(PegawaiNonAsn::class, 'user_id');
+        return $this->hasOne(Peserta::class, 'user_id');
     }
 
     public function mahasiswa(): HasOne
@@ -87,7 +92,7 @@ class User extends Authenticatable implements PasskeyUser
 
     public function isPegawaiNonAsn(): bool
     {
-        return $this->role === 'pegawai_non_asn' || $this->hasRole('pegawai_non_asn');
+        return $this->role === 'peserta_diklat' || $this->hasRole('peserta_diklat');
     }
 
     public function isMahasiswa(): bool

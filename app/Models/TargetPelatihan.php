@@ -29,7 +29,8 @@ class TargetPelatihan extends Model
 
     public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(PegawaiNonAsn::class, 'pegawai_id');
+        // return $this->belongsTo(PegawaiNonAsn::class, 'pegawai_id');
+        return $this->belongsTo(Peserta::class, 'pegawai_id');
     }
 
     public function sertifikatPemenuhan(): BelongsTo

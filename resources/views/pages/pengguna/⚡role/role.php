@@ -40,10 +40,10 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         'kelola-pengaturan-sistem' => ['label' => 'Kelola Pengaturan Sistem', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'cog-6-tooth', 'desc' => 'Konfigurasi parameter aplikasi dan instansi rumah sakit'],
 
         // 2. Modul Diklat Pegawai
-        'kelola-target-pelatihan' => ['label' => 'Kelola Target Pelatihan Pegawai', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'academic-cap', 'desc' => 'Menetapkan target pelatihan wajib & fungsional tahunan'],
-        'upload-sertifikat' => ['label' => 'Unggah Berkas Sertifikat', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'arrow-up-tray', 'desc' => 'Mengunggah file sertifikat pelatihan ke sistem'],
-        'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'check-badge', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
-        'lihat-rekap-pelatihan' => ['label' => 'Lihat Rekapitulasi Pelatihan Pegawai', 'group' => 'Modul Diklat Pegawai Non-ASN', 'icon' => 'chart-bar', 'desc' => 'Memantau statistik pemenuhan target pelatihan'],
+        'kelola-target-pelatihan' => ['label' => 'Kelola Target Pelatihan Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'academic-cap', 'desc' => 'Menetapkan target pelatihan wajib & fungsional tahunan'],
+        'upload-sertifikat' => ['label' => 'Unggah Berkas Sertifikat', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'arrow-up-tray', 'desc' => 'Mengunggah file sertifikat pelatihan ke sistem'],
+        'verifikasi-sertifikat' => ['label' => 'Verifikasi Sertifikat Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'check-badge', 'desc' => 'Meninjau, menyetujui, dan menolak pengajuan sertifikat'],
+        'lihat-rekap-pelatihan' => ['label' => 'Lihat Rekapitulasi Pelatihan Pegawai', 'group' => 'Modul Diklat Peserta Diklat', 'icon' => 'chart-bar', 'desc' => 'Memantau statistik pemenuhan target pelatihan'],
 
         // 3. Modul Diklit & Booking Praktik RS
         'kelola-pt-mou' => ['label' => 'Kelola Perguruan Tinggi & MoU', 'group' => 'Modul Praktik Mahasiswa RS (Diklit)', 'icon' => 'building-library', 'desc' => 'Mengatur institusi mitra dan masa berlaku MoU'],
@@ -59,7 +59,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
         'lihat-rekap-nilai' => ['label' => 'Lihat Transkrip & Rekap Nilai', 'group' => 'Modul Penilaian & Evaluasi Klinis', 'icon' => 'document-chart-bar', 'desc' => 'Melihat rekap nilai akhir dan transkrip kelulusan stase'],
 
         // 5. Laporan & Dokumen
-        'ekspor-laporan-diklat' => ['label' => 'Ekspor Laporan Diklat Pegawai', 'group' => 'Laporan & Ekspor Dokumen', 'icon' => 'arrow-down-tray', 'desc' => 'Ekspor data pelatihan pegawai non-ASN ke PDF/Excel'],
+        'ekspor-laporan-diklat' => ['label' => 'Ekspor Laporan Diklat Pegawai', 'group' => 'Laporan & Ekspor Dokumen', 'icon' => 'arrow-down-tray', 'desc' => 'Ekspor data pelatihan peserta diklat ke PDF/Excel'],
         'ekspor-laporan-diklit' => ['label' => 'Ekspor Laporan Praktik Mahasiswa', 'group' => 'Laporan & Ekspor Dokumen', 'icon' => 'arrow-down-tray', 'desc' => 'Ekspor data stase dan jadwal mahasiswa ke PDF/Excel'],
     ];
 
@@ -86,7 +86,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component {
 
         $categoryIcons = [
             'Manajemen Sistem & Pengguna' => 'shield-check',
-            'Modul Diklat Pegawai Non-ASN' => 'academic-cap',
+            'Modul Diklat Peserta Diklat' => 'academic-cap',
             'Modul Praktik Mahasiswa RS (Diklit)' => 'building-office-2',
             'Modul Penilaian & Evaluasi Klinis' => 'clipboard-document-check',
             'Laporan & Ekspor Dokumen' => 'document-chart-bar',

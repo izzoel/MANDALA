@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('sertifikats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pegawai_id')->constrained('pegawai_non_asns')->cascadeOnDelete();
+            // $table->foreignId('pegawai_id')->constrained('pegawai_non_asns')->cascadeOnDelete();
+            $table->foreignId('pegawai_id')->constrained('pesertas')->cascadeOnDelete();
             $table->string('nama_pelatihan');
             $table->string('penyelenggara');
             $table->date('tgl_pelaksanaan');
@@ -28,7 +29,8 @@ return new class extends Migration
 
         Schema::create('target_pelatihans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pegawai_id')->constrained('pegawai_non_asns')->cascadeOnDelete();
+            // $table->foreignId('pegawai_id')->constrained('pegawai_non_asns')->cascadeOnDelete();
+            $table->foreignId('pegawai_id')->constrained('pesertas')->cascadeOnDelete();
             $table->string('nama_target');
             $table->string('kategori')->default('Wajib'); // Wajib, Pilihan, Fungsional
             $table->string('periode')->default('2026');

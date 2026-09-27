@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pegawai_non_asns', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('nama');
-            $table->string('no_pegawai')->unique();
-            $table->string('unit_kerja');
-            $table->string('jabatan');
-            $table->date('tgl_mulai_kerja')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('pegawai_non_asns', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+        //     $table->string('nama');
+        //     $table->string('no_pegawai')->unique();
+        //     $table->string('unit_kerja');
+        //     $table->string('jabatan');
+        //     $table->date('tgl_mulai_kerja')->nullable();
+        //     $table->timestamps();
+        // });
 
         Schema::create('perguruan_tinggis', function (Blueprint $table) {
             $table->id();
@@ -85,6 +85,6 @@ return new class extends Migration
         Schema::dropIfExists('pembimbing_lapangans');
         Schema::dropIfExists('units');
         Schema::dropIfExists('perguruan_tinggis');
-        Schema::dropIfExists('pegawai_non_asns');
+        // Schema::dropIfExists('pegawai_non_asns');
     }
 };

@@ -7,9 +7,9 @@
 
 ## 1. Rangkuman Pencapaian Pengembangan
 
-### A. Modul 1: Pelatihan & Sertifikat Pegawai Non-ASN (Diklat)
+### A. Modul 1: Pelatihan & Sertifikat peserta diklat (Diklat)
 - **Target Pelatihan Pegawai (`/diklat/target`)**: Penetapan target wajib & fungsional tahunan oleh Admin Diklat, pemantauan progress pemenuhan melalui sertifikat.
-- **Upload Sertifikat Pegawai (`/diklat/sertifikat`)**: Antarmuka unggah berkas PDF sertifikat oleh pegawai Non-ASN lengkap dengan riwayat status verifikasi.
+- **Upload Sertifikat Pegawai (`/diklat/sertifikat`)**: Antarmuka unggah berkas PDF sertifikat oleh peserta diklat lengkap dengan riwayat status verifikasi.
 - **Verifikasi Sertifikat (`/diklat/verifikasi`)**: Panel audit bagi Admin Diklat untuk menyetujui/menolak sertifikat dan menautkannya ke target pelatihan.
 
 ### B. Modul 2: Booking Praktik & Kolaborasi Institusi Pendidikan (Diklit)
@@ -31,11 +31,11 @@
 - **Integrasi Spatie Laravel Permission**:
   - Konfigurasi role & permission granular dengan 5 kluster kategori izin:
     1. *Manajemen Sistem & Pengguna* (`kelola-role`, `kelola-user`, `kelola-pengaturan-sistem`)
-    2. *Modul Diklat Pegawai Non-ASN* (`kelola-target-pelatihan`, `upload-sertifikat`, `verifikasi-sertifikat`, `lihat-rekap-pelatihan`)
+    2. *Modul Diklat peserta diklat* (`kelola-target-pelatihan`, `upload-sertifikat`, `verifikasi-sertifikat`, `lihat-rekap-pelatihan`)
     3. *Modul Praktik Mahasiswa RS (Diklit)* (`kelola-pt-mou`, `kelola-unit-rs`, `ajukan-booking-praktik`, `persetujuan-booking`, `terbitkan-surat-rs`, `penunjukan-pembimbing`)
     4. *Modul Penilaian & Evaluasi Klinis* (`kelola-kriteria-nilai`, `input-penilaian-praktik`, `lihat-rekap-nilai`)
     5. *Laporan & Ekspor Dokumen* (`ekspor-laporan-diklat`, `ekspor-laporan-diklit`)
-  - **Fitur Preset Template Cepat**: Tombol otomatis untuk menerapkan izin standar bagi *Super Admin (100%)*, *Admin Diklat RS*, *Admin PT*, *CI Lapangan RS*, *Dosen PT*, dan *Pegawai Non-ASN*.
+  - **Fitur Preset Template Cepat**: Tombol otomatis untuk menerapkan izin standar bagi *Super Admin (100%)*, *Admin Diklat RS*, *Admin PT*, *CI Lapangan RS*, *Dosen PT*, dan *peserta diklat*.
   - Bypass `Gate::before` untuk role `super_admin`.
   - Halaman **Manajemen Pengguna (`/pengguna/user`)**: Khusus untuk `admin_diklat` dan `super_admin`.
   - Halaman **Manajemen Role & Permissions (`/pengguna/role`)**: Terproteksi ketat **HANYA untuk `super_admin`**.
@@ -73,8 +73,8 @@ Semua akun menggunakan kata sandi default: `password`
 | **Super Administrator** | `superadmin@mandala.test` | Akses penuh & Kelola Role Spatie (`/pengguna/role`) |
 | **Admin Diklat RS** | `diklat@mandala.test` | Kelola Diklat, Verifikasi, Persetujuan Booking, Kelola Akun |
 | **Admin Perguruan Tinggi** | `adminpt@mandala.test` | Cek Kuota & Ajukan Permohonan Booking Praktik |
-| **Pegawai Non-ASN 1** | `andika@mandala.test` | Target Pelatihan & Upload Sertifikat ACLS |
-| **Pegawai Non-ASN 2** | `siti@mandala.test` | Target Pelatihan & Upload Sertifikat Farmasi |
+| **peserta diklat 1** | `andika@mandala.test` | Target Pelatihan & Upload Sertifikat ACLS |
+| **peserta diklat 2** | `siti@mandala.test` | Target Pelatihan & Upload Sertifikat Farmasi |
 | **Pembimbing Lapangan (CI RS)** | `ci.lapangan@mandala.test` | Input Penilaian Praktik Lapangan |
 | **Pembimbing Dosen (PT)** | `dosen@mandala.test` | Input Penilaian Akademik Mahasiswa |
 | **Mahasiswa Praktikan** | `mahasiswa@mandala.test` | Pantau Jadwal Stase, Pembimbing & Hasil Penilaian |
@@ -86,7 +86,7 @@ Semua akun menggunakan kata sandi default: `password`
 1. **Export Laporan & Rekapitulasi (PDF / Excel)**:
    - Cetak Surat Persetujuan Praktik RS dalam format PDF resmi dengan kop surat rumah sakit.
    - Ekspor rekapitulasi penilaian kompetensi mahasiswa dan transkrip nilai stase klinik.
-   - Ekspor logbook pelatihan pegawai non-ASN untuk kebutuhan akreditasi RS.
+   - Ekspor logbook pelatihan peserta diklat untuk kebutuhan akreditasi RS.
 2. **Notifikasi & Real-time Alerts**:
    - Notifikasi email / in-app saat ada pengajuan booking baru bagi Admin Diklat.
    - Notifikasi penerbitan persetujuan ke Admin PT dan mahasiswa.

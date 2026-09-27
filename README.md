@@ -6,7 +6,7 @@
 
 ## 1. Fitur & Modul Sistem
 
-### A. Modul Diklat (Pelatihan Pegawai Non-ASN)
+### A. Modul Diklat (Pelatihan peserta diklat)
 - **Target Pelatihan:** Penugasan dan pemantauan target pelatihan wajib / fungsional tenaga kesehatan dan staf non-ASN.
 - **Upload & Berkas Sertifikat:** Pengunggahan mandiri sertifikat pelatihan (PDF/JPG/PNG max 5MB) dengan penautan otomatis ke target pelatihan.
 - **Verifikasi Sertifikat:** Antrean verifikasi keabsahan dokumen oleh Admin Diklat RS dengan review berkas & form keputusan (*Approve/Reject*).
@@ -22,7 +22,7 @@
 
 ### C. Modul Manajemen Pengguna, Role & Hak Akses (Laravel Spatie)
 - **Manajemen Role & Permissions (Eksklusif Super Admin):** Konfigurasi hak akses berbasis engine *Spatie Laravel Permission*. Super Admin dapat membuat peran baru, menambah izin (*permissions*), serta mencentang matriks izin per peran.
-- **Kelola Akun Multi-Peran (Super Admin & Admin Diklat):** Penambahan dan pembaruan akun pengguna dengan form ekstensi profil dinamis (Pegawai Non-ASN, Mahasiswa, CI Lapangan, Dosen Pembimbing, Admin PT, Admin Diklat, Super Admin).
+- **Kelola Akun Multi-Peran (Super Admin & Admin Diklat):** Penambahan dan pembaruan akun pengguna dengan form ekstensi profil dinamis (peserta diklat, Mahasiswa, CI Lapangan, Dosen Pembimbing, Admin PT, Admin Diklat, Super Admin).
 
 ---
 
@@ -33,7 +33,7 @@
 | **Super Administrator** | `super_admin` | Akses penuh, termasuk manajemen Role & Permissions Spatie |
 | **Admin Diklat RS** | `admin_diklat` | Kelola user, target pelatihan, verifikasi sertifikat, review booking, terbitkan surat, atur unit & kriteria |
 | **Admin Perguruan Tinggi** | `admin_pt` | Cek ketersediaan kuota unit & ajukan permohonan praktik mahasiswa |
-| **Pegawai Non-ASN** | `pegawai_non_asn` | Pantau target pelatihan & unggah berkas sertifikat |
+| **peserta diklat** | `pegawai_non_asn` | Pantau target pelatihan & unggah berkas sertifikat |
 | **Pembimbing Lapangan (CI RS)** | `pembimbing_lapangan` | Bimbing mahasiswa di unit & input evaluasi/nilai kompetensi |
 | **Pembimbing Dosen (PT)** | `pembimbing_dosen` | Pantau mahasiswa bimbingan & input penilaian akademik |
 | **Mahasiswa Praktikan** | `mahasiswa` | Lihat jadwal stase praktik, pembimbing, dan status permohonan |
@@ -92,8 +92,8 @@ Semua akun default menggunakan password: `password`
 | **Super Admin** | `superadmin@mandala.test` |
 | **Admin Diklat RS** | `diklat@mandala.test` |
 | **Admin Perguruan Tinggi** | `adminpt@mandala.test` |
-| **Pegawai Non-ASN 1 (Dokter)** | `andika@mandala.test` |
-| **Pegawai Non-ASN 2 (Farmasi)** | `siti@mandala.test` |
+| **peserta diklat 1 (Dokter)** | `andika@mandala.test` |
+| **peserta diklat 2 (Farmasi)** | `siti@mandala.test` |
 | **Pembimbing Lapangan (CI RS)** | `ci.lapangan@mandala.test` |
 | **Pembimbing Dosen (PT)** | `dosen@mandala.test` |
 | **Mahasiswa Praktikan** | `mahasiswa@mandala.test` |

@@ -20,83 +20,105 @@
                 {{ __('Dashboard') }}
             </flux:sidebar.item>
 
-            <!-- Modul 1: Diklat / Pelatihan Pegawai Non-ASN -->
-            <flux:sidebar.group expandable heading="{{ __('Diklat (Pelatihan)') }}" class="grid">
-                <flux:sidebar.item :href="route('diklat.target')"
-                    :current="request()->routeIs('diklat.target')" icon="flag" wire:navigate>
-                    {{ __('Target Pelatihan') }}
-                </flux:sidebar.item>
+            <!-- Modul 1: Diklat / Pelatihan Peserta Diklat -->
+            @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'verifikasi-sertifikat'])
+                <flux:sidebar.group expandable heading="{{ __('Diklat (Pelatihan)') }}" class="grid">
+                    @can('kelola-target-pelatihan')
+                        <flux:sidebar.item :href="route('diklat.target')" :current="request()->routeIs('diklat.target')"
+                            icon="flag" wire:navigate>
+                            {{ __('Target Pelatihan') }}
+                        </flux:sidebar.item>
+                    @endcan
 
-                <flux:sidebar.item :href="route('diklat.sertifikat')"
-                    :current="request()->routeIs('diklat.sertifikat')" icon="academic-cap" wire:navigate>
-                    {{ __('Sertifikat Pegawai') }}
-                </flux:sidebar.item>
+                    @can('upload-sertifikat')
+                        <flux:sidebar.item :href="route('diklat.sertifikat')" :current="request()->routeIs('diklat.sertifikat')"
+                            icon="academic-cap" wire:navigate>
+                            {{ __('Sertifikat Pegawai') }}
+                        </flux:sidebar.item>
+                    @endcan
 
-                @if(auth()->user()->isAdminDiklat())
-                    <flux:sidebar.item :href="route('diklat.verifikasi')"
-                        :current="request()->routeIs('diklat.verifikasi')" icon="shield-check" wire:navigate>
-                        {{ __('Verifikasi Sertifikat') }}
-                    </flux:sidebar.item>
-                @endif
-            </flux:sidebar.group>
+                    @can('verifikasi-sertifikat')
+                        <flux:sidebar.item :href="route('diklat.verifikasi')" :current="request()->routeIs('diklat.verifikasi')"
+                            icon="shield-check" wire:navigate>
+                            {{ __('Verifikasi Sertifikat') }}
+                        </flux:sidebar.item>
+                    @endcan
+                </flux:sidebar.group>
+            @endcanany
 
             <!-- Modul 2: Diklit / Praktik Klinik & Mahasiswa -->
-            <flux:sidebar.group expandable heading="{{ __('Diklit (Praktik RS)') }}" class="grid">
-                <flux:sidebar.item :href="route('diklit.perguruan-tinggi')"
-                    :current="request()->routeIs('diklit.perguruan-tinggi')" icon="building-library" wire:navigate>
-                    {{ __('Perguruan Tinggi (MoU)') }}
-                </flux:sidebar.item>
+            @canany(['kelola-pt-mou', 'kelola-unit-rs', 'ajukan-booking-praktik', 'persetujuan-booking',
+                'penunjukan-pembimbing', 'input-penilaian-praktik', 'lihat-rekap-nilai', 'kelola-kriteria-nilai'])
+                <flux:sidebar.group expandable heading="{{ __('Diklit (Praktik RS)') }}" class="grid">
+                    @can('kelola-pt-mou')
+                        <flux:sidebar.item :href="route('diklit.perguruan-tinggi')"
+                            :current="request()->routeIs('diklit.perguruan-tinggi')" icon="building-library" wire:navigate>
+                            {{ __('Perguruan Tinggi (MoU)') }}
+                        </flux:sidebar.item>
+                    @endcan
 
-                <flux:sidebar.item :href="route('diklit.unit')"
-                    :current="request()->routeIs('diklit.unit')" icon="building-office-2" wire:navigate>
-                    {{ __('Unit RS & Kuota') }}
-                </flux:sidebar.item>
+                    @can('kelola-unit-rs')
+                        <flux:sidebar.item :href="route('diklit.unit')" :current="request()->routeIs('diklit.unit')"
+                            icon="building-office-2" wire:navigate>
+                            {{ __('Unit RS & Kuota') }}
+                        </flux:sidebar.item>
+                    @endcan
 
-                <flux:sidebar.item :href="route('diklit.booking')"
-                    :current="request()->routeIs('diklit.booking')" icon="calendar-days" wire:navigate>
-                    {{ __('Booking Permohonan') }}
-                </flux:sidebar.item>
+                    @canany(['ajukan-booking-praktik', 'persetujuan-booking'])
+                        <flux:sidebar.item :href="route('diklit.booking')" :current="request()->routeIs('diklit.booking')"
+                            icon="calendar-days" wire:navigate>
+                            {{ __('Booking Permohonan') }}
+                        </flux:sidebar.item>
+                    @endcanany
 
-                @if(auth()->user()->isAdminDiklat())
-                    <flux:sidebar.item :href="route('diklit.persetujuan')"
-                        :current="request()->routeIs('diklit.persetujuan')" icon="clipboard-document-check" wire:navigate>
-                        {{ __('Persetujuan & Surat') }}
-                    </flux:sidebar.item>
-                @endif
+                    @can('persetujuan-booking')
+                        <flux:sidebar.item :href="route('diklit.persetujuan')"
+                            :current="request()->routeIs('diklit.persetujuan')" icon="clipboard-document-check" wire:navigate>
+                            {{ __('Persetujuan & Surat') }}
+                        </flux:sidebar.item>
+                    @endcan
 
-                <flux:sidebar.item :href="route('diklit.pembimbing')"
-                    :current="request()->routeIs('diklit.pembimbing')" icon="user-group" wire:navigate>
-                    {{ __('Penunjukan Pembimbing') }}
-                </flux:sidebar.item>
+                    @can('penunjukan-pembimbing')
+                        <flux:sidebar.item :href="route('diklit.pembimbing')"
+                            :current="request()->routeIs('diklit.pembimbing')" icon="user-group" wire:navigate>
+                            {{ __('Penunjukan Pembimbing') }}
+                        </flux:sidebar.item>
+                    @endcan
 
-                <flux:sidebar.item :href="route('diklit.penilaian')"
-                    :current="request()->routeIs('diklit.penilaian')" icon="star" wire:navigate>
-                    {{ __('Penilaian Praktik') }}
-                </flux:sidebar.item>
+                    @canany(['input-penilaian-praktik', 'lihat-rekap-nilai'])
+                        <flux:sidebar.item :href="route('diklit.penilaian')" :current="request()->routeIs('diklit.penilaian')"
+                            icon="star" wire:navigate>
+                            {{ __('Penilaian Praktik') }}
+                        </flux:sidebar.item>
+                    @endcanany
 
-                @if(auth()->user()->isAdminDiklat())
-                    <flux:sidebar.item :href="route('diklit.kriteria')"
-                        :current="request()->routeIs('diklit.kriteria')" icon="adjustments-horizontal" wire:navigate>
-                        {{ __('Kriteria Evaluasi') }}
-                    </flux:sidebar.item>
-                @endif
-            </flux:sidebar.group>
+                    @can('kelola-kriteria-nilai')
+                        <flux:sidebar.item :href="route('diklit.kriteria')" :current="request()->routeIs('diklit.kriteria')"
+                            icon="adjustments-horizontal" wire:navigate>
+                            {{ __('Kriteria Evaluasi') }}
+                        </flux:sidebar.item>
+                    @endcan
+                </flux:sidebar.group>
+            @endcanany
 
-            @if(auth()->user()->isAdminDiklat())
-                <flux:sidebar.group expandable heading="{{ __('Pengguna & Akses') }}" class="grid">
-                    <flux:sidebar.item :href="route('pengguna.user')"
-                        :current="request()->routeIs('pengguna.user')" icon="users" wire:navigate>
-                        {{ __('Manajemen Akun') }}
-                    </flux:sidebar.item>
+            @canany(['kelola-user', 'kelola-role'])
 
-                    @if(auth()->user()->isSuperAdmin())
-                        <flux:sidebar.item :href="route('pengguna.role')"
-                            :current="request()->routeIs('pengguna.role')" icon="shield-check" wire:navigate>
+                <flux:sidebar.group expandable heading="{{ __('Kelola Akun') }}" class="grid">
+                    @can('kelola-user')
+                        <flux:sidebar.item :href="route('pengguna.user')" :current="request()->routeIs('pengguna.user')"
+                            icon="users" wire:navigate>
+                            {{ __('Manajemen Akun') }}
+                        </flux:sidebar.item>
+                    @endcan
+
+                    @can('kelola-role')
+                        <flux:sidebar.item :href="route('pengguna.role')" :current="request()->routeIs('pengguna.role')"
+                            icon="shield-check" wire:navigate>
                             {{ __('Manajemen Role') }}
                         </flux:sidebar.item>
-                    @endif
+                    @endcan
                 </flux:sidebar.group>
-            @endif
+            @endcanany
 
             <flux:sidebar.group expandable heading="{{ __('Pengaturan Akun') }}" class="grid">
                 <flux:sidebar.item :href="route('profile.edit')" :current="request()->routeIs('profile.edit')"
@@ -114,7 +136,8 @@
                 <div class="text-[10px] text-zinc-400">Sistem Diklat & Diklit Terintegrasi</div>
 
                 <div class="mt-1">
-                    © 2026 <a href="https://zetware.id" target="_blank" class="text-primary-500 hover:underline"><i>zetware.id</i></a>
+                    © 2026 <a href="https://zetware.id" target="_blank"
+                        class="text-primary-500 hover:underline"><i>zetware.id</i></a>
                 </div>
             </div>
         </flux:sidebar.nav>
@@ -127,12 +150,18 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
             <flux:navbar.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}</flux:navbar.item>
-            <flux:navbar.item :href="route('diklat.target')"
-                :current="request()->routeIs('diklat.*')" wire:navigate>
-                {{ __('Diklat') }}</flux:navbar.item>
-            <flux:navbar.item :href="route('diklit.booking')"
-                :current="request()->routeIs('diklit.*')" wire:navigate>
-                {{ __('Diklit Praktik') }}</flux:navbar.item>
+
+            @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'verifikasi-sertifikat'])
+                <flux:navbar.item :href="route('diklat.sertifikat')" :current="request()->routeIs('diklat.*')"
+                    wire:navigate>
+                    {{ __('Diklat') }}</flux:navbar.item>
+            @endcanany
+
+            @canany(['kelola-pt-mou', 'kelola-unit-rs', 'ajukan-booking-praktik', 'persetujuan-booking',
+                'penunjukan-pembimbing', 'input-penilaian-praktik', 'lihat-rekap-nilai', 'kelola-kriteria-nilai'])
+                <flux:navbar.item :href="route('diklit.booking')" :current="request()->routeIs('diklit.*')" wire:navigate>
+                    {{ __('Diklit Praktik') }}</flux:navbar.item>
+            @endcanany
 
             <flux:spacer />
 
@@ -147,7 +176,8 @@
 
                                 <div class="grid flex-1 text-start text-sm leading-tight">
                                     <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
-                                    <flux:text class="truncate">{{ auth()->user()->email }} ({{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }})</flux:text>
+                                    <flux:text class="truncate">{{ auth()->user()->email }}
+                                        ({{ ucfirst(str_replace('_', ' ', auth()->user()->role)) }})</flux:text>
                                 </div>
                             </div>
                         </div>
