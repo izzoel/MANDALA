@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\PegawaiNonAsn;
+use App\Models\Peserta;
 use App\Models\TargetPelatihan;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -46,9 +46,9 @@ new #[Title('Target Pelatihan Pegawai')] class extends Component
     }
 
     #[Computed]
-    public function listPegawai()
+    public function listPeserta()
     {
-        return PegawaiNonAsn::orderBy('nama')->get();
+        return Peserta::orderBy('nama')->get();
     }
 
     public function openCreateModal(): void

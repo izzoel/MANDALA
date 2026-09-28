@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">Sertifikat Pelatihan Pegawai
+            <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">Sertifikat Pelatihan Peserta
             </flux:heading>
             <flux:text class="text-zinc-600 dark:text-zinc-400">
                 Penyimpanan dan verifikasi bukti sertifikat pelatihan kompetensi kesehatan & kepegawaian rumah sakit.
@@ -121,8 +121,8 @@
                     <flux:label>Pilih Peserta</flux:label>
                     <flux:select wire:model.live="pegawai_id" variant="listbox" searchable>
                         <flux:select.option value="">-- Pilih Peserta --</flux:select.option>
-                        @foreach ($this->listPegawai as $p)
-                            <flux:select.option :value="$p->id">{{ $p->nama }} ({{ $p->unit_kerja }})
+                        @foreach ($this->listPeserta as $peserta)
+                            <flux:select.option :value="$peserta->id">{{ $peserta->nama }} ({{ $peserta->unit_kerja }})
                             </flux:select.option>
                         @endforeach
                     </flux:select>

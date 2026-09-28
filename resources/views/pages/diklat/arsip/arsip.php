@@ -6,7 +6,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Verifikasi Sertifikat Pelatihan')] class extends Component
+new #[Title('Arsip Sertifikat Pelatihan')] class extends Component
 {
     public string $search = '';
 
