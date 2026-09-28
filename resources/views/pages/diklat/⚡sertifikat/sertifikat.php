@@ -36,8 +36,11 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
 
     // Modal Verifikasi
     public bool $showVerifyModal = false;
+
     public ?Sertifikat $selectedSertifikat = null;
+
     public string $status_verifikasi = 'disetujui';
+
     public string $catatan_verifikator = '';
 
     public function mount(): void
@@ -96,7 +99,7 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
     }
 
     #[Computed]
-    public function listPegawai()
+    public function listPeserta()
     {
         // return PegawaiNonAsn::orderBy('nama')->get();
         return Peserta::orderBy('nama')->get();
