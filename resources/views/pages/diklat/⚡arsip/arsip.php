@@ -51,7 +51,7 @@ new #[Title('Arsip Sertifikat Pelatihan')] class extends Component
     public function openVerifyModal(int $id): void
     {
         $this->selectedSertifikat = Sertifikat::with(['pegawai.user'])->findOrFail($id);
-        $this->status_verifikasi = $this->selectedSertifikat->status_verifikasi === 'pending' ? 'disetujui' : $this->selectedSertifikat->status_verifikasi;
+        $this->status_verifikasi = $this->selectedSertifikat->status_verifikasi ?? 'pending';
         $this->catatan_verifikator = $this->selectedSertifikat->catatan_verifikator ?? '';
         $this->showVerifyModal = true;
     }

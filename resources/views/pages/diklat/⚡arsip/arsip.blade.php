@@ -21,8 +21,7 @@
         class="grid gap-4 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 sm:grid-cols-12">
         <div class="sm:col-span-8">
             <flux:input wire:model.live.debounce.300ms="search"
-                placeholder="Cari nama pegawai, no. sertifikat, pelatihan, atau unit kerja..."
-                icon="magnifying-glass" />
+                placeholder="Cari nama pegawai, no. sertifikat, pelatihan, atau unit kerja..." icon="magnifying-glass" />
         </div>
         <div class="sm:col-span-4">
             <flux:select wire:model.live="filterStatus" variant="listbox" placeholder="Pilih Status">
@@ -56,7 +55,8 @@
                             <td class="px-5 py-4">
                                 <div class="font-semibold text-zinc-900 dark:text-white">
                                     {{ $s->pegawai->nama ?? '-' }}</div>
-                                <div class="text-xs text-zinc-500">{{ $s->pegawai->unit_kerja ?? '-' }} • {{ $s->pegawai->no_pegawai ?? '-' }}</div>
+                                <div class="text-xs text-zinc-500">{{ $s->pegawai->unit_kerja ?? '-' }} •
+                                    {{ $s->pegawai->no_pegawai ?? '-' }}</div>
                             </td>
                             <td class="px-5 py-4">
                                 <div class="font-medium text-zinc-900 dark:text-zinc-100">{{ $s->nama_pelatihan }}
@@ -92,7 +92,8 @@
                             </td>
                             <td class="px-5 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <flux:button wire:click="openVerifyModal({{ $s->id }})" size="sm" variant="subtle" icon="pencil-square">
+                                    <flux:button wire:click="openVerifyModal({{ $s->id }})" size="sm"
+                                        variant="subtle" icon="pencil-square">
                                         Review
                                     </flux:button>
                                     <flux:button href="{{ asset('storage/' . $s->file_path) }}" target="_blank"
@@ -160,10 +161,10 @@
 
                 <flux:field>
                     <flux:label>Keputusan Verifikasi</flux:label>
-                    <flux:select wire:model="status_verifikasi">
-                        <flux:select.option value="disetujui">Setujui (Valid &amp; Sah)</flux:select.option>
-                        <flux:select.option value="ditolak">Tolak (Tidak Valid / Tidak Terbaca)</flux:select.option>
-                        <flux:select.option value="pending">Kembalikan ke Pending</flux:select.option>
+                    <flux:select wire:model="status_verifikasi" variant="listbox" placeholder="Pilih Status">
+                        <flux:select.option value="disetujui">Setujui</flux:select.option>
+                        <flux:select.option value="ditolak">Tolak</flux:select.option>
+                        <flux:select.option value="pending">Pending</flux:select.option>
                     </flux:select>
                 </flux:field>
 
