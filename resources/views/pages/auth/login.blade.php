@@ -5,6 +5,15 @@
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
+    @if ($errors->any())
+      <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-800 dark:border-red-900/50 dark:bg-red-950/50 dark:text-red-300">
+        <div class="flex items-center gap-2">
+          <flux:icon name="exclamation-triangle" class="size-4 shrink-0 text-red-600 dark:text-red-400" />
+          <span>{{ $errors->first() }}</span>
+        </div>
+      </div>
+    @endif
+
     {{-- <x-sso /> --}}
     {{-- <x-passkey-verify /> --}}
 
