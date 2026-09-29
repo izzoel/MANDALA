@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PerguruanTinggi extends Model
@@ -13,6 +14,7 @@ class PerguruanTinggi extends Model
     protected $table = 'perguruan_tinggis';
 
     protected $fillable = [
+        'user_id',
         'nama_pt',
         'status_mou',
         'tgl_mulai_mou',
@@ -30,6 +32,11 @@ class PerguruanTinggi extends Model
     public function isMouValid(): bool
     {
         return $this->status_mou && $this->tgl_akhir_mou >= now()->toDateString();
+    }
+
+    public function adminUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function mahasiswas(): HasMany

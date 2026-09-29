@@ -230,17 +230,15 @@
 
                 <flux:field class="relative mb-2">
                     <flux:label>Peran Pengguna (Role RBAC)</flux:label>
-                    <flux:select wire:model.live="role" variant="listbox" :disabled="count($this->roles) === 1" searchable
-                        placeholder="Pilih peran pengguna...">
+                    <flux:select wire:model.live="role" variant="listbox" :disabled="count($this->roles) === 1"
+                        searchable placeholder="Pilih peran pengguna...">
                         @foreach ($this->roles as $r)
                             <flux:select.option :wire:key="'role-'.$r->id" value="{{ $r->name }}">
                                 {{ ucwords(str_replace('_', ' ', $r->name)) }}
                             </flux:select.option>
                         @endforeach
                     </flux:select>
-                    @if (count($this->roles) === 1)
-                        <div class="text-[11px] text-zinc-500 mt-1">Akun terbatas khusus peran Mahasiswa</div>
-                    @endif
+
                     <flux:error name="role" class="absolute left-0 -bottom-4 text-[11px] mt-3!" />
                 </flux:field>
 
@@ -293,8 +291,8 @@
 
                     <flux:field class="relative">
                         <flux:label>Perguruan Tinggi Asal</flux:label>
-                        <flux:select wire:model="pt_id">
-                            <flux:select.option value="">-- Pilih Institusi PT Mitra --</flux:select.option>
+                        <flux:select wire:model="pt_id" variant="listbox" searchable
+                            placeholder="Pilih Institusi PT Mitra">
                             @foreach ($this->perguruanTinggis as $pt)
                                 <flux:select.option :value="$pt->id">{{ $pt->nama_pt }}</flux:select.option>
                             @endforeach
@@ -324,8 +322,7 @@
 
                     <flux:field class="relative">
                         <flux:label>Unit Penugasan di Rumah Sakit</flux:label>
-                        <flux:select wire:model="unit_id">
-                            <flux:select.option value="">-- Pilih Unit RS --</flux:select.option>
+                        <flux:select wire:model="unit_id" variant="listbox" searchable placeholder="Pilih Unit RS">
                             @foreach ($this->units as $u)
                                 <flux:select.option :value="$u->id">{{ $u->nama_unit }}</flux:select.option>
                             @endforeach
@@ -353,8 +350,8 @@
 
                     <flux:field class="relative">
                         <flux:label>Perguruan Tinggi Asal</flux:label>
-                        <flux:select wire:model="pt_id">
-                            <flux:select.option value="">-- Pilih Institusi PT Mitra --</flux:select.option>
+                        <flux:select wire:model="pt_id" variant="listbox" searchable
+                            placeholder="Pilih Institusi PT Mitra">
                             @foreach ($this->perguruanTinggis as $pt)
                                 <flux:select.option :value="$pt->id">{{ $pt->nama_pt }}</flux:select.option>
                             @endforeach

@@ -74,7 +74,12 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
 
         return User::query()
             ->with(['peserta', 'mahasiswa.perguruanTinggi', 'pembimbingLapangan.unit', 'pembimbingDosen.perguruanTinggi'])
-            ->when($isOnlyAdminPt, fn ($q) => $q->where('role', 'mahasiswa'))
+            ->when($isOnlyAdminPt, function ($q) use ($user) {
+                $q->where('role', 'mahasiswa');
+                if ($user->perguruanTinggi) {
+                    $q->whereHas('mahasiswa', fn ($m) => $m->where('pt_id', $user->perguruanTinggi->id));
+                }
+            })
             ->when(! $isOnlyAdminPt && $this->filterRole !== 'semua', fn ($q) => $q->where('role', $this->filterRole))
             ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status', $this->filterStatus))
             ->when($this->search !== '', function ($q) {
@@ -92,6 +97,13 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
     #[Computed]
     public function perguruanTinggis()
     {
+        $user = Auth::user();
+        if ($user && ($user->hasRole('admin_pt') || ($user->can('kelola-akun-mahasiswa') && ! $user->can('kelola-user')))) {
+            if ($user->perguruanTinggi) {
+                return PerguruanTinggi::where('id', $user->perguruanTinggi->id)->get();
+            }
+        }
+
         return PerguruanTinggi::orderBy('nama_pt')->get();
     }
 
@@ -131,6 +143,9 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
         $user = Auth::user();
         if ($user && ($user->hasRole('admin_pt') || ($user->can('kelola-akun-mahasiswa') && ! $user->can('kelola-user')))) {
             $this->role = 'mahasiswa';
+            if ($user->perguruanTinggi) {
+                $this->pt_id = $user->perguruanTinggi->id;
+            }
         } else {
             $this->role = 'peserta_diklat';
         }

@@ -73,6 +73,11 @@ class User extends Authenticatable implements PasskeyUser
         return $this->hasOne(PembimbingDosen::class, 'user_id');
     }
 
+    public function perguruanTinggi(): HasOne
+    {
+        return $this->hasOne(PerguruanTinggi::class, 'user_id');
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->role === 'super_admin' || $this->hasRole('super_admin');

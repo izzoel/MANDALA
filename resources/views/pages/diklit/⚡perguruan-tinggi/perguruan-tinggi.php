@@ -1,9 +1,13 @@
 <?php
 
 use App\Models\PerguruanTinggi;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Spatie\Permission\Models\Role;
 
 new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
     public string $search = '';
@@ -23,6 +27,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
     public function perguruanTinggis()
     {
         return PerguruanTinggi::query()
+            ->with(['adminUser'])
             ->withCount(['mahasiswas', 'permohonanPraktiks'])
             ->when($this->filterStatus === 'aktif', fn ($q) => $q->where('status_mou', true)->where('tgl_akhir_mou', '>=', now()->toDateString()))
             ->when($this->filterStatus === 'expired', fn ($q) => $q->where(fn ($sub) => $sub->where('status_mou', false)->orWhere('tgl_akhir_mou', '<', now()->toDateString())))
@@ -85,15 +90,45 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
             ]);
             session()->flash('message', 'Data Perguruan Tinggi berhasil diperbarui.');
         } else {
-            PerguruanTinggi::create([
+            // Generate email [nama PT]@mandala.test
+            $emailSlug = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $this->nama_pt));
+            if (empty($emailSlug)) {
+                $emailSlug = 'adminpt' . rand(100, 999);
+            }
+            $adminEmail = $emailSlug . '@mandala.test';
+
+            // Pastikan email unik jika nama PT sama
+            $counter = 1;
+            while (User::where('email', $adminEmail)->exists()) {
+                $adminEmail = $emailSlug . $counter . '@mandala.test';
+                $counter++;
+            }
+
+            // Buat Akun Admin PT
+            $adminUser = User::create([
+                'uuid' => Str::uuid(),
+                'name' => 'Admin ' . $this->nama_pt,
+                'email' => $adminEmail,
+                'password' => Hash::make('password'),
+                'role' => 'admin_pt',
+                'status' => 'aktif',
+            ]);
+
+            $roleAdminPt = Role::firstOrCreate(['name' => 'admin_pt', 'guard_name' => 'web']);
+            $adminUser->assignRole($roleAdminPt);
+
+            // Buat Data PT dan tautkan user_id
+            $pt = PerguruanTinggi::create([
+                'user_id' => $adminUser->id,
                 'nama_pt' => $this->nama_pt,
                 'status_mou' => $statusBool,
                 'tgl_mulai_mou' => $this->tgl_mulai_mou,
                 'tgl_akhir_mou' => $this->tgl_akhir_mou,
                 'kontak' => $this->kontak,
-                'email_pt' => $this->email_pt,
+                'email_pt' => $this->email_pt ?: $adminEmail,
             ]);
-            session()->flash('message', 'Perguruan Tinggi mitra baru berhasil ditambahkan.');
+
+            session()->flash('message', "Perguruan Tinggi baru dan akun Admin PT ({$adminEmail}) dengan password default 'password' berhasil dibuat.");
         }
 
         $this->showModal = false;

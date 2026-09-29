@@ -74,8 +74,14 @@
                     <div>
                         <h4 class="font-bold text-zinc-900 dark:text-white line-clamp-2 text-base">{{ $pt->nama_pt }}
                         </h4>
-                        <p class="text-xs text-zinc-500 mt-1">Kontak: {{ $pt->kontak ?? '-' }} •
-                            {{ $pt->email_pt ?? '-' }}</p>
+                        <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500">
+                            <span class="inline-flex items-center gap-1 font-mono text-primary-600 dark:text-primary-400 font-medium">
+                                <flux:icon name="user" class="size-3" /> {{ $pt->adminUser->email ?? $pt->email_pt ?? '-' }}
+                            </span>
+                            @if($pt->kontak)
+                                <span>&bull; {{ $pt->kontak }}</span>
+                            @endif
+                        </div>
                     </div>
 
                     <div

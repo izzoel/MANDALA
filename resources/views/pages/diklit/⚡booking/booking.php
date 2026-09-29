@@ -62,7 +62,9 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
         $user = auth()->user();
         if ($user) {
-            if ($user->mahasiswa && $user->mahasiswa->pt_id) {
+            if ($user->perguruanTinggi) {
+                $this->pt_id = $user->perguruanTinggi->id;
+            } elseif ($user->mahasiswa && $user->mahasiswa->pt_id) {
                 $this->pt_id = $user->mahasiswa->pt_id;
             } elseif ($user->pembimbingDosen && $user->pembimbingDosen->pt_id) {
                 $this->pt_id = $user->pembimbingDosen->pt_id;
