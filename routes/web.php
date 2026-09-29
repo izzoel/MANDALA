@@ -1,17 +1,10 @@
 <?php
 
-use App\Http\Controllers\SsoController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'landing')->name('landing');
 
-Route::get('/sso/redirect', [SsoController::class, 'redirect'])->name('sso.redirect');
-Route::get('/callback', [SsoController::class, 'callback'])->name('sso.callback');
-
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/sso/redirect/{nama}', [SsoController::class, 'ticket'])->name('sso.ticket');
-    Route::get('/sso/redirect/{nama}/{ticket}', [SsoController::class, 'handoff'])->name('sso.handoff');
-
     // Dashboard Utama
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 

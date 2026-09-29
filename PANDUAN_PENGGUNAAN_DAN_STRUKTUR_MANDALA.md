@@ -45,8 +45,6 @@ MANDALA adalah sistem terpadu yang dirancang untuk mendukung operasional divisi 
 mandala/
 ├── app/
 │   ├── Http/
-│   │   ├── Controllers/
-│   │   │   └── SsoController.php            # Autentikasi OIDC & SSO Ticket Handoff
 │   │   └── Middleware/
 │   │       └── CheckRole.php                # Middleware proteksi rute berbasis peran (RBAC)
 │   ├── Models/                              # Model Eloquent
