@@ -315,7 +315,7 @@
                   </div>
                   <div>
                     <div class="text-xs font-bold">Verifikasi Sertifikat ACLS</div>
-                    <div class="text-[10px] text-brand-300">Target Pelatihan Pegawai Non-ASN</div>
+                    <div class="text-[10px] text-brand-300">Pelatihan Pegawai Non-ASN</div>
                   </div>
                 </div>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-semibold">
@@ -361,12 +361,12 @@
                 1. Pelatihan &amp; Sertifikasi Pegawai (Diklat)
               </h3>
               <p class="text-slate-600 text-sm font-body leading-relaxed">
-                Penugasan target pelatihan fungsional tahunan bagi tenaga kesehatan dan staf non-ASN. Unggah portofolio sertifikat mandiri dengan verifikasi berjenjang oleh Tim Diklat RS.
+                Penugasan pelatihan fungsional tahunan bagi tenaga kesehatan dan staf non-ASN. Unggah portofolio sertifikat mandiri dengan verifikasi berjenjang oleh Tim Diklat RS.
               </p>
               <ul class="space-y-2 text-xs text-slate-600 font-medium pt-2">
                 <li class="flex items-center gap-2">
                   <svg class="size-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-                  Target Pelatihan Wajib &amp; Fungsional
+                  Pelatihan Wajib &amp; Fungsional
                 </li>
                 <li class="flex items-center gap-2">
                   <svg class="size-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
@@ -640,7 +640,7 @@
             </div>
             <h4 class="text-base font-bold text-slate-900">Peserta Diklat / Pegawai</h4>
             <p class="text-xs text-slate-600 font-body leading-relaxed">
-              Pantau pemenuhan target pelatihan tahunan, unggah berkas sertifikat mandiri, dan unduh transkrip pelatihan.
+              Pantau pemenuhan kewajiban pelatihan tahunan, unggah berkas sertifikat mandiri, dan unduh transkrip pelatihan.
             </p>
           </div>
 
@@ -696,7 +696,7 @@
               </span>
             </summary>
             <p class="mt-4 text-sm text-slate-600 font-body leading-relaxed">
-              Pegawai masuk ke menu <strong>Diklat &gt; Sertifikat</strong>, memilih target pelatihan yang sesuai, lalu mengunggah file sertifikat (format PDF/JPG/PNG maksimal 5MB). Berkas akan masuk ke antrean verifikasi Admin Diklat RS.
+              Pegawai masuk ke menu <strong>Diklat &gt; Sertifikat</strong>, memilih pelatihan yang sesuai, lalu mengunggah file sertifikat (format PDF/JPG/PNG maksimal 5MB). Berkas akan masuk ke antrean verifikasi Admin Diklat RS.
             </p>
           </details>
 
@@ -749,7 +749,7 @@
         <div class="space-y-3">
           <h5 class="text-xs font-bold uppercase tracking-wider text-slate-900">Modul Layanan</h5>
           <ul class="space-y-2 text-xs text-slate-600 font-medium">
-            <li><a href="{{ route('login') }}" class="hover:text-brand-600 transition-colors">Target Pelatihan Pegawai</a></li>
+            <li><a href="{{ route('login') }}" class="hover:text-brand-600 transition-colors">Pelatihan Pegawai</a></li>
             <li><a href="{{ route('login') }}" class="hover:text-brand-600 transition-colors">Verifikasi Sertifikat Diklat</a></li>
             <li><a href="{{ route('login') }}" class="hover:text-brand-600 transition-colors">Booking Praktik Mahasiswa</a></li>
             <li><a href="{{ route('login') }}" class="hover:text-brand-600 transition-colors">Evaluasi &amp; Penilaian Klinis</a></li>

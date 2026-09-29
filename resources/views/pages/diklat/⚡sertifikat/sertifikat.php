@@ -1,6 +1,5 @@
 <?php
 
-// use App\Models\PegawaiNonAsn;
 use App\Models\Peserta;
 use App\Models\Sertifikat;
 use App\Models\TargetPelatihan;
@@ -16,6 +15,8 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
     public string $search = '';
 
     public string $filterStatus = 'semua';
+
+    public string $filterPeserta = 'semua';
 
     // Form Upload
     public bool $showUploadModal = false;
@@ -46,62 +47,47 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
     public function mount(): void
     {
         $user = auth()->user();
-        // if ($user && ! $user->can('lihat-seluruh-sertifikat') && $user->pegawaiNonAsn) {
-        //     $this->pegawai_id = $user->pegawaiNonAsn->id;
-        // }
         if ($user && ! $user->can('lihat-seluruh-sertifikat') && $user->peserta) {
             $this->pegawai_id = $user->peserta->id;
         }
     }
-
-    // #[Computed]
-    // public function sertifikats()
-    // {
-    //     $user = auth()->user();
-
-    //     // dd(Sertifikat::where('pegawai_id', $this->pegawai_id)->get());
-
-    //     return Sertifikat::query()
-    //         ->with(['pegawai.user', 'verifikator'])
-    //         ->when(! $user->can('lihat-seluruh-sertifikat'), function ($q) use ($user) {
-    //             // if ($user->can('lihat-sertifikat-sendiri') && $user->pegawaiNonAsn) {
-    //             //     $q->where('pegawai_id', $user->pegawaiNonAsn->id);
-    //             if ($user->can('lihat-sertifikat-sendiri') && $user->peserta) {
-    //                 $q->where('pegawai_id', $user->peserta->id);
-    //             } else {
-    //                 $q->whereNull('id'); // Sembunyikan jika tidak punya akses keduanya
-    //             }
-    //         })
-    //         ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status_verifikasi', $this->filterStatus))
-    //         ->when($this->search !== '', function ($q) {
-    //             $term = '%'.strtolower($this->search).'%';
-    //             $q->where(function ($sub) use ($term) {
-    //                 $sub->whereRaw('LOWER(nama_pelatihan) LIKE ?', [$term])
-    //                     ->orWhereRaw('LOWER(no_sertifikat) LIKE ?', [$term])
-    //                     ->orWhereRaw('LOWER(penyelenggara) LIKE ?', [$term])
-    //                     ->orWhereHas('pegawai', fn ($p) => $p->whereRaw('LOWER(nama) LIKE ?', [$term]));
-    //             });
-    //         })
-    //         ->latest()
-    //         ->get();
-    // }
 
     #[Computed]
     public function sertifikats()
     {
         $user = auth()->user();
 
-        if ($user && ! $user->can('lihat-seluruh-sertifikat') && $user->peserta) {
-            return Sertifikat::where('pegawai_id', $user->peserta->id)->get();
-        }
-
-        return Sertifikat::all();
+        return Sertifikat::query()
+            ->with(['pegawai.user', 'verifikator'])
+            ->when($user && ! $user->can('lihat-seluruh-sertifikat') && $user->peserta, function ($q) use ($user) {
+                $q->where('pegawai_id', $user->peserta->id);
+            })
+            ->when($this->filterPeserta !== 'semua' && $this->filterPeserta !== '', function ($q) {
+                $q->where('pegawai_id', $this->filterPeserta);
+            })
+            ->when($this->filterStatus !== 'semua' && $this->filterStatus !== '', function ($q) {
+                $q->where('status_verifikasi', $this->filterStatus);
+            })
+            ->when($this->search !== '', function ($q) {
+                $term = '%'.strtolower($this->search).'%';
+                $q->where(function ($sub) use ($term) {
+                    $sub->whereRaw('LOWER(nama_pelatihan) LIKE ?', [$term])
+                        ->orWhereRaw('LOWER(no_sertifikat) LIKE ?', [$term])
+                        ->orWhereRaw('LOWER(penyelenggara) LIKE ?', [$term])
+                        ->orWhereHas('pegawai', function ($p) use ($term) {
+                            $p->whereRaw('LOWER(nama) LIKE ?', [$term])
+                                ->orWhereRaw('LOWER(unit_kerja) LIKE ?', [$term])
+                                ->orWhereRaw('LOWER(no_pegawai) LIKE ?', [$term]);
+                        });
+                });
+            })
+            ->latest()
+            ->get();
     }
 
     #[Computed]
     public function listPeserta()
     {
-        // return PegawaiNonAsn::orderBy('nama')->get();
         return Peserta::orderBy('nama')->get();
     }
 
@@ -123,9 +109,6 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
         $this->tgl_pelaksanaan = now()->toDateString();
 
         $user = auth()->user();
-        // if ($user && ! $user->can('lihat-seluruh-sertifikat') && $user->pegawaiNonAsn) {
-        //     $this->pegawai_id = $user->pegawaiNonAsn->id;
-        // }
         if ($user && ! $user->can('lihat-seluruh-sertifikat') && $user->peserta) {
             $this->pegawai_id = $user->peserta->id;
         }
@@ -142,6 +125,15 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
             'tgl_pelaksanaan' => 'required|date',
             'no_sertifikat' => 'required|string|max:100',
             'file_sertifikat' => 'required|file|mimes:pdf|max:5120',
+        ], [
+            'file_sertifikat.required' => 'Berkas sertifikat wajib diunggah.',
+            'file_sertifikat.file' => 'Berkas yang diunggah tidak valid.',
+            'file_sertifikat.mimes' => 'Format berkas wajib berupa dokumen PDF (.pdf).',
+            'file_sertifikat.max' => 'Ukuran berkas PDF maksimal 5MB.',
+            'pegawai_id.required' => 'Pilih peserta diklat terlebih dahulu.',
+            'nama_pelatihan.required' => 'Nama pelatihan wajib diisi.',
+            'penyelenggara.required' => 'Lembaga penyelenggara wajib diisi.',
+            'no_sertifikat.required' => 'Nomor sertifikat wajib diisi.',
         ]);
 
         $filePath = $this->file_sertifikat->store('sertifikat', 'public');
@@ -176,7 +168,7 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
         ]);
 
         $this->showUploadModal = false;
-        session()->flash('message', 'Sertifikat berhasil diunggah dan sedang dalam antrean verifikasi Admin Diklat.');
+        session()->flash('message', 'Sertifikat PDF berhasil diunggah dan sedang dalam antrean verifikasi Admin Diklat.');
     }
 
     public function openVerifyModal(int $id): void

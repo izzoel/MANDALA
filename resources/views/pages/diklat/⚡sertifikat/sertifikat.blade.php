@@ -4,12 +4,12 @@
             <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">Sertifikat Pelatihan Peserta
             </flux:heading>
             <flux:text class="text-zinc-600 dark:text-zinc-400">
-                Penyimpanan dan verifikasi bukti sertifikat pelatihan kompetensi kesehatan & kepegawaian rumah sakit.
+                Penyimpanan dan verifikasi bukti sertifikat pelatihan kompetensi kesehatan &amp; kepegawaian rumah sakit.
             </flux:text>
         </div>
 
         <flux:button wire:click="openModal" variant="primary" icon="arrow-up-tray">
-            Unggah Sertifikat Baru
+            Unggah Sertifikat PDF
         </flux:button>
     </div>
 
@@ -23,13 +23,21 @@
     <!-- Search & Filter -->
     <div
         class="grid gap-4 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 sm:grid-cols-12">
-        <div class="sm:col-span-8">
+        <div class="sm:col-span-6">
             <flux:input wire:model.live.debounce.300ms="search"
                 placeholder="Cari nama pelatihan, nomor sertifikat, penyelenggara, atau pegawai..."
                 icon="magnifying-glass" />
         </div>
-        <div class="sm:col-span-4">
-            <flux:select wire:model.live="filterStatus">
+        <div class="sm:col-span-3">
+            <flux:select wire:model.live="filterPeserta" variant="listbox" searchable placeholder="Pilih Peserta">
+                <flux:select.option value="semua">Semua Peserta</flux:select.option>
+                @foreach ($this->listPeserta as $peserta)
+                    <flux:select.option :value="$peserta->id">{{ $peserta->nama }} ({{ $peserta->unit_kerja }})</flux:select.option>
+                @endforeach
+            </flux:select>
+        </div>
+        <div class="sm:col-span-3">
+            <flux:select wire:model.live="filterStatus" variant="listbox">
                 <flux:select.option value="semua">Semua Status Verifikasi</flux:select.option>
                 <flux:select.option value="pending">Menunggu Verifikasi (Pending)</flux:select.option>
                 <flux:select.option value="disetujui">Disetujui</flux:select.option>
@@ -86,7 +94,6 @@
                 </div>
 
                 <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-
                     @role('admin_diklat')
                         <flux:button wire:click="openVerifyModal({{ $sertifikat->id }})" size="sm" variant="subtle"
                             icon="shield-check">
@@ -96,14 +103,14 @@
 
                     <flux:button href="{{ asset('storage/' . $sertifikat->file_path) }}" target="_blank" size="sm"
                         variant="subtle" icon="arrow-down-tray">
-                        Lihat Berkas
+                        Lihat PDF
                     </flux:button>
                 </div>
             </div>
         @empty
             <div
                 class="col-span-full rounded-xl border border-dashed border-zinc-300 p-8 text-center text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-                Belum ada berkas sertifikat yang diunggah.
+                Tidak ada data sertifikat pelatihan yang sesuai dengan kriteria pencarian/filter.
             </div>
         @endforelse
     </div>
@@ -112,8 +119,8 @@
     <flux:modal wire:model="showUploadModal" class="min-w-2xl">
         <form wire:submit.prevent="saveSertifikat" class="space-y-4">
             <div>
-                <flux:heading size="lg">Unggah Sertifikat Pelatihan</flux:heading>
-                <flux:subheading>Unggah bukti kelulusan pelatihan (PDF, JPG, PNG - Maksimal 5MB).</flux:subheading>
+                <flux:heading size="lg">Unggah Sertifikat Pelatihan (PDF)</flux:heading>
+                <flux:subheading>Unggah bukti sertifikat pelatihan resmi dalam format PDF (Maksimal 5MB).</flux:subheading>
             </div>
 
             @can('lihat-seluruh-sertifikat')
@@ -132,9 +139,9 @@
 
             @if ($this->openTargets->count() > 0)
                 <flux:field>
-                    <flux:label>Hubungkan ke Target Pelatihan (Opsional)</flux:label>
+                    <flux:label>Hubungkan ke Penugasan Pelatihan (Opsional)</flux:label>
                     <flux:select wire:model="target_pelatihan_id">
-                        <flux:select.option value="">-- Bukan Target Khusus --</flux:select.option>
+                        <flux:select.option value="">-- Bukan Penugasan Khusus --</flux:select.option>
                         @foreach ($this->openTargets as $tgt)
                             <flux:select.option :value="$tgt->id">{{ $tgt->nama_target }} (Tenggat:
                                 {{ $tgt->tenggat->format('d/m/Y') }})</flux:select.option>
@@ -170,17 +177,11 @@
                 </flux:field>
             </div>
 
-            {{-- <flux:file-upload wire:model="file_sertifikat" label="File Dokumen Sertifikat" error="false">
-                <flux:file-upload.dropzone heading="Seret file atau klik untuk menelusuri"
-                    text="PDF, JPG, PNG maksimal 5MB" with-progress inline />
-                <flux:error name="file_sertifikat" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
-            </flux:file-upload> --}}
-
             <flux:field class="relative mb-4 mt-2">
-                <flux:label>File Dokumen Sertifikat</flux:label>
+                <flux:label>File Dokumen Sertifikat (Hanya PDF)</flux:label>
 
-                <flux:file-upload wire:model="file_sertifikat" :error="false">
-                    <flux:file-upload.dropzone heading="Seret file atau klik untuk menelusuri" text="PDF maksimal 5MB"
+                <flux:file-upload wire:model="file_sertifikat" accept="application/pdf" :error="false">
+                    <flux:file-upload.dropzone heading="Seret file PDF atau klik untuk menelusuri" text="Hanya dokumen PDF (Maksimal 5MB)"
                         with-progress inline />
                 </flux:file-upload>
 
@@ -190,7 +191,7 @@
             <div class="flex justify-end gap-2 pt-4">
                 <flux:button type="button" variant="subtle" wire:click="$set('showUploadModal', false)">Batal
                 </flux:button>
-                <flux:button type="submit" variant="primary">Kirim Sertifikat</flux:button>
+                <flux:button type="submit" variant="primary">Kirim Sertifikat PDF</flux:button>
             </div>
         </form>
     </flux:modal>
@@ -200,7 +201,7 @@
         <flux:modal wire:model="showVerifyModal" class="min-w-xl">
             <form wire:submit.prevent="submitVerifikasi" class="space-y-4">
                 <div>
-                    <flux:heading size="lg">Review & Verifikasi Dokumen Sertifikat</flux:heading>
+                    <flux:heading size="lg">Review &amp; Verifikasi Dokumen Sertifikat</flux:heading>
                     <flux:subheading>Pastikan keaslian nomor sertifikat dan relevansi kompetensi pelatihan.
                     </flux:subheading>
                 </div>
@@ -234,7 +235,7 @@
                     <div class="pt-2">
                         <flux:button href="{{ asset('storage/' . $selectedSertifikat->file_path) }}" target="_blank"
                             size="sm" variant="filled" icon="document-magnifying-glass">
-                            Buka / Preview Berkas Sertifikat
+                            Buka / Preview Berkas PDF
                         </flux:button>
                     </div>
                 </div>
@@ -242,7 +243,7 @@
                 <flux:field>
                     <flux:label>Status Verifikasi</flux:label>
                     <flux:select wire:model="status_verifikasi" variant="listbox">
-                        <flux:select.option value="disetujui">Setujui (Valid & Sah)</flux:select.option>
+                        <flux:select.option value="disetujui">Setujui (Valid &amp; Sah)</flux:select.option>
                         <flux:select.option value="ditolak">Tolak (Tidak Valid / Tidak Terbaca)</flux:select.option>
                     </flux:select>
                 </flux:field>

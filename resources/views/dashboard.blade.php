@@ -68,18 +68,18 @@
 
         <!-- KPI Cards Grid -->
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <!-- Card 1: Target Pelatihan -->
+            <!-- Card 1: Pelatihan Pegawai -->
             <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold uppercase text-zinc-500">Target Pelatihan</span>
+                    <span class="text-xs font-semibold uppercase text-zinc-500">Pelatihan Pegawai</span>
                     <span class="rounded-full bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
-                        <flux:icon name="flag" class="size-4" />
+                        <flux:icon name="academic-cap" class="size-4" />
                     </span>
                 </div>
                 <div class="mt-3">
-                    <div class="text-2xl font-bold text-zinc-900 dark:text-white">{{ $totalTarget }} Target</div>
+                    <div class="text-2xl font-bold text-zinc-900 dark:text-white">{{ $totalTarget }} Pelatihan</div>
                     <div class="mt-1 text-xs text-emerald-600 font-medium flex items-center gap-1">
-                        <flux:icon name="check-circle" class="size-3" /> {{ $targetSelesai }} telah terpenuhi
+                        <flux:icon name="check-circle" class="size-3" /> {{ $targetSelesai }} telah selesai
                     </div>
                 </div>
             </div>

@@ -24,9 +24,9 @@
             @canany(['kelola-target-pelatihan', 'upload-sertifikat', 'arsip-sertifikat'])
                 <flux:sidebar.group expandable heading="{{ __('Diklat (Pelatihan)') }}" class="grid">
                     @can('kelola-target-pelatihan')
-                        <flux:sidebar.item :href="route('diklat.target')" :current="request()->routeIs('diklat.target')"
-                            icon="flag" wire:navigate>
-                            {{ __('Target Pelatihan') }}
+                        <flux:sidebar.item :href="route('diklat.pelatihan')" :current="request()->routeIs('diklat.pelatihan')"
+                            icon="academic-cap" wire:navigate>
+                            {{ __('Pelatihan') }}
                         </flux:sidebar.item>
                     @endcan
 

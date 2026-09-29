@@ -17,7 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Modul 1: Perencanaan & Pelatihan peserta diklat (Diklat)
     Route::prefix('diklat')->name('diklat.')->group(function () {
-        Route::livewire('/target', 'pages::diklat.target')->name('target');
+        Route::livewire('/pelatihan', 'pages::diklat.pelatihan')->name('pelatihan');
+        Route::redirect('/target', '/diklat/pelatihan');
         Route::livewire('/sertifikat', 'pages::diklat.sertifikat')->name('sertifikat');
         Route::livewire('/arsip', 'pages::diklat.arsip')
             ->middleware('role:admin_diklat,super_admin')
