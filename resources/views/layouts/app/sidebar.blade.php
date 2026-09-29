@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     @include('partials.head')
@@ -184,6 +184,16 @@
                             {{ __('Pengaturan Akun') }}
                         </flux:menu.item>
                     </flux:menu.radio.group>
+
+                    <flux:menu.separator />
+
+                    <flux:menu.submenu heading="{{ __('Tema Tampilan') }}" icon="paint-brush">
+                        <flux:menu.radio.group x-data x-model="$flux.appearance">
+                            <flux:menu.radio value="light" icon="sun">{{ __('Light') }}</flux:menu.radio>
+                            <flux:menu.radio value="dark" icon="moon">{{ __('Dark') }}</flux:menu.radio>
+                            <flux:menu.radio value="system" icon="computer-desktop">{{ __('System') }}</flux:menu.radio>
+                        </flux:menu.radio.group>
+                    </flux:menu.submenu>
 
                     <flux:menu.separator />
 
