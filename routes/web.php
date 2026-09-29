@@ -30,9 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::livewire('/perguruan-tinggi', 'pages::diklit.perguruan-tinggi')->name('perguruan-tinggi');
         Route::livewire('/unit', 'pages::diklit.unit')->name('unit');
         Route::livewire('/booking', 'pages::diklit.booking')->name('booking');
-        Route::livewire('/persetujuan', 'pages::diklit.persetujuan')
-            ->middleware('role:admin_diklat,super_admin')
-            ->name('persetujuan');
+        Route::redirect('/persetujuan', '/diklit/booking')->name('persetujuan');
         Route::livewire('/pembimbing', 'pages::diklit.pembimbing')->name('pembimbing');
         Route::livewire('/penilaian', 'pages::diklit.penilaian')->name('penilaian');
         Route::livewire('/kriteria', 'pages::diklit.kriteria')

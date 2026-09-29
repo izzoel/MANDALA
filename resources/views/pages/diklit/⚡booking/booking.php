@@ -2,6 +2,7 @@
 
 use App\Models\PerguruanTinggi;
 use App\Models\PermohonanPraktik;
+use App\Models\SuratPersetujuan;
 use App\Models\Unit;
 use App\Models\UnitProdiKuota;
 use App\Services\BookingKuotaService;
@@ -41,6 +42,12 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
     // Detail Modal
     public bool $showDetailModal = false;
     public ?PermohonanPraktik $selectedPermohonan = null;
+
+    // Review & Persetujuan Modal (Penerbitan Surat RS)
+    public bool $showReviewModal = false;
+    public string $status_keputusan = 'disetujui';
+    public string $nomor_surat = '';
+    public string $catatan_diklat = '';
 
     // Real-time Kuota Feedback
     public ?array $kuotaCheckResult = null;
@@ -277,6 +284,71 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
         if ($this->selectedPermohonan) {
             $this->showDetailModal = true;
         }
+    }
+
+    public function openReviewModal(?int $id = null): void
+    {
+        $permohonanId = $id ?? $this->selectedPermohonan?->id;
+        if (! $permohonanId) {
+            return;
+        }
+
+        $this->selectedPermohonan = PermohonanPraktik::with([
+            'perguruanTinggi',
+            'unit',
+            'suratPersetujuan',
+        ])->findOrFail($permohonanId);
+
+        $this->status_keputusan = $this->selectedPermohonan->status === 'ditolak' ? 'ditolak' : 'disetujui';
+        $this->nomor_surat = $this->selectedPermohonan->suratPersetujuan?->nomor_surat
+            ?? (rand(100, 999) . '/DIKLAT-RS/' . date('m/Y'));
+        $this->catatan_diklat = $this->selectedPermohonan->catatan_diklat
+            ?? 'Disetujui. Mahasiswa wajib mematuhi SOP dan tata tertib keselamatan rumah sakit.';
+
+        $this->showDetailModal = false;
+        $this->showReviewModal = true;
+    }
+
+    public function submitKeputusan(): void
+    {
+        if (! $this->selectedPermohonan) {
+            return;
+        }
+
+        $this->validate([
+            'status_keputusan' => 'required|in:disetujui,ditolak',
+            'nomor_surat' => 'required_if:status_keputusan,disetujui|nullable|string|max:100',
+            'catatan_diklat' => 'nullable|string|max:500',
+        ]);
+
+        $this->selectedPermohonan->update([
+            'status' => $this->status_keputusan,
+            'catatan_diklat' => $this->catatan_diklat,
+        ]);
+
+        if ($this->status_keputusan === 'disetujui') {
+            SuratPersetujuan::updateOrCreate(
+                ['permohonan_id' => $this->selectedPermohonan->id],
+                [
+                    'nomor_surat' => $this->nomor_surat,
+                    'diterbitkan_oleh' => auth()->id(),
+                    'tgl_terbit' => now()->toDateString(),
+                    'catatan' => $this->catatan_diklat,
+                ]
+            );
+        }
+
+        $this->showReviewModal = false;
+        $this->selectedPermohonan = PermohonanPraktik::with([
+            'perguruanTinggi',
+            'unit.prodiKuotas',
+            'suratPersetujuan.diterbitkanOleh',
+            'penunjukanPembimbings.mahasiswa',
+            'penunjukanPembimbings.pembimbingLapangan',
+            'penunjukanPembimbings.pembimbingDosen',
+        ])->find($this->selectedPermohonan->id);
+
+        session()->flash('message', 'Keputusan permohonan praktik berhasil diproses dan dicatat.');
     }
 
     public function batalkanPermohonan(int $id): void

@@ -12,7 +12,7 @@ new #[Title('Kriteria Penilaian Praktik')] class extends Component {
     public string $nama_kriteria = '';
     public float $bobot = 20.0;
     public int $urutan = 1;
-    public bool $aktif = true;
+    public string $aktif = '1';
 
     #[Computed]
     public function kriteriaList()
@@ -31,7 +31,7 @@ new #[Title('Kriteria Penilaian Praktik')] class extends Component {
         $this->reset(['editingId', 'nama_kriteria', 'bobot', 'urutan', 'aktif']);
         $this->bobot = 20.0;
         $this->urutan = KriteriaPenilaian::count() + 1;
-        $this->aktif = true;
+        $this->aktif = '1';
         $this->showModal = true;
     }
 
@@ -42,7 +42,7 @@ new #[Title('Kriteria Penilaian Praktik')] class extends Component {
         $this->nama_kriteria = $k->nama_kriteria;
         $this->bobot = (float) $k->bobot;
         $this->urutan = $k->urutan;
-        $this->aktif = (bool) $k->aktif;
+        $this->aktif = $k->aktif ? '1' : '0';
         $this->showModal = true;
     }
 
@@ -52,8 +52,10 @@ new #[Title('Kriteria Penilaian Praktik')] class extends Component {
             'nama_kriteria' => 'required|string|max:255',
             'bobot' => 'required|numeric|min:1|max:100',
             'urutan' => 'required|integer|min:1',
-            'aktif' => 'required|boolean',
+            'aktif' => 'required|in:0,1',
         ]);
+
+        $aktifBool = $this->aktif === '1';
 
         if ($this->editingId) {
             $k = KriteriaPenilaian::findOrFail($this->editingId);
@@ -61,7 +63,7 @@ new #[Title('Kriteria Penilaian Praktik')] class extends Component {
                 'nama_kriteria' => $this->nama_kriteria,
                 'bobot' => $this->bobot,
                 'urutan' => $this->urutan,
-                'aktif' => $this->aktif,
+                'aktif' => $aktifBool,
             ]);
             session()->flash('message', 'Kriteria penilaian berhasil diperbarui.');
         } else {
@@ -69,7 +71,7 @@ new #[Title('Kriteria Penilaian Praktik')] class extends Component {
                 'nama_kriteria' => $this->nama_kriteria,
                 'bobot' => $this->bobot,
                 'urutan' => $this->urutan,
-                'aktif' => $this->aktif,
+                'aktif' => $aktifBool,
             ]);
             session()->flash('message', 'Kriteria penilaian baru berhasil ditambahkan.');
         }

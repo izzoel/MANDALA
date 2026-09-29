@@ -235,7 +235,7 @@
 
                 <flux:field>
                     <flux:label>Tenggat Waktu Pemenuhan</flux:label>
-                    <flux:input type="date" wire:model="tenggat" />
+                    <flux:date-picker wire:model="tenggat" />
                     <flux:error name="tenggat" />
                 </flux:field>
             </div>

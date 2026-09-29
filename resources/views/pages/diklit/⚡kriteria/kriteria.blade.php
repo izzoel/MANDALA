@@ -125,10 +125,11 @@
 
             <flux:field>
                 <flux:label>Status Kriteria</flux:label>
-                <flux:select wire:model="aktif">
-                    <flux:select.option :value="true">Aktif (Digunakan dalam formulir nilai)</flux:select.option>
-                    <flux:select.option :value="false">Nonaktif (Diarsipkan)</flux:select.option>
+                <flux:select wire:model="aktif" variant="listbox">
+                    <flux:select.option value="1">Aktif (Digunakan dalam formulir nilai)</flux:select.option>
+                    <flux:select.option value="0">Nonaktif (Diarsipkan)</flux:select.option>
                 </flux:select>
+                <flux:error name="aktif" />
             </flux:field>
 
             <div class="flex justify-end gap-2 pt-4">

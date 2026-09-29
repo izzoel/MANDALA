@@ -71,13 +71,6 @@
                         </flux:sidebar.item>
                     @endcanany
 
-                    @can('persetujuan-booking')
-                        <flux:sidebar.item :href="route('diklit.persetujuan')"
-                            :current="request()->routeIs('diklit.persetujuan')" icon="clipboard-document-check" wire:navigate>
-                            {{ __('Persetujuan & Surat') }}
-                        </flux:sidebar.item>
-                    @endcan
-
                     @can('penunjukan-pembimbing')
                         <flux:sidebar.item :href="route('diklit.pembimbing')"
                             :current="request()->routeIs('diklit.pembimbing')" icon="user-group" wire:navigate>

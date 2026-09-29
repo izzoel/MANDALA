@@ -285,7 +285,7 @@ new #[Title('Pengaturan Profil')] class extends Component {
 
                         <flux:field class="relative mb-2">
                             <flux:label>Tanggal Mulai Bekerja</flux:label>
-                            <flux:input type="date" wire:model="tgl_mulai_kerja" />
+                            <flux:date-picker wire:model="tgl_mulai_kerja" />
                             <flux:error name="tgl_mulai_kerja" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
                         </flux:field>
                     </div>

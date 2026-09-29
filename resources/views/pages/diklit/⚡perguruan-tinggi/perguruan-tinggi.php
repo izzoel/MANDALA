@@ -13,7 +13,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
     public bool $showModal = false;
     public ?int $editingPtId = null;
     public string $nama_pt = '';
-    public bool $status_mou = true;
+    public string $status_mou = '1';
     public string $tgl_mulai_mou = '';
     public string $tgl_akhir_mou = '';
     public string $kontak = '';
@@ -41,7 +41,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
     public function openCreateModal(): void
     {
         $this->reset(['editingPtId', 'nama_pt', 'status_mou', 'tgl_mulai_mou', 'tgl_akhir_mou', 'kontak', 'email_pt']);
-        $this->status_mou = true;
+        $this->status_mou = '1';
         $this->tgl_mulai_mou = now()->toDateString();
         $this->tgl_akhir_mou = now()->addYears(2)->toDateString();
         $this->showModal = true;
@@ -52,9 +52,9 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
         $pt = PerguruanTinggi::findOrFail($id);
         $this->editingPtId = $pt->id;
         $this->nama_pt = $pt->nama_pt;
-        $this->status_mou = (bool) $pt->status_mou;
-        $this->tgl_mulai_mou = $pt->tgl_mulai_mou->format('Y-m-d');
-        $this->tgl_akhir_mou = $pt->tgl_akhir_mou->format('Y-m-d');
+        $this->status_mou = $pt->status_mou ? '1' : '0';
+        $this->tgl_mulai_mou = $pt->tgl_mulai_mou ? $pt->tgl_mulai_mou->format('Y-m-d') : '';
+        $this->tgl_akhir_mou = $pt->tgl_akhir_mou ? $pt->tgl_akhir_mou->format('Y-m-d') : '';
         $this->kontak = $pt->kontak ?? '';
         $this->email_pt = $pt->email_pt ?? '';
         $this->showModal = true;
@@ -64,18 +64,20 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
     {
         $this->validate([
             'nama_pt' => 'required|string|max:255',
-            'status_mou' => 'required|boolean',
+            'status_mou' => 'required|in:0,1',
             'tgl_mulai_mou' => 'required|date',
             'tgl_akhir_mou' => 'required|date|after:tgl_mulai_mou',
             'kontak' => 'nullable|string|max:100',
             'email_pt' => 'nullable|email|max:150',
         ]);
 
+        $statusBool = $this->status_mou === '1';
+
         if ($this->editingPtId) {
             $pt = PerguruanTinggi::findOrFail($this->editingPtId);
             $pt->update([
                 'nama_pt' => $this->nama_pt,
-                'status_mou' => $this->status_mou,
+                'status_mou' => $statusBool,
                 'tgl_mulai_mou' => $this->tgl_mulai_mou,
                 'tgl_akhir_mou' => $this->tgl_akhir_mou,
                 'kontak' => $this->kontak,
@@ -85,7 +87,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
         } else {
             PerguruanTinggi::create([
                 'nama_pt' => $this->nama_pt,
-                'status_mou' => $this->status_mou,
+                'status_mou' => $statusBool,
                 'tgl_mulai_mou' => $this->tgl_mulai_mou,
                 'tgl_akhir_mou' => $this->tgl_akhir_mou,
                 'kontak' => $this->kontak,

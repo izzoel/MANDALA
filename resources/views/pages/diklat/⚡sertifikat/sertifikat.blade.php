@@ -166,7 +166,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <flux:field class="relative mb-2">
                     <flux:label>Tanggal Pelaksanaan</flux:label>
-                    <flux:input type="date" wire:model="tgl_pelaksanaan" />
+                    <flux:date-picker wire:model="tgl_pelaksanaan" />
                     <flux:error name="tgl_pelaksanaan" class="absolute left-0 -bottom-5 text-[11px] mt-3!" />
                 </flux:field>
 
