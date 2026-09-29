@@ -7,6 +7,7 @@
   <title>MANDALA - Manajemen Diklat Akademik & Layanan Administrasi Rumah Sakit</title>
   <meta name="description" content="Sistem Informasi Terpadu Tata Kelola Pendidikan & Pelatihan (Diklat), Booking Unit Praktik Klinik Mahasiswa (Diklit), dan Evaluasi Kompetensi Rumah Sakit.">
   <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+  <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
 
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,11 +111,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <!-- Logo Brand -->
       <a href="{{ url('/') }}" class="flex items-center gap-3.5 group">
-        <div class="size-11 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center shadow-lg shadow-brand-600/20 ring-1 ring-white/60 group-hover:scale-105 transition-transform duration-200">
-          <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-          </svg>
-        </div>
+        <img src="{{ asset('mandala.svg') }}" alt="MANDALA Logo" class="size-11 object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-200">
         <div class="flex flex-col">
           <span class="text-xl font-extrabold tracking-tight text-slate-900 flex items-center gap-1.5">
             MANDALA
@@ -732,9 +729,7 @@
         <!-- Col 1: Brand Info -->
         <div class="md:col-span-2 space-y-4">
           <div class="flex items-center gap-3">
-            <div class="size-9 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold">
-              M
-            </div>
+            <img src="{{ asset('mandala.svg') }}" alt="MANDALA Logo" class="size-9 object-contain drop-shadow-sm">
             <span class="text-lg font-extrabold text-slate-900">MANDALA</span>
           </div>
           <p class="text-xs text-slate-500 font-body leading-relaxed max-w-sm">

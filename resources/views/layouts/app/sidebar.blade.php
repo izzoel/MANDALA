@@ -125,8 +125,8 @@
 
         <flux:sidebar.nav>
             <div class="mt-4 px-3 text-xs text-zinc-500 dark:text-zinc-400">
-                <div class="font-semibold tracking-wide">MANDALA RS v2.0</div>
-                <div class="text-[10px] text-zinc-400">Sistem Diklat & Diklit Terintegrasi</div>
+                <div class="font-semibold tracking-wide">MANDALA v1.0</div>
+                <div class="text-[8px] text-zinc-400">Manajemen Diklat Akademik & Layanan Administrasi</div>
 
                 <div class="mt-1">
                     © 2026 <a href="https://zetware.id" target="_blank"
