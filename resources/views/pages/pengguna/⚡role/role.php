@@ -45,6 +45,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component
         // 1. Sistem & Pengguna
         'kelola-role' => ['label' => 'Kelola Role & Permissions', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'shield-check', 'desc' => 'Akses penuh konfigurasi peran dan izin Spatie'],
         'kelola-user' => ['label' => 'Kelola Akun Pengguna', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'users', 'desc' => 'Menambah, mengedit, dan mengaktifkan akun pengguna'],
+        'kelola-akun-mahasiswa' => ['label' => 'Kelola Akun Mahasiswa', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'user-group', 'desc' => 'Menambah dan mengelola akun mahasiswa institusi PT'],
         'kelola-pengaturan-sistem' => ['label' => 'Kelola Pengaturan Sistem', 'group' => 'Manajemen Sistem & Pengguna', 'icon' => 'cog-6-tooth', 'desc' => 'Konfigurasi parameter aplikasi dan instansi rumah sakit'],
 
         // 2. Modul Diklat Pegawai
@@ -204,6 +205,7 @@ new #[Title('Manajemen Role & Hak Akses (Spatie)')] class extends Component
                 break;
             case 'admin_pt':
                 $this->selectedPermissions = [
+                    'kelola-akun-mahasiswa',
                     'ajukan-booking-praktik',
                     'lihat-rekap-nilai',
                     'ekspor-laporan-diklit',

@@ -94,15 +94,15 @@
                 </flux:sidebar.group>
             @endcanany
 
-            @canany(['kelola-user', 'kelola-role'])
+            @canany(['kelola-user', 'kelola-akun-mahasiswa', 'kelola-role'])
 
                 <flux:sidebar.group expandable heading="{{ __('Kelola Akun') }}" class="grid">
-                    @can('kelola-user')
+                    @canany(['kelola-user', 'kelola-akun-mahasiswa'])
                         <flux:sidebar.item :href="route('pengguna.user')" :current="request()->routeIs('pengguna.user')"
                             icon="users" wire:navigate>
                             {{ __('Manajemen Akun') }}
                         </flux:sidebar.item>
-                    @endcan
+                    @endcanany
 
                     @can('kelola-role')
                         <flux:sidebar.item :href="route('pengguna.role')" :current="request()->routeIs('pengguna.role')"

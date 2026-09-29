@@ -40,9 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Modul 3: Manajemen Akun & Hak Akses (RBAC)
     Route::prefix('pengguna')->name('pengguna.')->group(function () {
-        // Akun Pengguna: Admin Diklat & Super Admin
+        // Akun Pengguna: Admin Diklat, Super Admin, dan Admin PT
         Route::livewire('/user', 'pages::pengguna.user')
-            ->middleware('role:admin_diklat,super_admin')
+            ->middleware('role:admin_diklat,super_admin,admin_pt')
             ->name('user');
 
         // Manajemen Role & Permissions Spatie: HANYA Super Admin

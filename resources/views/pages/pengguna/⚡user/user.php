@@ -69,10 +69,13 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
     #[Computed]
     public function users()
     {
+        $user = Auth::user();
+        $isOnlyAdminPt = $user && ($user->hasRole('admin_pt') || ($user->can('kelola-akun-mahasiswa') && ! $user->can('kelola-user')));
+
         return User::query()
-            // ->with(['pegawaiNonAsn', 'mahasiswa.perguruanTinggi', 'pembimbingLapangan.unit', 'pembimbingDosen.perguruanTinggi'])
             ->with(['peserta', 'mahasiswa.perguruanTinggi', 'pembimbingLapangan.unit', 'pembimbingDosen.perguruanTinggi'])
-            ->when($this->filterRole !== 'semua', fn ($q) => $q->where('role', $this->filterRole))
+            ->when($isOnlyAdminPt, fn ($q) => $q->where('role', 'mahasiswa'))
+            ->when(! $isOnlyAdminPt && $this->filterRole !== 'semua', fn ($q) => $q->where('role', $this->filterRole))
             ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status', $this->filterStatus))
             ->when($this->search !== '', function ($q) {
                 $term = '%'.strtolower($this->search).'%';
@@ -104,8 +107,12 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
         $user = Auth::user();
 
         if ($user) {
+            if ($user->hasRole('admin_pt') || ($user->can('kelola-akun-mahasiswa') && ! $user->can('kelola-user'))) {
+                return Role::where('name', 'mahasiswa')->get();
+            }
+
             if ($user->hasRole('admin_diklat')) {
-                return Role::whereNotIn('name', ['super_admin', 'admin_diklat', 'mahasiswa'])->get();
+                return Role::whereNotIn('name', ['super_admin', 'admin_diklat'])->get();
             }
         }
 
@@ -120,7 +127,14 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
             'no_pegawai', 'unit_kerja', 'jabatan', 'tgl_mulai_kerja',
             'pt_id', 'nim', 'prodi', 'nidn', 'unit_id', 'nip_nik', 'kontak',
         ]);
-        $this->role = 'peserta_diklat';
+
+        $user = Auth::user();
+        if ($user && ($user->hasRole('admin_pt') || ($user->can('kelola-akun-mahasiswa') && ! $user->can('kelola-user')))) {
+            $this->role = 'mahasiswa';
+        } else {
+            $this->role = 'peserta_diklat';
+        }
+
         $this->status = 'aktif';
         $this->tgl_mulai_kerja = now()->toDateString();
         $this->showModal = true;
@@ -129,6 +143,14 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
     public function editUser(int $id): void
     {
         $user = User::with(['peserta', 'mahasiswa', 'pembimbingLapangan', 'pembimbingDosen'])->findOrFail($id);
+
+        $currentUser = Auth::user();
+        $isOnlyAdminPt = $currentUser && ($currentUser->hasRole('admin_pt') || ($currentUser->can('kelola-akun-mahasiswa') && ! $currentUser->can('kelola-user')));
+        if ($isOnlyAdminPt && $user->role !== 'mahasiswa') {
+            session()->flash('error', 'Anda hanya memiliki hak akses untuk mengelola akun mahasiswa.');
+            return;
+        }
+
         $this->editingUserId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
@@ -166,6 +188,13 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
 
     public function saveUser(): void
     {
+        $currentUser = Auth::user();
+        $isOnlyAdminPt = $currentUser && ($currentUser->hasRole('admin_pt') || ($currentUser->can('kelola-akun-mahasiswa') && ! $currentUser->can('kelola-user')));
+
+        if ($isOnlyAdminPt) {
+            $this->role = 'mahasiswa';
+        }
+
         $rules = [
             'name' => 'required|string|max:255',
             'email' => [
@@ -174,7 +203,7 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
                 'max:255',
                 Rule::unique('users', 'email')->ignore($this->editingUserId),
             ],
-            'role' => ['required', Rule::exists('roles', 'name')],
+            'role' => ['required', $isOnlyAdminPt ? Rule::in(['mahasiswa']) : Rule::exists('roles', 'name')],
             'status' => 'required|in:aktif,nonaktif',
         ];
 
@@ -303,6 +332,14 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
         }
 
         $user = User::findOrFail($id);
+
+        $currentUser = Auth::user();
+        $isOnlyAdminPt = $currentUser && ($currentUser->hasRole('admin_pt') || ($currentUser->can('kelola-akun-mahasiswa') && ! $currentUser->can('kelola-user')));
+        if ($isOnlyAdminPt && $user->role !== 'mahasiswa') {
+            session()->flash('error', 'Anda hanya memiliki izin untuk mengelola akun mahasiswa.');
+            return;
+        }
+
         $newStatus = $user->status === 'aktif' ? 'nonaktif' : 'aktif';
         $user->update(['status' => $newStatus]);
 
@@ -318,6 +355,14 @@ new #[Title('Manajemen Akun & Hak Akses')] class extends Component
         }
 
         $user = User::findOrFail($id);
+
+        $currentUser = Auth::user();
+        $isOnlyAdminPt = $currentUser && ($currentUser->hasRole('admin_pt') || ($currentUser->can('kelola-akun-mahasiswa') && ! $currentUser->can('kelola-user')));
+        if ($isOnlyAdminPt && $user->role !== 'mahasiswa') {
+            session()->flash('error', 'Anda hanya memiliki izin untuk mengelola akun mahasiswa.');
+            return;
+        }
+
         $userName = $user->name;
         $user->delete();
 

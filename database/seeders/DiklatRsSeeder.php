@@ -36,6 +36,7 @@ class DiklatRsSeeder extends Seeder
             // Manajemen Sistem & Pengguna
             'kelola-role',
             'kelola-user',
+            'kelola-akun-mahasiswa',
             'kelola-pengaturan-sistem',
 
             // Modul Diklat Pegawai
@@ -79,6 +80,7 @@ class DiklatRsSeeder extends Seeder
 
         $roleAdminDiklat->syncPermissions([
             'kelola-user',
+            'kelola-akun-mahasiswa',
             'kelola-target-pelatihan',
             'upload-sertifikat',
             'arsip-sertifikat',
@@ -95,6 +97,7 @@ class DiklatRsSeeder extends Seeder
         ]);
 
         $roleAdminPt->syncPermissions([
+            'kelola-akun-mahasiswa',
             'ajukan-booking-praktik',
             'lihat-rekap-nilai',
             'ekspor-laporan-diklit',

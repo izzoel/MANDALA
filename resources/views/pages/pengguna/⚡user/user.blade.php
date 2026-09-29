@@ -31,20 +31,22 @@
     <!-- Search & Filter Bar -->
     <div
         class="grid gap-4 rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 sm:grid-cols-12">
-        <div class="sm:col-span-6">
+        <div class="{{ count($this->roles) > 1 ? 'sm:col-span-6' : 'sm:col-span-9' }}">
             <flux:input wire:model.live.debounce.300ms="search" placeholder="Cari nama pengguna, email, atau peran..."
                 icon="magnifying-glass" />
         </div>
-        <div class="sm:col-span-3">
-            <flux:select wire:model.live="filterRole" variant="listbox" searchable>
-                <flux:select.option value="semua">Semua Peran (Role)</flux:select.option>
-                @foreach ($this->roles as $r)
-                    <flux:select.option :wire:key="'filter-'.$r->id" value="{{ $r->name }}">
-                        {{ ucwords(str_replace('_', ' ', $r->name)) }}
-                    </flux:select.option>
-                @endforeach
-            </flux:select>
-        </div>
+        @if (count($this->roles) > 1)
+            <div class="sm:col-span-3">
+                <flux:select wire:model.live="filterRole" variant="listbox" searchable>
+                    <flux:select.option value="semua">Semua Peran (Role)</flux:select.option>
+                    @foreach ($this->roles as $r)
+                        <flux:select.option :wire:key="'filter-'.$r->id" value="{{ $r->name }}">
+                            {{ ucwords(str_replace('_', ' ', $r->name)) }}
+                        </flux:select.option>
+                    @endforeach
+                </flux:select>
+            </div>
+        @endif
         <div class="sm:col-span-3">
             <flux:select wire:model.live="filterStatus" variant="listbox">
                 <flux:select.option value="semua">Semua Status</flux:select.option>
@@ -228,7 +230,7 @@
 
                 <flux:field class="relative mb-2">
                     <flux:label>Peran Pengguna (Role RBAC)</flux:label>
-                    <flux:select wire:model.live="role" variant="listbox" searchable
+                    <flux:select wire:model.live="role" variant="listbox" :disabled="count($this->roles) === 1" searchable
                         placeholder="Pilih peran pengguna...">
                         @foreach ($this->roles as $r)
                             <flux:select.option :wire:key="'role-'.$r->id" value="{{ $r->name }}">
@@ -236,6 +238,9 @@
                             </flux:select.option>
                         @endforeach
                     </flux:select>
+                    @if (count($this->roles) === 1)
+                        <div class="text-[11px] text-zinc-500 mt-1">Akun terbatas khusus peran Mahasiswa</div>
+                    @endif
                     <flux:error name="role" class="absolute left-0 -bottom-4 text-[11px] mt-3!" />
                 </flux:field>
 
