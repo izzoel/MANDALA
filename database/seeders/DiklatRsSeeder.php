@@ -135,7 +135,7 @@ class DiklatRsSeeder extends Seeder
 
         $adminDiklat = User::create([
             'name' => 'Ns. Ratna Dewi, S.Kep (Admin Diklat)',
-            'email' => 'diklat@mandala.test',
+            'email' => 'admin@mandala.test',
             'password' => Hash::make('password'),
             'role' => 'admin_diklat',
             'status' => 'aktif',

@@ -43,6 +43,31 @@ test('email verification status is unchanged when email address is unchanged', f
     expect($user->refresh()->email_verified_at)->not->toBeNull();
 });
 
+test('admin diklat can update profile information', function () {
+    $user = User::factory()->create([
+        'role' => 'admin_diklat',
+        'name' => 'Admin Diklat Asli',
+        'email' => 'diklat@mandala.test',
+    ]);
+
+    $this->actingAs($user);
+
+    $response = Livewire::test('pages::settings.profile')
+        ->assertSet('name', 'Admin Diklat Asli')
+        ->assertSet('email', 'diklat@mandala.test')
+        ->set('name', 'Admin Diklat Baru')
+        ->set('email', 'diklat.baru@mandala.test')
+        ->call('updateProfileInformation');
+
+    $response->assertHasNoErrors();
+
+    $user->refresh();
+
+    expect($user->name)->toEqual('Admin Diklat Baru');
+    expect($user->email)->toEqual('diklat.baru@mandala.test');
+    expect($user->role)->toEqual('admin_diklat');
+});
+
 test('user can delete their account', function () {
     $user = User::factory()->create();
 

@@ -96,16 +96,6 @@
 
 <body class="bg-slate-50 text-slate-800 font-sans selection:bg-brand-100 selection:text-brand-900 min-h-screen flex flex-col">
 
-  <!-- TOP NOTIFICATION BANNER -->
-  <div class="bg-gradient-to-r from-brand-900 via-hospital-navy to-brand-900 text-white text-xs font-medium py-2 px-4 text-center relative z-50">
-    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
-      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand-500/20 text-brand-300 border border-brand-400/30">
-        Versi 2.4
-      </span>
-      <span>Portal Layanan Pendidikan, Pelatihan &amp; Izin Praktik Mahasiswa Rumah Sakit Resmi Dibuka</span>
-    </div>
-  </div>
-
   <!-- NAVIGATION BAR -->
   <header class="sticky top-0 w-full z-40 glass-nav transition-all duration-300" id="main-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -115,9 +105,8 @@
         <div class="flex flex-col">
           <span class="text-xl font-extrabold tracking-tight text-slate-900 flex items-center gap-1.5">
             MANDALA
-            <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-brand-100 text-brand-800 border border-brand-200">RS</span>
           </span>
-          <span class="text-[11px] font-medium text-slate-500 tracking-tight leading-none">Diklat &amp; Akademik Terpadu</span>
+          <span class="text-[11px] font-medium text-slate-500 tracking-tight leading-none">Manajemen Diklat Akademik & Layanan Administrasi</span>
         </div>
       </a>
 
@@ -605,7 +594,7 @@
             <div class="size-10 rounded-xl bg-brand-100 text-brand-700 font-bold flex items-center justify-center">
               AD
             </div>
-            <h4 class="text-base font-bold text-slate-900">Admin Diklat RS</h4>
+            <h4 class="text-base font-bold text-slate-900">Admin Sistem</h4>
             <p class="text-xs text-slate-600 font-body leading-relaxed">
               Verifikasi sertifikat, kelola kuota unit, persetujuan booking izin praktik, penerbitan surat, dan master kriteria nilai.
             </p>
@@ -693,7 +682,7 @@
               </span>
             </summary>
             <p class="mt-4 text-sm text-slate-600 font-body leading-relaxed">
-              Pegawai masuk ke menu <strong>Diklat &gt; Sertifikat</strong>, memilih pelatihan yang sesuai, lalu mengunggah file sertifikat (format PDF/JPG/PNG maksimal 5MB). Berkas akan masuk ke antrean verifikasi Admin Diklat RS.
+              Pegawai masuk ke menu <strong>Diklat &gt; Sertifikat</strong>, memilih pelatihan yang sesuai, lalu mengunggah file sertifikat (format PDF maksimal 5MB). Berkas akan masuk ke antrean verifikasi Admin Diklat RS.
             </p>
           </details>
 
@@ -733,10 +722,10 @@
             <span class="text-lg font-extrabold text-slate-900">MANDALA</span>
           </div>
           <p class="text-xs text-slate-500 font-body leading-relaxed max-w-sm">
-            Manajemen Diklat Akademik &amp; Layanan Administrasi Rumah Sakit. Sistem terintegrasi tata kelola pelatihan SDM kesehatan dan izin stase mahasiswa perguruan tinggi.
+            Manajemen Diklat Akademik &amp; Layanan Administrasi Rumah Sakit.
           </p>
           <div class="text-xs text-slate-400 font-medium">
-            &copy; 2026 Zetware. Hak cipta dilindungi undang-undang.
+            &copy; 2026 zetware.id
           </div>
         </div>
 
