@@ -6,21 +6,30 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Unit RS & Alokasi Kuota')] class extends Component {
+new #[Title('Unit RS & Alokasi Kuota')] class extends Component
+{
     public string $search = '';
 
     // Form Modal Unit
     public bool $showUnitModal = false;
+
     public ?int $editingUnitId = null;
+
     public string $nama_unit = '';
+
     public string $mode_kuota = 'gabungan';
+
     public int $kuota_maks = 10;
+
     public string $deskripsi = '';
 
     // Form Modal Alokasi Prodi Kuota
     public bool $showProdiModal = false;
+
     public ?int $selectedUnitId = null;
+
     public string $new_prodi = '';
+
     public int $new_kuota_maks = 5;
 
     #[Computed]
@@ -30,7 +39,7 @@ new #[Title('Unit RS & Alokasi Kuota')] class extends Component {
             ->with(['prodiKuotas', 'pembimbingLapangans'])
             ->withCount(['permohonanPraktiks' => fn ($q) => $q->where('status', 'disetujui')])
             ->when($this->search !== '', function ($q) {
-                $term = '%' . strtolower($this->search) . '%';
+                $term = '%'.strtolower($this->search).'%';
                 $q->where(function ($sub) use ($term) {
                     $sub->whereRaw('LOWER(nama_unit) LIKE ?', [$term])
                         ->orWhereRaw('LOWER(deskripsi) LIKE ?', [$term]);

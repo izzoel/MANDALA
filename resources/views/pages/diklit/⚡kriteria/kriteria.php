@@ -5,13 +5,19 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Kriteria Penilaian Praktik')] class extends Component {
+new #[Title('Kriteria Penilaian Praktik')] class extends Component
+{
     // Form Modal
     public bool $showModal = false;
+
     public ?int $editingId = null;
+
     public string $nama_kriteria = '';
+
     public float $bobot = 20.0;
+
     public int $urutan = 1;
+
     public string $aktif = '1';
 
     #[Computed]

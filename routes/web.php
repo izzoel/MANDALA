@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'landing')->name('landing');
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
+Route::view('/kebijakan-privasi', 'privacy-policy');
+Route::view('/terms-of-service', 'terms-of-service')->name('terms.service');
+Route::view('/syarat-ketentuan', 'terms-of-service');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Utama
@@ -43,6 +48,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('role:super_admin')
             ->name('role');
     });
+
+    // Akses Dokumen Google Drive & Lokal
+    Route::get('/dokumen/lihat/{type}/{id}', [DocumentController::class, 'view'])->name('document.view');
+    Route::get('/dokumen/unduh/{type}/{id}', [DocumentController::class, 'download'])->name('document.download');
 });
 
 require __DIR__.'/settings.php';

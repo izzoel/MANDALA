@@ -3,6 +3,7 @@
 use App\Models\Peserta;
 use App\Models\Sertifikat;
 use App\Models\TargetPelatihan;
+use App\Services\GoogleDriveService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -136,7 +137,7 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
             'no_sertifikat.required' => 'Nomor sertifikat wajib diisi.',
         ]);
 
-        $filePath = $this->file_sertifikat->store('sertifikat', 'public');
+        $uploadResult = app(GoogleDriveService::class)->uploadWithFallback($this->file_sertifikat, 'sertifikat');
 
         $sertifikat = Sertifikat::create([
             'pegawai_id' => $this->pegawai_id,
@@ -144,7 +145,9 @@ new #[Title('Sertifikat Pelatihan')] class extends Component
             'penyelenggara' => $this->penyelenggara,
             'tgl_pelaksanaan' => $this->tgl_pelaksanaan,
             'no_sertifikat' => $this->no_sertifikat,
-            'file_path' => $filePath,
+            'file_path' => $uploadResult['file_path'],
+            'drive_file_id' => $uploadResult['drive_file_id'],
+            'drive_link' => $uploadResult['drive_link'],
             'status_verifikasi' => 'pending',
         ]);
 

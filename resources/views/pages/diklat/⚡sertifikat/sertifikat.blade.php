@@ -101,7 +101,7 @@
                         </flux:button>
                     @endrole
 
-                    <flux:button href="{{ asset('storage/' . $sertifikat->file_path) }}" target="_blank" size="sm"
+                    <flux:button href="{{ $sertifikat->file_url }}" target="_blank" size="sm"
                         variant="subtle" icon="arrow-down-tray">
                         Lihat PDF
                     </flux:button>
@@ -233,7 +233,7 @@
                     </div>
 
                     <div class="pt-2">
-                        <flux:button href="{{ asset('storage/' . $selectedSertifikat->file_path) }}" target="_blank"
+                        <flux:button href="{{ $selectedSertifikat->file_url }}" target="_blank"
                             size="sm" variant="filled" icon="document-magnifying-glass">
                             Buka / Preview Berkas PDF
                         </flux:button>

@@ -2,26 +2,41 @@
 
 use App\Models\PerguruanTinggi;
 use App\Models\User;
+use App\Services\GoogleDriveService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Role;
 
-new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
+new #[Title('Perguruan Tinggi & Status MoU')] class extends Component
+{
+    use WithFileUploads;
+
     public string $search = '';
+
     public string $filterStatus = 'semua';
 
     // Form Modal
     public bool $showModal = false;
+
     public ?int $editingPtId = null;
+
     public string $nama_pt = '';
+
     public string $status_mou = '1';
+
     public string $tgl_mulai_mou = '';
+
     public string $tgl_akhir_mou = '';
+
     public string $kontak = '';
+
     public string $email_pt = '';
+
+    public $file_mou;
 
     #[Computed]
     public function perguruanTinggis()
@@ -32,7 +47,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
             ->when($this->filterStatus === 'aktif', fn ($q) => $q->where('status_mou', true)->where('tgl_akhir_mou', '>=', now()->toDateString()))
             ->when($this->filterStatus === 'expired', fn ($q) => $q->where(fn ($sub) => $sub->where('status_mou', false)->orWhere('tgl_akhir_mou', '<', now()->toDateString())))
             ->when($this->search !== '', function ($q) {
-                $term = '%' . strtolower($this->search) . '%';
+                $term = '%'.strtolower($this->search).'%';
                 $q->where(function ($sub) use ($term) {
                     $sub->whereRaw('LOWER(nama_pt) LIKE ?', [$term])
                         ->orWhereRaw('LOWER(email_pt) LIKE ?', [$term])
@@ -45,7 +60,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
 
     public function openCreateModal(): void
     {
-        $this->reset(['editingPtId', 'nama_pt', 'status_mou', 'tgl_mulai_mou', 'tgl_akhir_mou', 'kontak', 'email_pt']);
+        $this->reset(['editingPtId', 'nama_pt', 'status_mou', 'tgl_mulai_mou', 'tgl_akhir_mou', 'kontak', 'email_pt', 'file_mou']);
         $this->status_mou = '1';
         $this->tgl_mulai_mou = now()->toDateString();
         $this->tgl_akhir_mou = now()->addYears(2)->toDateString();
@@ -62,6 +77,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
         $this->tgl_akhir_mou = $pt->tgl_akhir_mou ? $pt->tgl_akhir_mou->format('Y-m-d') : '';
         $this->kontak = $pt->kontak ?? '';
         $this->email_pt = $pt->email_pt ?? '';
+        $this->file_mou = null;
         $this->showModal = true;
     }
 
@@ -74,40 +90,54 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
             'tgl_akhir_mou' => 'required|date|after:tgl_mulai_mou',
             'kontak' => 'nullable|string|max:100',
             'email_pt' => 'nullable|email|max:150',
+            'file_mou' => 'nullable|file|mimes:pdf|max:5120',
+        ], [
+            'file_mou.mimes' => 'Berkas MoU harus berformat PDF (.pdf).',
+            'file_mou.max' => 'Ukuran berkas MoU maksimal 5MB.',
         ]);
 
         $statusBool = $this->status_mou === '1';
 
+        $driveData = [];
+        if ($this->file_mou) {
+            $uploadResult = app(GoogleDriveService::class)->uploadWithFallback($this->file_mou, 'mou');
+            $driveData = [
+                'file_mou' => $uploadResult['file_path'],
+                'drive_file_id' => $uploadResult['drive_file_id'],
+                'drive_link' => $uploadResult['drive_link'],
+            ];
+        }
+
         if ($this->editingPtId) {
             $pt = PerguruanTinggi::findOrFail($this->editingPtId);
-            $pt->update([
+            $pt->update(array_merge([
                 'nama_pt' => $this->nama_pt,
                 'status_mou' => $statusBool,
                 'tgl_mulai_mou' => $this->tgl_mulai_mou,
                 'tgl_akhir_mou' => $this->tgl_akhir_mou,
                 'kontak' => $this->kontak,
                 'email_pt' => $this->email_pt,
-            ]);
-            session()->flash('message', 'Data Perguruan Tinggi berhasil diperbarui.');
+            ], $driveData));
+            session()->flash('message', 'Data Perguruan Tinggi & Berkas MoU berhasil diperbarui.');
         } else {
             // Generate email [nama PT]@mandala.test
             $emailSlug = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $this->nama_pt));
             if (empty($emailSlug)) {
-                $emailSlug = 'adminpt' . rand(100, 999);
+                $emailSlug = 'adminpt'.rand(100, 999);
             }
-            $adminEmail = $emailSlug . '@mandala.test';
+            $adminEmail = $emailSlug.'@mandala.test';
 
             // Pastikan email unik jika nama PT sama
             $counter = 1;
             while (User::where('email', $adminEmail)->exists()) {
-                $adminEmail = $emailSlug . $counter . '@mandala.test';
+                $adminEmail = $emailSlug.$counter.'@mandala.test';
                 $counter++;
             }
 
             // Buat Akun Admin PT
             $adminUser = User::create([
                 'uuid' => Str::uuid(),
-                'name' => 'Admin ' . $this->nama_pt,
+                'name' => 'Admin '.$this->nama_pt,
                 'email' => $adminEmail,
                 'password' => Hash::make('password'),
                 'role' => 'admin_pt',
@@ -118,7 +148,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
             $adminUser->assignRole($roleAdminPt);
 
             // Buat Data PT dan tautkan user_id
-            $pt = PerguruanTinggi::create([
+            $pt = PerguruanTinggi::create(array_merge([
                 'user_id' => $adminUser->id,
                 'nama_pt' => $this->nama_pt,
                 'status_mou' => $statusBool,
@@ -126,7 +156,7 @@ new #[Title('Perguruan Tinggi & Status MoU')] class extends Component {
                 'tgl_akhir_mou' => $this->tgl_akhir_mou,
                 'kontak' => $this->kontak,
                 'email_pt' => $this->email_pt ?: $adminEmail,
-            ]);
+            ], $driveData));
 
             session()->flash('message', "Perguruan Tinggi baru dan akun Admin PT ({$adminEmail}) dengan password default 'password' berhasil dibuat.");
         }

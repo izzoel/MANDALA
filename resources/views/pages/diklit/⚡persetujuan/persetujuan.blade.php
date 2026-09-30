@@ -145,9 +145,9 @@
                             {{ $selectedPermohonan->tgl_selesai->format('d M Y') }}</span>
                     </div>
 
-                    @if ($selectedPermohonan->file_surat_permohonan)
+                    @if ($selectedPermohonan->file_surat_permohonan || $selectedPermohonan->drive_file_id || $selectedPermohonan->drive_link)
                         <div class="pt-2">
-                            <flux:button href="{{ asset('storage/' . $selectedPermohonan->file_surat_permohonan) }}"
+                            <flux:button href="{{ $selectedPermohonan->file_url }}"
                                 target="_blank" size="sm" variant="filled" icon="document-text">
                                 Buka Berkas Pengantar PT
                             </flux:button>

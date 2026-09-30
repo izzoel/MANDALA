@@ -327,9 +327,9 @@
                                         @endif
                                     </td>
                                     <td class="px-5 py-4 text-xs space-y-1">
-                                        @if ($p->file_surat_permohonan)
+                                        @if ($p->file_surat_permohonan || $p->drive_file_id || $p->drive_link)
                                             <div>
-                                                <a href="{{ asset('storage/' . $p->file_surat_permohonan) }}"
+                                                <a href="{{ $p->file_url }}"
                                                     target="_blank"
                                                     class="text-primary-600 hover:underline inline-flex items-center gap-1">
                                                     <flux:icon name="document-text" class="size-3.5" /> Surat PT
@@ -591,11 +591,11 @@
                         <div
                             class="flex items-center justify-between rounded-lg border border-zinc-200/80 p-3 dark:border-zinc-800">
                             <span class="text-zinc-600 dark:text-zinc-400 font-medium">Surat Permohonan PT:</span>
-                            @if ($selectedPermohonan->file_surat_permohonan)
-                                <a href="{{ asset('storage/' . $selectedPermohonan->file_surat_permohonan) }}"
+                            @if ($selectedPermohonan->file_surat_permohonan || $selectedPermohonan->drive_file_id || $selectedPermohonan->drive_link)
+                                <a href="{{ $selectedPermohonan->file_url }}"
                                     target="_blank"
                                     class="font-semibold text-primary-600 hover:underline flex items-center gap-1">
-                                    <flux:icon name="arrow-down-tray" class="size-3.5" /> Unduh PDF
+                                    <flux:icon name="arrow-down-tray" class="size-3.5" /> Unduh / Buka Dokumen
                                 </a>
                             @else
                                 <span class="text-zinc-400 italic">Tidak dilampirkan</span>
@@ -714,11 +714,11 @@
                             {{ $selectedPermohonan->tgl_selesai->format('d M Y') }}</span>
                     </div>
 
-                    @if ($selectedPermohonan->file_surat_permohonan)
+                    @if ($selectedPermohonan->file_surat_permohonan || $selectedPermohonan->drive_file_id || $selectedPermohonan->drive_link)
                         <div
                             class="pt-2 border-t border-zinc-200 dark:border-zinc-700/60 flex items-center justify-between">
                             <span class="text-zinc-500">Berkas Pengantar PT:</span>
-                            <a href="{{ asset('storage/' . $selectedPermohonan->file_surat_permohonan) }}"
+                            <a href="{{ $selectedPermohonan->file_url }}"
                                 target="_blank"
                                 class="font-semibold text-primary-600 hover:underline flex items-center gap-1">
                                 <flux:icon name="arrow-down-tray" class="size-3.5" /> Unduh Dokumen PDF

@@ -95,13 +95,21 @@
                             <span
                                 class="font-bold {{ $pt->tgl_akhir_mou < now() ? 'text-red-600' : 'text-emerald-600' }}">{{ $pt->tgl_akhir_mou->format('d/m/Y') }}</span>
                         </div>
+                        @if ($pt->mou_url)
+                            <div class="pt-1.5 border-t border-zinc-200/60 dark:border-zinc-700/60 flex items-center justify-between">
+                                <span class="text-zinc-500">Dokumen:</span>
+                                <a href="{{ $pt->mou_url }}" target="_blank" class="inline-flex items-center gap-1 font-semibold text-primary-600 hover:underline dark:text-primary-400">
+                                    <flux:icon name="document-text" class="size-3.5" /> Berkas MoU (PDF)
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
                 <div
                     class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs text-zinc-500">
                     <span>{{ $pt->mahasiswas_count }} Mahasiswa</span>
-                    <span>{{ $pt->permohonan_praktiks_count }} Pengajuan Praktik</span>
+                    <span>{{ $pt->permohonan_praktiks_count }} Pengajuan</span>
                 </div>
             </div>
         @empty
@@ -160,6 +168,14 @@
                     <flux:select.option value="0">Nonaktif (Dibekukan / Tidak Berlaku)</flux:select.option>
                 </flux:select>
                 <flux:error name="status_mou" />
+            </flux:field>
+
+            <flux:field class="relative mb-2">
+                <flux:label>Dokumen Berkas MoU Kerjasama (PDF, Maks 5MB)</flux:label>
+                <flux:file-upload wire:model="file_mou" accept="application/pdf" :error="false">
+                    <flux:file-upload.dropzone heading="Unggah Dokumen MoU Kerjasama" text="Hanya format berkas PDF (Maksimal 5MB) - Tersimpan di Google Drive" with-progress inline />
+                </flux:file-upload>
+                <flux:error name="file_mou" />
             </flux:field>
 
             <div class="flex justify-end gap-2 pt-4">

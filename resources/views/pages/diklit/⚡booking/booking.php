@@ -4,8 +4,8 @@ use App\Models\PerguruanTinggi;
 use App\Models\PermohonanPraktik;
 use App\Models\SuratPersetujuan;
 use App\Models\Unit;
-use App\Models\UnitProdiKuota;
 use App\Services\BookingKuotaService;
+use App\Services\GoogleDriveService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
@@ -13,7 +13,8 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
+new #[Title('Booking & Permohonan Praktik RS')] class extends Component
+{
     use WithFileUploads;
 
     // View Mode: 'list' atau 'kalender'
@@ -21,36 +22,52 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
     // Filter & Search
     public string $search = '';
+
     public string $filterStatus = 'semua';
+
     public string|int|null $filterUnitId = null;
 
     // Calendar State
     public int $calendarMonth = 0;
+
     public int $calendarYear = 0;
+
     public string|int|null $calendarUnitId = null;
 
     // Form Permohonan Booking
     public bool $showBookingModal = false;
+
     public string|int|null $pt_id = null;
+
     public string|int|null $unit_id = null;
+
     public string $prodi = '';
+
     public int $jumlah_mahasiswa = 1;
+
     public string $tgl_mulai = '';
+
     public string $tgl_selesai = '';
+
     public $file_surat_permohonan;
 
     // Detail Modal
     public bool $showDetailModal = false;
+
     public ?PermohonanPraktik $selectedPermohonan = null;
 
     // Review & Persetujuan Modal (Penerbitan Surat RS)
     public bool $showReviewModal = false;
+
     public string $status_keputusan = 'disetujui';
+
     public string $nomor_surat = '';
+
     public string $catatan_diklat = '';
 
     // Real-time Kuota Feedback
     public ?array $kuotaCheckResult = null;
+
     public string $errorMessage = '';
 
     public function mount(): void
@@ -107,6 +124,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
         }
 
         $unit = Unit::with('prodiKuotas')->find((int) $this->unit_id);
+
         return $unit ? $unit->prodiKuotas : collect();
     }
 
@@ -118,7 +136,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
             ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status', $this->filterStatus))
             ->when(! empty($this->filterUnitId), fn ($q) => $q->where('unit_id', (int) $this->filterUnitId))
             ->when($this->search !== '', function ($q) {
-                $term = '%' . strtolower($this->search) . '%';
+                $term = '%'.strtolower($this->search).'%';
                 $q->where(function ($sub) use ($term) {
                     $sub->whereRaw('LOWER(prodi) LIKE ?', [$term])
                         ->orWhereHas('perguruanTinggi', fn ($pt) => $pt->whereRaw('LOWER(nama_pt) LIKE ?', [$term]))
@@ -166,7 +184,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
             ->when(! empty($this->calendarUnitId), fn ($q) => $q->where('unit_id', (int) $this->calendarUnitId))
             ->where(function ($q) use ($startOfMonth, $endOfMonth) {
                 $q->where('tgl_mulai', '<=', $endOfMonth->toDateString())
-                  ->where('tgl_selesai', '>=', $startOfMonth->toDateString());
+                    ->where('tgl_selesai', '>=', $startOfMonth->toDateString());
             })
             ->orderBy('tgl_mulai')
             ->get();
@@ -177,7 +195,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
                 ->where('status', 'disetujui')
                 ->where(function ($q) use ($startOfMonth, $endOfMonth) {
                     $q->where('tgl_mulai', '<=', $endOfMonth->toDateString())
-                      ->where('tgl_selesai', '>=', $startOfMonth->toDateString());
+                        ->where('tgl_selesai', '>=', $startOfMonth->toDateString());
                 })
                 ->get();
 
@@ -303,7 +321,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
         $this->status_keputusan = $this->selectedPermohonan->status === 'ditolak' ? 'ditolak' : 'disetujui';
         $this->nomor_surat = $this->selectedPermohonan->suratPersetujuan?->nomor_surat
-            ?? (rand(100, 999) . '/DIKLAT-RS/' . date('m/Y'));
+            ?? (rand(100, 999).'/DIKLAT-RS/'.date('m/Y'));
         $this->catatan_diklat = $this->selectedPermohonan->catatan_diklat
             ?? 'Disetujui. Mahasiswa wajib mematuhi SOP dan tata tertib keselamatan rumah sakit.';
 
@@ -360,6 +378,7 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
         // Hanya permohonan 'diajukan' yang bisa dibatalkan atau pengguna dengan hak admin
         if ($permohonan->status !== 'diajukan' && ! auth()->user()?->isAdminDiklat()) {
             session()->flash('error', 'Permohonan yang telah disetujui/ditolak tidak dapat dibatalkan.');
+
             return;
         }
 
@@ -397,8 +416,14 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
 
         try {
             $filePath = null;
+            $driveFileId = null;
+            $driveLink = null;
+
             if ($this->file_surat_permohonan) {
-                $filePath = $this->file_surat_permohonan->store('surat_permohonan', 'public');
+                $uploadResult = app(GoogleDriveService::class)->uploadWithFallback($this->file_surat_permohonan, 'surat_permohonan');
+                $filePath = $uploadResult['file_path'];
+                $driveFileId = $uploadResult['drive_file_id'];
+                $driveLink = $uploadResult['drive_link'];
             }
 
             $service = app(BookingKuotaService::class);
@@ -410,11 +435,13 @@ new #[Title('Booking & Permohonan Praktik RS')] class extends Component {
                 'tgl_mulai' => $this->tgl_mulai,
                 'tgl_selesai' => $this->tgl_selesai,
                 'file_surat_permohonan' => $filePath,
+                'drive_file_id' => $driveFileId,
+                'drive_link' => $driveLink,
             ]);
 
             $this->showBookingModal = false;
             session()->flash('message', 'Permohonan booking praktik berhasil diajukan dan masuk ke antrean verifikasi Diklat RS.');
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->errorMessage = $e->getMessage();
         }
     }

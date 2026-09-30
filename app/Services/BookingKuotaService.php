@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\PermohonanPraktik;
 use App\Models\PerguruanTinggi;
+use App\Models\PermohonanPraktik;
 use App\Models\Unit;
 use App\Models\UnitProdiKuota;
 use Exception;
@@ -15,12 +15,9 @@ class BookingKuotaService
      * Memeriksa ketersediaan kuota unit untuk rentang tanggal tertentu.
      * Menggunakan logika overlap tanggal: StartA <= EndB AND StartB <= EndA
      *
-     * @param int $unitId
-     * @param string $prodi
-     * @param string $tglMulai (Y-m-d)
-     * @param string $tglSelesai (Y-m-d)
-     * @param int $jumlahDiminta
-     * @param int|null $excludePermohonanId (jika sedang edit permohonan)
+     * @param  string  $tglMulai  (Y-m-d)
+     * @param  string  $tglSelesai  (Y-m-d)
+     * @param  int|null  $excludePermohonanId  (jika sedang edit permohonan)
      * @return array{available: bool, sisa_kuota: int, kuota_maks: int, kuota_terpakai: int, message: string}
      */
     public function checkKuotaAvailability(
@@ -39,7 +36,7 @@ class BookingKuotaService
             ->when($excludePermohonanId, fn ($q) => $q->where('id', '!=', $excludePermohonanId))
             ->where(function ($q) use ($tglMulai, $tglSelesai) {
                 $q->where('tgl_mulai', '<=', $tglSelesai)
-                  ->where('tgl_selesai', '>=', $tglMulai);
+                    ->where('tgl_selesai', '>=', $tglMulai);
             });
 
         if ($unit->mode_kuota === 'gabungan') {
@@ -98,9 +95,7 @@ class BookingKuotaService
     /**
      * Memvalidasi keabsahan MoU perguruan tinggi.
      *
-     * @param int $ptId
      * @throws Exception
-     * @return PerguruanTinggi
      */
     public function validateMou(int $ptId): PerguruanTinggi
     {
@@ -147,6 +142,8 @@ class BookingKuotaService
                 'tgl_mulai' => $data['tgl_mulai'],
                 'tgl_selesai' => $data['tgl_selesai'],
                 'file_surat_permohonan' => $data['file_surat_permohonan'] ?? null,
+                'drive_file_id' => $data['drive_file_id'] ?? null,
+                'drive_link' => $data['drive_link'] ?? null,
                 'status' => 'diajukan',
                 'catatan_diklat' => null,
             ]);

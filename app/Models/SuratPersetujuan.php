@@ -16,6 +16,8 @@ class SuratPersetujuan extends Model
         'permohonan_id',
         'nomor_surat',
         'file_pdf',
+        'drive_file_id',
+        'drive_link',
         'diterbitkan_oleh',
         'tgl_terbit',
         'catatan',
@@ -24,6 +26,23 @@ class SuratPersetujuan extends Model
     protected $casts = [
         'tgl_terbit' => 'date',
     ];
+
+    public function getFileUrlAttribute(): ?string
+    {
+        if (! empty($this->drive_link)) {
+            return $this->drive_link;
+        }
+
+        if (! empty($this->drive_file_id)) {
+            return route('document.view', ['type' => 'surat_persetujuan', 'id' => $this->id]);
+        }
+
+        if (! empty($this->file_pdf)) {
+            return str_starts_with($this->file_pdf, 'http') ? $this->file_pdf : asset('storage/'.$this->file_pdf);
+        }
+
+        return null;
+    }
 
     public function permohonan(): BelongsTo
     {

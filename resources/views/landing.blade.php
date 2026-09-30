@@ -746,8 +746,8 @@
           <ul class="space-y-2 text-xs text-slate-600 font-medium">
             <li><a href="#alur-praktik" class="hover:text-brand-600 transition-colors">Panduan Alur Permohonan</a></li>
             <li><a href="#faq" class="hover:text-brand-600 transition-colors">Pusat Bantuan &amp; FAQ</a></li>
-            <li><a href="#" class="hover:text-brand-600 transition-colors">Kebijakan Privasi</a></li>
-            <li><a href="#" class="hover:text-brand-600 transition-colors">Syarat &amp; Ketentuan</a></li>
+            <li><a href="{{ route('privacy.policy') }}" class="hover:text-brand-600 transition-colors">Kebijakan Privasi</a></li>
+            <li><a href="{{ route('terms.service') }}" class="hover:text-brand-600 transition-colors">Syarat &amp; Ketentuan</a></li>
           </ul>
         </div>
 

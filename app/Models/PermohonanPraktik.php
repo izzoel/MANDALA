@@ -22,6 +22,8 @@ class PermohonanPraktik extends Model
         'tgl_mulai',
         'tgl_selesai',
         'file_surat_permohonan',
+        'drive_file_id',
+        'drive_link',
         'status',
         'catatan_diklat',
     ];
@@ -30,6 +32,23 @@ class PermohonanPraktik extends Model
         'tgl_mulai' => 'date',
         'tgl_selesai' => 'date',
     ];
+
+    public function getFileUrlAttribute(): ?string
+    {
+        if (! empty($this->drive_link)) {
+            return $this->drive_link;
+        }
+
+        if (! empty($this->drive_file_id)) {
+            return route('document.view', ['type' => 'surat_permohonan', 'id' => $this->id]);
+        }
+
+        if (! empty($this->file_surat_permohonan)) {
+            return str_starts_with($this->file_surat_permohonan, 'http') ? $this->file_surat_permohonan : asset('storage/'.$this->file_surat_permohonan);
+        }
+
+        return null;
+    }
 
     public function perguruanTinggi(): BelongsTo
     {

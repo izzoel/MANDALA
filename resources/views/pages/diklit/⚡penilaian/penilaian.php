@@ -9,19 +9,26 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Penilaian Praktik Mahasiswa')] class extends Component {
+new #[Title('Penilaian Praktik Mahasiswa')] class extends Component
+{
     public string $search = '';
 
     // Form Modal Input Nilai
     public bool $showNilaiModal = false;
+
     public ?int $mahasiswa_id = null;
+
     public ?int $permohonan_id = null;
+
     public string $peran_penilai = 'lapangan'; // lapangan, dosen
+
     public string $tgl_isi = '';
+
     public string $catatan_umum = '';
 
     // Nilai Dinamis per Kriteria [kriteria_id => nilai] & Catatan [kriteria_id => catatan]
     public array $nilaiKriteria = [];
+
     public array $catatanKriteria = [];
 
     public function mount(): void
@@ -35,7 +42,7 @@ new #[Title('Penilaian Praktik Mahasiswa')] class extends Component {
         return PenilaianPraktik::query()
             ->with(['mahasiswa.perguruanTinggi', 'penilai', 'detailPenilaians.kriteria', 'permohonan.unit'])
             ->when($this->search !== '', function ($q) {
-                $term = '%' . strtolower($this->search) . '%';
+                $term = '%'.strtolower($this->search).'%';
                 $q->where(function ($sub) use ($term) {
                     $sub->whereHas('mahasiswa', fn ($m) => $m->whereRaw('LOWER(nama) LIKE ?', [$term])->orWhereRaw('LOWER(nim) LIKE ?', [$term]))
                         ->orWhereHas('penilai', fn ($p) => $p->whereRaw('LOWER(name) LIKE ?', [$term]));
@@ -121,6 +128,6 @@ new #[Title('Penilaian Praktik Mahasiswa')] class extends Component {
         }
 
         $this->showNilaiModal = false;
-        session()->flash('message', 'Penilaian praktik mahasiswa berhasil disimpan (Nilai Akhir: ' . round($nilaiAkhir, 2) . ').');
+        session()->flash('message', 'Penilaian praktik mahasiswa berhasil disimpan (Nilai Akhir: '.round($nilaiAkhir, 2).').');
     }
 };

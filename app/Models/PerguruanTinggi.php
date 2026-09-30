@@ -21,6 +21,9 @@ class PerguruanTinggi extends Model
         'tgl_akhir_mou',
         'kontak',
         'email_pt',
+        'file_mou',
+        'drive_file_id',
+        'drive_link',
     ];
 
     protected $casts = [
@@ -28,6 +31,23 @@ class PerguruanTinggi extends Model
         'tgl_mulai_mou' => 'date',
         'tgl_akhir_mou' => 'date',
     ];
+
+    public function getMouUrlAttribute(): ?string
+    {
+        if (! empty($this->drive_link)) {
+            return $this->drive_link;
+        }
+
+        if (! empty($this->drive_file_id)) {
+            return route('document.view', ['type' => 'mou', 'id' => $this->id]);
+        }
+
+        if (! empty($this->file_mou)) {
+            return str_starts_with($this->file_mou, 'http') ? $this->file_mou : asset('storage/'.$this->file_mou);
+        }
+
+        return null;
+    }
 
     public function isMouValid(): bool
     {

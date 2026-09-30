@@ -9,14 +9,19 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Penunjukan Pembimbing Praktik')] class extends Component {
+new #[Title('Penunjukan Pembimbing Praktik')] class extends Component
+{
     public string $search = '';
 
     // Modal Form
     public bool $showModal = false;
+
     public ?int $permohonan_id = null;
+
     public ?int $mahasiswa_id = null;
+
     public ?int $pembimbing_lapangan_id = null;
+
     public ?int $pembimbing_dosen_id = null;
 
     #[Computed]
@@ -25,7 +30,7 @@ new #[Title('Penunjukan Pembimbing Praktik')] class extends Component {
         return PenunjukanPembimbing::query()
             ->with(['permohonan.unit', 'permohonan.perguruanTinggi', 'mahasiswa', 'pembimbingLapangan', 'pembimbingDosen'])
             ->when($this->search !== '', function ($q) {
-                $term = '%' . strtolower($this->search) . '%';
+                $term = '%'.strtolower($this->search).'%';
                 $q->where(function ($sub) use ($term) {
                     $sub->whereHas('mahasiswa', fn ($m) => $m->whereRaw('LOWER(nama) LIKE ?', [$term])->orWhereRaw('LOWER(nim) LIKE ?', [$term]))
                         ->orWhereHas('pembimbingLapangan', fn ($pl) => $pl->whereRaw('LOWER(nama) LIKE ?', [$term]))

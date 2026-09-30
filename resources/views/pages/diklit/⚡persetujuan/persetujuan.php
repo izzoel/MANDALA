@@ -6,15 +6,21 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Title('Persetujuan Permohonan Praktik RS')] class extends Component {
+new #[Title('Persetujuan Permohonan Praktik RS')] class extends Component
+{
     public string $search = '';
+
     public string $filterStatus = 'diajukan'; // diajukan, disetujui, ditolak
 
     // Modal Review
     public bool $showReviewModal = false;
+
     public ?PermohonanPraktik $selectedPermohonan = null;
+
     public string $status_keputusan = 'disetujui';
+
     public string $nomor_surat = '';
+
     public string $catatan_diklat = '';
 
     #[Computed]
@@ -24,7 +30,7 @@ new #[Title('Persetujuan Permohonan Praktik RS')] class extends Component {
             ->with(['perguruanTinggi', 'unit', 'suratPersetujuan'])
             ->when($this->filterStatus !== 'semua', fn ($q) => $q->where('status', $this->filterStatus))
             ->when($this->search !== '', function ($q) {
-                $term = '%' . strtolower($this->search) . '%';
+                $term = '%'.strtolower($this->search).'%';
                 $q->where(function ($sub) use ($term) {
                     $sub->whereRaw('LOWER(prodi) LIKE ?', [$term])
                         ->orWhereHas('perguruanTinggi', fn ($pt) => $pt->whereRaw('LOWER(nama_pt) LIKE ?', [$term]))
@@ -39,7 +45,7 @@ new #[Title('Persetujuan Permohonan Praktik RS')] class extends Component {
     {
         $this->selectedPermohonan = PermohonanPraktik::with(['perguruanTinggi', 'unit'])->findOrFail($id);
         $this->status_keputusan = 'disetujui';
-        $this->nomor_surat = rand(100, 999) . '/DIKLAT-RS/' . date('m/Y');
+        $this->nomor_surat = rand(100, 999).'/DIKLAT-RS/'.date('m/Y');
         $this->catatan_diklat = 'Disetujui. Mahasiswa wajib mematuhi SOP dan tata tertib keselamatan rumah sakit.';
         $this->showReviewModal = true;
     }

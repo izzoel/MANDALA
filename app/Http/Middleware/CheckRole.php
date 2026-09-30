@@ -11,8 +11,7 @@ class CheckRole
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string  ...$roles
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
@@ -35,6 +34,6 @@ class CheckRole
             return $next($request);
         }
 
-        abort(403, 'Akses ditolak. Peran pengguna (' . $user->role . ') tidak memiliki izin untuk halaman ini.');
+        abort(403, 'Akses ditolak. Peran pengguna ('.$user->role.') tidak memiliki izin untuk halaman ini.');
     }
 }
